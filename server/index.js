@@ -2,6 +2,10 @@ const express = require("express");
 
 const app = express();
 
-app.listen(3000, (req, res) => {
+app.get("/", (req, res) => {
+  console.log(req.body);
+});
+
+app.listen(3001, (req, res) => {
   console.log("시작");
 });
