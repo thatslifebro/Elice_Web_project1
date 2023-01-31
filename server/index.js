@@ -2,8 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-mongoose.set('strictQuery', false);
+const productRouter = require('./router/product');
 
+//mongodb 연결
+mongoose.set('strictQuery', false);
 mongoose
   .connect(
     'mongodb+srv://6team:6team@cluster0.dpy7y0u.mongodb.net/?retryWrites=true&w=majority',
@@ -11,10 +13,18 @@ mongoose
   .then(console.log('db연결 성공'))
   .catch((err) => console.log(err));
 
+//req.body로 데이터 받아오려면 써야하는 것
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.get('/', (req, res) => {
   console.log(req.body);
 });
 
+//product 관련 라우터
+app.use('/api', productRouter);
+
+//서버열기 'localhost:3001'
 app.listen(3001, (req, res) => {
   console.log('시작');
 });
