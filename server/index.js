@@ -18,13 +18,3 @@ app.get('/', (req, res) => {
 app.listen(3001, (req, res) => {
   console.log('시작');
 });
-
-adslfkjsalkfjsadlkfjaslfk;
-asdlkfjsaklfjslakdfjslakfj;
-sadfasfasfsaf;
-
-console.log('hihellohihi');
-
-abcdefgh;
-
-12345464631643511345;
