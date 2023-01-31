@@ -19,10 +19,10 @@ app.listen(3001, (req, res) => {
   console.log('시작');
 });
 
-<<<<<<< HEAD
 adslfkjsalkfjsadlkfjaslfk;
 asdlkfjsaklfjslakdfjslakfj;
 sadfasfasfsaf;
-=======
+
 console.log('hihellohihi');
->>>>>>> origin/feature-productDB
+
+abcdefgh;
