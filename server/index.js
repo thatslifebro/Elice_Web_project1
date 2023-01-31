@@ -24,4 +24,6 @@ app.listen(3001, (req, res) => {
   plz;
 
   hekllasld;
+
+  console.log('가나다라마바사ㅇㅇㄴ망리ㅓ니말');
 });
