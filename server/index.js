@@ -17,4 +17,6 @@ app.get('/', (req, res) => {
 
 app.listen(3001, (req, res) => {
   console.log('시작');
+
+  helloWorld;
 });
