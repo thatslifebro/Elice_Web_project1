@@ -17,14 +17,4 @@ app.get('/', (req, res) => {
 
 app.listen(3001, (req, res) => {
   console.log('시작');
-
-  helloWorld;
-
-  console.log('sadlkfjklasdf');
-  plz;
-
-  hekllasld;
-  helelelelel;
-
-  console.log('가나다라마바사ㅇㅇㄴ망리ㅓ니말');
 });
