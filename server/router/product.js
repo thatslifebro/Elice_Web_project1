@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const { Product } = require('../db/model');
 const asyncHandler = require('../util/async-Handler');
-
 const router = Router();
 
 // ---- 모든 유저(관리자 및 회원) ----
