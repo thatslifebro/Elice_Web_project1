@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-const productRouter = require('./router/product');
+//const productRouter = require('./router/product');
+const authRouter = require('./router/auth');
 
 //mongodb 연결
 mongoose.set('strictQuery', false);
@@ -22,7 +23,13 @@ app.get('/', (req, res) => {
 });
 
 //product 관련 라우터
-app.use('/api', productRouter);
+//app.use('/api/product', productRouter);
+app.use('/api/auth', authRouter);
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.send(err.message);
+});
 
 //서버열기 'localhost:3001'
 app.listen(3001, (req, res) => {
