@@ -1,4 +1,5 @@
-const { router } = require('express');
+const { Router } = require('express');
+const router = Router();
 
 //모든 물품 정보 주기
 router.get('/', (req, res) => {});

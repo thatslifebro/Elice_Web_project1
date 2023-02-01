@@ -4,6 +4,7 @@ const app = express();
 
 //const productRouter = require('./router/product');
 const authRouter = require('./router/auth');
+const categoryRouter = require('./router/category');
 
 //mongodb 연결
 mongoose.set('strictQuery', false);
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 //product 관련 라우터
 //app.use('/api/product', productRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/category', categoryRouter);
 
 app.use((err, req, res, next) => {
   console.log(err);
