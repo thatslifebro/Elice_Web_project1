@@ -1,80 +1,40 @@
 const { Router } = require('express');
 const { User } = require('../db/model');
 const asyncHandler = require('../util/async-Handler');
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const router = Router();
 
-//모든 사용자정보 가져오기
-router.get(
-  '/',
-  asyncHandler(async (req, res) => {
-    const Users = await User.find();
-    res.json(Users);
-    return;
-  }),
-);
-
-//id로 사용자 정보가져오기
-router.get(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findByIdAndUpdate(id);
-    if (!user) {
-      throw new Error('없는 사용자 입니다');
-    }
-    res.json(user);
-    return;
-  }),
-);
-
-//새로운 사용자 등록하기
 router.post(
-  '/',
+  '/login',
   asyncHandler(async (req, res) => {
-    const { email, fullName, password, phoneNumber, address } = req.body;
-    if (!email || !fullName || !password || !phoneNumber || !address) {
-      throw new Error('필수 항목이 모두 채워지지 않았습니다.');
+    const user = await User.findOne({ email: req.body.email });
+    const match = await bcrypt.compare(req.body.password, user.password);
+    if (!match || !user) {
+      throw new Error('이메일이나 비번이 틀림');
     }
-    const newUser = await User.create({
+    //jwt tokken 생성
+    //res.json(jwt tokken)
+    res.json('로그인 성공');
+    return;
+  }),
+);
+
+router.post(
+  '/register',
+  asyncHandler(async (req, res) => {
+    const { email, address, fullName } = req.body;
+    const user = await User.findOne({ email });
+    if (user) {
+      throw new Error('이미 있는 이메일');
+    }
+    await User.create({
       email,
-      fullName,
-      password,
-      phoneNumber,
       address,
+      fullName,
+      password: await bcrypt.hash(req.body.password, saltRounds),
     });
-    res.json(newUser);
-    return;
-  }),
-);
-
-//id로 사용자 정보 수정하기
-router.put(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    console.log(user);
-    if (!user) {
-      throw new Error('없는 사용자 입니다');
-    }
-    res.json(user);
-    return;
-  }),
-);
-
-//id로 사용자 정보 삭제하기
-router.delete(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findByIdAndDelete(id);
-    if (!user) {
-      throw new Error('없는 사용자 입니다');
-    }
-    res.json(user);
+    res.json('성공');
     return;
   }),
 );

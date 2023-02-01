@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 //const productRouter = require('./router/product');
+const usersRouter = require('./router/users');
 const authRouter = require('./router/auth');
 
 //mongodb 연결
@@ -22,8 +23,9 @@ app.get('/', (req, res) => {
   console.log(req.body);
 });
 
-//product 관련 라우터
+//라우터
 //app.use('/api/product', productRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 
 app.use((err, req, res, next) => {
