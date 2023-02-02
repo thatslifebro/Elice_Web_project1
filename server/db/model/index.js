@@ -9,3 +9,4 @@ exports.User = mongoose.model('User', Users);
 exports.Category = mongoose.model('Category', Categorys);
 exports.Product = mongoose.model('Product', Products);
 exports.Order = mongoose.model('Order', Orders);
+exports.OrderItem = mongoose.model('OrderItem', OrderItems);
