@@ -1,18 +1,21 @@
-const express = require('express');
-const mongoose = require('mongoose');
+import express from 'express';
+import mongoose from 'mongoose';
 const app = express();
 
 //const productRouter = require('./router/product');
-const usersRouter = require('./router/users');
-const productRouter = require('./router/products');
-const authRouter = require('./router/auth');
-const categoryRouter = require('./router/categories');
+import usersRouter from './router/users';
+import productRouter from './router/products';
+import authRouter from './router/auth';
+import categoryRouter from './router/categories';
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 //mongodb 연결
 mongoose.set('strictQuery', false);
 mongoose
   .connect(
-    'mongodb+srv://6team:6team@cluster0.dpy7y0u.mongodb.net/?retryWrites=true&w=majority',
+    `mongodb+srv://${process.env.DB_ADDRESS}/?retryWrites=true&w=majority`,
   )
   .then(console.log('db연결 성공'))
   .catch((err) => console.log(err));

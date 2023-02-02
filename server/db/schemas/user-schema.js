@@ -1,4 +1,4 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
 const UserSchema = new Schema(
   {
@@ -15,6 +15,12 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    role: {
+      //USER, ADMIN
+      type: String,
+      required: true,
+      default: 'USER',
     },
     phoneNumber: {
       type: String,
@@ -40,4 +46,4 @@ const UserSchema = new Schema(
   },
 );
 
-module.exports = UserSchema;
+export default UserSchema;

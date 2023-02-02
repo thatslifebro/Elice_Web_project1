@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const { User } = require('../db/model');
-const asyncHandler = require('../util/async-Handler');
-const bcrypt = require('bcrypt');
+import { Router } from 'express';
+import { User } from '../db/model';
+import { asyncHandler } from '../util/async-handler';
+import bcrypt from 'bcrypt';
 const saltRounds = 10;
 const router = Router();
 
@@ -38,5 +38,4 @@ router.post(
     return;
   }),
 );
-
-module.exports = router;
+export default router;
