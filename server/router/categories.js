@@ -2,6 +2,8 @@ const { Router } = require('express');
 const { Category } = require('../db/model');
 const asyncHandler = require('../util/async-Handler');
 
+const { categoriesService } = require('../services/categories');
+
 const router = Router();
 
 //관리자모드 - get, get, post, push, delete
@@ -35,6 +37,18 @@ router.post(
   '/',
   asyncHandler(async (req, res) => {
     const { title } = req.body;
+    const newCategory = await categoriesService.addCategory(title);
+    res.status(200).json(newCategory);
+    //return;
+  }),
+);
+
+/* old
+//새로운 카테고리 등록하기
+router.post(
+  '/',
+  asyncHandler(async (req, res) => {
+    const { title } = req.body;
     if (!title) {
       throw new Error('등록할 카테고리를 입력하세요.');
     }
@@ -45,6 +59,7 @@ router.post(
     return;
   }),
 );
+*/
 
 //id로 카테고리 수정하기
 router.put(
