@@ -58,13 +58,9 @@ function RegisterForm() {
     <div>
       <Container className="panel">
         <Form>
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextPassword"
-          >
+          <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
             <Col sm>
-              <Form.Control type="password" placeholder="UserID" />
+              <Form.Control type="email" placeholder="Email Address" />
             </Col>
           </Form.Group>
 
@@ -88,21 +84,12 @@ function RegisterForm() {
             </Col>
           </Form.Group>
 
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextPassword"
-          >
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintextName">
             <Col sm>
-              <Form.Control type="password" placeholder="Username" />
+              <Form.Control type="name" placeholder="Name" />
             </Col>
           </Form.Group>
 
-          <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
-            <Col sm>
-              <Form.Control type="email" placeholder="Email Address" />
-            </Col>
-          </Form.Group>
           <br />
 
           <div className="d-grid gap-1">
