@@ -16,6 +16,12 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    role: {
+      //USER, ADMIN
+      type: String,
+      required: true,
+      default: 'USER',
+    },
     phoneNumber: {
       type: String,
       required: false,
