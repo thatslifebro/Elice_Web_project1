@@ -1,6 +1,6 @@
-const { Router } = require('express');
-const { User } = require('../db/model');
-const asyncHandler = require('../util/async-Handler');
+import { Router } from 'express';
+import { User } from '../db/model';
+import { asyncHandler } from '../util/async-handler';
 
 const router = Router();
 
@@ -138,4 +138,4 @@ router.delete(
 //   }),
 // );
 
-module.exports = router;
+export default router;

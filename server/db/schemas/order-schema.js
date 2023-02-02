@@ -1,4 +1,4 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
 const OrderSchema = new Schema(
   {
@@ -58,4 +58,4 @@ const OrderSchema = new Schema(
   },
 );
 
-module.exports = OrderSchema;
+export default OrderSchema;

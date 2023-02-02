@@ -1,8 +1,8 @@
-const { Router } = require('express');
-const { Product } = require('../db/model');
-const asyncHandler = require('../util/async-Handler');
-const router = Router();
+import { Router } from 'express';
+import { Product } from '../db/model';
+import { asyncHandler } from '../util/async-handler';
 
+const router = Router();
 // ---- 모든 유저(관리자 및 회원) ----
 
 //모든 제품정보 가져오기
@@ -111,4 +111,4 @@ router.delete(
   }),
 );
 
-module.exports = router;
+export default router;

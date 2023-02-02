@@ -1,9 +1,6 @@
-const { Router } = require('express');
-const { Category } = require('../db/model');
-const asyncHandler = require('../util/async-Handler');
-
-const { categoriesService } = require('../services/categories');
-
+import { Router } from 'express';
+import { Category } from '../db/model';
+import { asyncHandler } from '../util/async-handler';
 const router = Router();
 
 //관리자모드 - get, get, post, push, delete
@@ -92,5 +89,4 @@ router.delete(
     return;
   }),
 );
-
-module.exports = router;
+export default router;
