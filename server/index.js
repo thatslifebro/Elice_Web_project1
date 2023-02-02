@@ -4,9 +4,9 @@ const app = express();
 
 //const productRouter = require('./router/product');
 const usersRouter = require('./router/users');
-const productRouter = require('./router/product');
+const productRouter = require('./router/products');
 const authRouter = require('./router/auth');
-const categoryRouter = require('./router/category');
+const categoryRouter = require('./router/categories');
 
 //mongodb 연결
 mongoose.set('strictQuery', false);
@@ -26,12 +26,10 @@ app.get('/', (req, res) => {
 });
 
 //라우터
-//app.use('/api/product', productRouter);
 app.use('/api/users', usersRouter);
-//product 관련 라우터
-app.use('/api/product', productRouter);
+app.use('/api/products', productRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/category', categoryRouter);
+app.use('/api/categories', categoryRouter);
 
 app.use((err, req, res, next) => {
   console.log(err);
