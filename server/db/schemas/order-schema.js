@@ -7,9 +7,28 @@ const OrderSchema = new Schema(
       ref: 'users',
       required: true,
     },
-    productId: {
-      type: [Number],
+    productItem: {
+      type: Schema.Types.ObjectId,
       required: true,
+    },
+    Order: {
+      type: new Schema({
+        //상품 아이디
+        productId: {
+          type: [String],
+          required: true,
+        },
+        //수량
+        quantity: {
+          type: [Number],
+          required: true,
+        },
+        //총 가격
+        totalPrice: {
+          type: Number,
+          required: true,
+        },
+      }),
     },
     address: {
       type: new Schema(
