@@ -9,7 +9,7 @@ const router = Router();
 router.get(
   '/',
   asyncHandler(async (req, res) => {
-    const users = await User.find().select('email address fullName');
+    const users = await User.find().select('email address fullName role');
     res.json(users);
     return;
   }),
@@ -21,7 +21,7 @@ router.get(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById(id).select('email address fullName');
+    const user = await User.findById(id).select('email address fullName role');
     if (!user) {
       throw new Error('없는 사용자 입니다');
     }
@@ -128,14 +128,5 @@ router.delete(
 
 //회원 탈퇴
 //회원
-
-// router.put(
-//   '/', //유효성검사
-//   asyncHandler(async (req, res) => {
-//     const { id } = // jwt 토큰에서 받은 id
-//     const user = await User.findByIdAndDelete(id);
-//     return;
-//   }),
-// );
 
 export default router;

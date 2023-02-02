@@ -1,21 +1,17 @@
 import { Router } from 'express';
-import { User } from '../db/model';
 import { asyncHandler } from '../util/async-handler';
-import bcrypt from 'bcrypt';
-const saltRounds = 10;
+import { authService } from '../services/auth';
+
+import verifyToken from '../db/middleware/verify-token';
+
 const router = Router();
 
 router.post(
   '/login',
   asyncHandler(async (req, res) => {
-    const user = await User.findOne({ email: req.body.email });
-    const match = await bcrypt.compare(req.body.password, user.password);
-    if (!match || !user) {
-      throw new Error('이메일이나 비번이 틀림');
-    }
-    //jwt tokken 생성
-    //res.json(jwt tokken)
-    res.json('로그인 성공');
+    const { email, password } = req.body;
+    const token = await authService.login(email, password);
+    res.json(token);
     return;
   }),
 );
@@ -23,19 +19,28 @@ router.post(
 router.post(
   '/register',
   asyncHandler(async (req, res) => {
-    const { email, address, fullName } = req.body;
-    const user = await User.findOne({ email });
-    if (user) {
-      throw new Error('이미 있는 이메일');
-    }
-    await User.create({
+    const { email, password, address, fullName, role } = req.body;
+    const newuser = await authService.register(
       email,
+      password,
       address,
       fullName,
-      password: await bcrypt.hash(req.body.password, saltRounds),
-    });
+      role,
+    );
+    res.json(newuser);
+    return;
+  }),
+);
+
+router.delete(
+  '/withdrawal',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { userId, role } = req.decoded;
+    await authService.withdrawal(userId, role, req.body.password);
     res.json('성공');
     return;
   }),
 );
+
 export default router;

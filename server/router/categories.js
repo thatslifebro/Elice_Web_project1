@@ -1,11 +1,12 @@
 import { Router } from 'express';
-import { Category } from '../db/model';
+import { Category, Product } from '../db/model';
 import { asyncHandler } from '../util/async-handler';
 const router = Router();
 
 //관리자모드 - get, get, post, push, delete
 
 //전체카테고리목록
+
 router.get(
   '/',
   asyncHandler(async (req, res) => {
