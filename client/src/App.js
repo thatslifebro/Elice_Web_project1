@@ -1,9 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
-import RegisterForm from './component/RegisterForm';
+import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginForm from './component/LoginForm';
+import LoginForm from './component/users/LoginForm';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import UserData from './component/users/UserData';
+import { Nav } from 'react-bootstrap';
+import UserWithdrawal from './component/users/UserWithdrawal';
 
 function App() {
   return (
@@ -17,12 +19,10 @@ function App() {
       </header>
       <Routes>
         <Route path="/" />
-        <Route path="/login" element={<LoginForm />}>
-          로그인 화면
-        </Route>
-        <Route path="/register" element={<RegisterForm />}>
-          회원가입 화면
-        </Route>
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
+        <Route path="/userdata" element={<UserData />} />
+        <Route path="/userwithdrawal" element={<UserWithdrawal />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

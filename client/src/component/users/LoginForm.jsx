@@ -19,7 +19,7 @@ function LoginForm() {
     return true;
   };
 
-  const validatePassword = (password, confirmPassword) => {
+  const validatePassword = (password) => {
     if (password !== admin.password) {
       setError('password error');
       return false;
