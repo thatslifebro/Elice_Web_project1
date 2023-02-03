@@ -15,6 +15,10 @@ import { Nav } from 'react-bootstrap';
 import UserWithdrawal from './component/users/UserWithdrawal';
 import ChangePassword from './component/users/ChangePassword';
 
+import CategoryProducts from './component/product/CategoryProducts';
+import Product from './component/product/Product';
+import AdminCategory from './component/product/AdminCategory';
+
 function App() {
   return (
     <Router>
@@ -34,6 +38,7 @@ function App() {
           회원가입 화면
         </Route>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Route path="/admin/category" element={<AdminCategoryForm />}>
           관리자 카테고리 화면
         </Route>
@@ -48,6 +53,20 @@ function App() {
 =======
         <Route path="/AddProduct" element={<AddProduct />}></Route>
 >>>>>>> origin/feature-89page
+=======
+
+        <Route path="/product" element={<CategoryProducts />}>
+          카테고리별 상품목록
+        </Route>
+        <Route path="/product/:id" element={<Product />}>
+          상품상세
+        </Route>
+
+        <Route path="/adminCategory" element={<AdminCategory />}>
+          상품상세
+        </Route>
+
+>>>>>>> origin/feature-12Page
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

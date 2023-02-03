@@ -2,7 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 const app = express();
+<<<<<<< HEAD
 app.use(cors({ origin: 'http://localhost:3000' }));
+=======
+app.use(cors({ corigin: 'http://localhost:3000' }));
+>>>>>>> origin/feature-12Page
 
 import usersRouter from './router/users';
 import productRouter from './router/products';
