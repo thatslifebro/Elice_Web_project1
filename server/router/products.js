@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { Product, Category } from '../db/model';
 import asyncHandler from '../util/async-handler';
-import productService from '../services/products';
+import ProductsService from '../services/products';
 const router = Router();
 // ---- 모든 유저(관리자 및 회원) ----
 
@@ -9,18 +9,9 @@ const router = Router();
 router.get(
   '/',
   asyncHandler(async (req, res) => {
-    const title = req.query.category;
-    const products = await Product.find();
-    if (!title) {
-      res.json(products);
-    } else {
-      const category = await Category.find({ title });
-      const products = await Product.find({ categoryId: category.id });
-      if (!products) {
-        throw new Error('존재하지 않는 제품입니다');
-      }
-      res.json(products);
-    }
+    const category = req.query.category;
+    const products = await ProductsService.getAllProduct(category);
+    res.json(products);
     return;
   }),
 );
@@ -30,10 +21,7 @@ router.get(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id);
-    if (!product) {
-      throw new Error('존재하지 않는 제품입니다');
-    }
+    const product = await ProductsService.getProductById(id);
     res.json(product);
     return;
   }),
@@ -53,18 +41,7 @@ router.post(
       inventory,
       price,
     } = req.body;
-    if (
-      !title ||
-      !categoryId ||
-      !shortDescription ||
-      !detailDescription ||
-      !imageKey ||
-      !inventory ||
-      !price
-    ) {
-      throw new Error('필수 항목이 모두 채워지지 않았습니다.');
-    }
-    const newProduct = await productService.addProduct({
+    const newProduct = await ProductsService.addProduct({
       title,
       categoryId,
       shortDescription,
@@ -83,13 +60,8 @@ router.put(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const Products = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    console.log(Products);
-    if (!Products) {
-      throw new Error('존재하지 않는 제품 입니다');
-    }
+    const updatedProduct = await ProductsService.updatedProductById(id);
+    res.json(updatedProduct);
     return;
   }),
 );
@@ -99,10 +71,7 @@ router.delete(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findByIdAndDelete(id);
-    if (!product) {
-      throw new Error('이미 존재하지 않은 상품입니다');
-    }
+    await ProductsService.deleteProductById(id);
     return;
   }),
 );

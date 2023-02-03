@@ -1,16 +1,28 @@
 const { Product } = require('../db/model');
 
 export class ProductsService {
-  //   static async getAllProducts() {
-  //     const getProduct = await Product.find();
-  //     console.log('db에 상품을 정상적으로 가져왔습니다.');
-  //     return getProduct;
-  //   }
-  //   static async getCategoryProducts() {
-  //     const getProduct = await Product.find({ categoryId: id });
-  //     console.log('db에 상품을 정상적으로 가져왔습니다.');
-  //     return getProduct;
-  //   }
+  static async getAllProduct(title) {
+    const products = await Product.find();
+    if (!title) {
+      return products;
+    } else {
+      const category = await Category.find({ title });
+      const products = await Product.find({ categoryId: category.id });
+      if (!products) {
+        throw new Error('존재하지 않는 제품입니다');
+      }
+      return products;
+    }
+  }
+
+  static async getProductById(id) {
+    const product = await Product.findById(id);
+    if (!product) {
+      throw new Error('존재하지 않는 제품입니다');
+    }
+    return product;
+  }
+
   static async addProduct({
     title,
     categoryId,
@@ -20,6 +32,17 @@ export class ProductsService {
     inventory,
     price,
   }) {
+    if (
+      !title ||
+      !categoryId ||
+      !shortDescription ||
+      !detailDescription ||
+      !imageKey ||
+      !inventory ||
+      !price
+    ) {
+      throw new Error('필수 항목이 모두 채워지지 않았습니다.');
+    }
     const createNewProduct = await Product.create({
       title,
       categoryId,
@@ -29,20 +52,22 @@ export class ProductsService {
       inventory,
       price,
     });
-    console.log('db에 상품이 정상적으로 등록되었습니다.');
     return createNewProduct;
   }
-  static async setProduct(title) {
+
+  static async updateProductById(id) {
     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    console.log('db에 상품이 정상적으로 수정되었습니다.');
-    return createNewProduct;
+    if (!Products) {
+      throw new Error('존재하지 않는 제품 입니다');
+    }
+    return updatedProduct;
   }
-  static async deleteProductData(title) {
-    const createNewProduct = await Product.findByIdAndDelete({ title });
-    console.log('db에 상품이 정상적으로 삭제되었습니다.');
-    return createNewProduct;
+
+  static async deleteProductById(id) {
+    await Product.findByIdAndDelete(id);
+    return;
   }
 }
 
