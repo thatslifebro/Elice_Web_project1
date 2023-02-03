@@ -11,8 +11,24 @@ export class ProductsService {
   //     console.log('db에 상품을 정상적으로 가져왔습니다.');
   //     return getProduct;
   //   }
-  static async addProduct({}) {
-    const createNewProduct = await Product.create({});
+  static async addProduct({
+    title,
+    categoryId,
+    shortDescription,
+    detailDescription,
+    imageKey,
+    inventory,
+    price,
+  }) {
+    const createNewProduct = await Product.create({
+      title,
+      categoryId,
+      shortDescription,
+      detailDescription,
+      imageKey,
+      inventory,
+      price,
+    });
     console.log('db에 상품이 정상적으로 등록되었습니다.');
     return createNewProduct;
   }
@@ -29,3 +45,5 @@ export class ProductsService {
     return createNewProduct;
   }
 }
+
+export default ProductsService;

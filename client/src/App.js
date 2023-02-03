@@ -1,10 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import RegisterForm from './component/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginForm from './component/LoginForm';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AdminCategoryForm from './component/AdminCategory';
+import AdminProductUD from './component/AdminProductUD';
 
 function App() {
   return (
@@ -26,6 +26,9 @@ function App() {
         </Route>
         <Route path="/admin/category" element={<AdminCategoryForm />}>
           관리자 카테고리 화면
+        </Route>
+        <Route path="/admin/product" element={<AdminProductUD />}>
+          관리자 product update delete 화면
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
