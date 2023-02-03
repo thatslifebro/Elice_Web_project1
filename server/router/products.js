@@ -26,7 +26,6 @@ router.get(
     return;
   }),
 );
-// ----- 관리자  ------
 
 //새로운 물품 등록하기
 router.post(
@@ -41,7 +40,7 @@ router.post(
       inventory,
       price,
     } = req.body;
-    const newProduct = await ProductsService.addProduct({
+    const createdProduct = await ProductsService.addProduct({
       title,
       categoryId,
       shortDescription,
@@ -50,7 +49,7 @@ router.post(
       inventory,
       price,
     });
-    res.status(200).json(newProduct);
+    res.status(200).json(createdProduct);
     return;
   }),
 );
@@ -71,7 +70,8 @@ router.delete(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    await ProductsService.deleteProductById(id);
+    const deletedProuct = await ProductsService.deleteProductById(id);
+    res.json(deletedProuct);
     return;
   }),
 );

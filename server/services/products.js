@@ -1,6 +1,6 @@
 const { Product } = require('../db/model');
 
-export class ProductsService {
+export default class ProductsService {
   static async getAllProduct(title) {
     const products = await Product.find();
     if (!title) {
@@ -43,7 +43,7 @@ export class ProductsService {
     ) {
       throw new Error('필수 항목이 모두 채워지지 않았습니다.');
     }
-    const createNewProduct = await Product.create({
+    const createdProduct = await Product.create({
       title,
       categoryId,
       shortDescription,
@@ -52,23 +52,24 @@ export class ProductsService {
       inventory,
       price,
     });
-    return createNewProduct;
+    return createdProduct;
   }
 
   static async updateProductById(id) {
     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    if (!Products) {
+    if (!updatedProducts) {
       throw new Error('존재하지 않는 제품 입니다');
     }
     return updatedProduct;
   }
 
   static async deleteProductById(id) {
-    await Product.findByIdAndDelete(id);
-    return;
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (!deletedProduct) {
+      throw new Error('존재하지 않는 제품 입니다');
+    }
+    return deletedProduct;
   }
 }
-
-export default ProductsService;
