@@ -76,14 +76,18 @@ function LoginForm() {
           </Form.Group>
           <br />
 
-          <div className="d-grid gap-1">
-            <Button variant="primary" type="submit" onClick={handleSubmit}>
-              로그인
-            </Button>
-            <Button variant="secondary" type="submit">
-              <Nav.Link href="/register">회원 가입하기</Nav.Link>
-            </Button>
-          </div>
+          <Button
+            variant="primary"
+            type="submit"
+            size="xl"
+            onClick={handleSubmit}
+          >
+            로그인
+          </Button>
+          <br />
+          <Button variant="secondary" type="submit" size="xl">
+            <Nav.Link href="/register">회원 가입하기</Nav.Link>
+          </Button>
         </Form>
         {isLogin && <h2>Login Success</h2>}
       </Container>

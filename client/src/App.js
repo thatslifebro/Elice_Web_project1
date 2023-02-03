@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import UserData from './component/users/UserData';
 import { Nav } from 'react-bootstrap';
 import UserWithdrawal from './component/users/UserWithdrawal';
+import ChangePassword from './component/users/ChangePassword';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/userdata" element={<UserData />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/userwithdrawal" element={<UserWithdrawal />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
