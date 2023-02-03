@@ -1,10 +1,14 @@
 import './App.css';
-import RegisterForm from './component/RegisterForm';
+import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginForm from './component/LoginForm';
+import LoginForm from './component/users/LoginForm';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AdminCategoryForm from './component/AdminCategory';
 import AdminProductUD from './component/AdminProductUD';
+import UserData from './component/users/UserData';
+import { Nav } from 'react-bootstrap';
+import UserWithdrawal from './component/users/UserWithdrawal';
+import ChangePassword from './component/users/ChangePassword';
 
 function App() {
   return (
@@ -30,6 +34,11 @@ function App() {
         <Route path="/admin/product" element={<AdminProductUD />}>
           관리자 product update delete 화면
         </Route>
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
+        <Route path="/userdata" element={<UserData />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
+        <Route path="/userwithdrawal" element={<UserWithdrawal />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
