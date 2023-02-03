@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Product, Category } from '../db/model';
-import { asyncHandler } from '../util/async-handler';
+import asyncHandler from '../util/async-handler';
 
 const router = Router();
 // ---- 모든 유저(관리자 및 회원) ----
