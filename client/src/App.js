@@ -1,7 +1,12 @@
 import './App.css';
 import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
+<<<<<<< HEAD
 import LoginForm from './component/users/LoginForm';
+=======
+import LoginForm from './component/LoginForm';
+import AddProduct from './component/AddProduct';
+>>>>>>> origin/feature-89page
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AdminCategoryForm from './component/AdminCategory';
 import AdminProductUD from './component/AdminProductUD';
@@ -28,6 +33,7 @@ function App() {
         <Route path="/register" element={<RegisterForm />}>
           회원가입 화면
         </Route>
+<<<<<<< HEAD
         <Route path="/admin/category" element={<AdminCategoryForm />}>
           관리자 카테고리 화면
         </Route>
@@ -39,6 +45,9 @@ function App() {
         <Route path="/userdata" element={<UserData />} />
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/userwithdrawal" element={<UserWithdrawal />} />
+=======
+        <Route path="/AddProduct" element={<AddProduct />}></Route>
+>>>>>>> origin/feature-89page
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
