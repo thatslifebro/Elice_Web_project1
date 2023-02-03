@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { Product, Category } from '../db/model';
-import { asyncHandler } from '../util/async-handler';
-
+import asyncHandler from '../util/async-handler';
+import productService from '../services/products';
 const router = Router();
 // ---- 모든 유저(관리자 및 회원) ----
 
 //모든 물품 목록 가져오기)
 router.get(
-  '/ ',
+  '/',
   asyncHandler(async (req, res) => {
     const title = req.query.category;
     const products = await Product.find();

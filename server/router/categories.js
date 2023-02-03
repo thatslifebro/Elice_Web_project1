@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncHandler } from '../util/async-handler';
+import asyncHandler from '../util/async-handler';
 import { categoriesService } from '../services/categories';
 
 const router = Router();

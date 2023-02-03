@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Form, Row, Col, Container, Nav } from 'react-bootstrap';
+import {
+  Button,
+  Form,
+  Row,
+  Col,
+  Container,
+  Nav,
+  InputGroup,
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+// **** input 받는 부분에서 onChange로 state를 세팅하는 부분이 사라졌으니 새로 코딩할것 ****
 function RegisterForm() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -89,6 +97,11 @@ function RegisterForm() {
               <Form.Control type="name" placeholder="Name" />
             </Col>
           </Form.Group>
+
+          <InputGroup as={Col} className="mb-3">
+            <Form.Control placeholder="Address1" />
+            <Form.Control placeholder="Address2" />
+          </InputGroup>
 
           <br />
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncHandler } from '../util/async-handler';
+import asyncHandler from '../util/async-handler';
 import { authService } from '../services/auth';
 
 import verifyToken from '../db/middleware/verify-token';
