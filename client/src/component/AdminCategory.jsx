@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Button, Form, Row, Col, Container } from 'react-bootstrap';
 import { useEffect } from 'react';
@@ -31,6 +31,12 @@ function AdminCategoryForm() {
                 .post(`http://localhost:3001/api/categories`, {
                   title: e.target.title,
                 })
+                .then((res) => {
+                  setCategories((currentCategories) => {
+                    const newCategories = currentCategories;
+                    return [...newCategories, res.data];
+                  });
+                })
                 .catch((err) => {
                   console.log(err);
                 });
@@ -45,7 +51,6 @@ function AdminCategoryForm() {
 
   const Category = ({ category }) => {
     const [newTitle, setNewTitle] = useState('');
-    const categoryInput = useRef();
     const updateCategory = (e) => {
       e.preventDefault();
       axios
@@ -53,7 +58,32 @@ function AdminCategoryForm() {
           title: e.target.title,
         })
         .then((res) => {
-          categoryInput.current.placeholder = newTitle;
+          setCategories((currentCategories) => {
+            const newCategories = currentCategories;
+            return newCategories.map((thiscategory) => {
+              if (thiscategory._id === category._id) {
+                thiscategory.title = res.data.title;
+              }
+              return thiscategory;
+            });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    const deleteCategory = (e) => {
+      e.preventDefault();
+      axios
+        .delete(`http://localhost:3001/api/categories/${category._id}`)
+        .then((res) => {
+          setCategories((currentCategories) => {
+            const newCategories = currentCategories;
+            return newCategories.filter(
+              (thiscategory) => thiscategory._id !== category._id,
+            );
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -68,7 +98,6 @@ function AdminCategoryForm() {
             aria-label="Username"
             aria-describedby="basic-addon1"
             value={newTitle}
-            ref={categoryInput}
             onChange={(e) => {
               e.preventDefault();
               setNewTitle(e.target.value);
@@ -84,7 +113,9 @@ function AdminCategoryForm() {
           >
             수정
           </Button>{' '}
-          <Button variant="danger">삭제</Button>
+          <Button variant="danger" onClick={deleteCategory}>
+            삭제
+          </Button>
         </Col>
       </Row>
     );
