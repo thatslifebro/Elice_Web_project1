@@ -3,6 +3,7 @@ import './App.css';
 import RegisterForm from './component/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginForm from './component/LoginForm';
+import AddProduct from './component/AddProduct';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/register" element={<RegisterForm />}>
           회원가입 화면
         </Route>
+        <Route path="/AddProduct" element={<AddProduct />}></Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
