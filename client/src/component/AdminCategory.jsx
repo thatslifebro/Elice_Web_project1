@@ -8,7 +8,7 @@ function AdminCategoryForm() {
     const [newTitle, setNewTitle] = useState('');
     return (
       <Row>
-        <Col>
+        <Col sm="9">
           <Form.Control
             placeholder="등록할 카테고리"
             aria-label="Username"
@@ -20,7 +20,7 @@ function AdminCategoryForm() {
             }}
           />
         </Col>
-        <Col>
+        <Col sm="3">
           <Button
             variant="primary"
             type="submit"
@@ -92,7 +92,7 @@ function AdminCategoryForm() {
 
     return (
       <Row>
-        <Col>
+        <Col sm="9">
           <Form.Control
             placeholder={category.title}
             aria-label="Username"
@@ -104,7 +104,7 @@ function AdminCategoryForm() {
             }}
           />
         </Col>
-        <Col>
+        <Col sm="3">
           <Button
             variant="warning"
             cid={category._id}
