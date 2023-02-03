@@ -5,6 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginForm from './component/LoginForm';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
+import CategoryProducts from './component/product/CategoryProducts';
+import Product from './component/product/Product';
+import AdminCategory from './component/product/AdminCategory';
+
 function App() {
   return (
     <Router>
@@ -23,6 +27,18 @@ function App() {
         <Route path="/register" element={<RegisterForm />}>
           회원가입 화면
         </Route>
+
+        <Route path="/product" element={<CategoryProducts />}>
+          카테고리별 상품목록
+        </Route>
+        <Route path="/product/:id" element={<Product />}>
+          상품상세
+        </Route>
+
+        <Route path="/adminCategory" element={<AdminCategory />}>
+          상품상세
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
