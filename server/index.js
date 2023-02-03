@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-  console.log(req.body);
+  res.send('asdf');
 });
 
 //라우터
@@ -42,6 +42,6 @@ app.use((err, req, res, next) => {
 });
 
 //서버열기 'localhost:3001'
-app.listen(3001, (req, res) => {
+app.listen(3000, (req, res) => {
   console.log('시작');
 });
