@@ -28,9 +28,12 @@ function AdminCategoryForm() {
             onClick={(e) => {
               e.preventDefault();
               axios
-                .post(`http://localhost:3001/api/categories`, {
-                  title: e.target.title,
-                })
+                .post(
+                  `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`,
+                  {
+                    title: e.target.title,
+                  },
+                )
                 .then((res) => {
                   setCategories((currentCategories) => {
                     const newCategories = currentCategories;
@@ -54,19 +57,18 @@ function AdminCategoryForm() {
     const updateCategory = (e) => {
       e.preventDefault();
       axios
-        .put(`http://localhost:3001/api/categories/${category._id}`, {
-          title: e.target.title,
-        })
+        .put(
+          `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/${category._id}`,
+          {
+            title: e.target.title,
+          },
+        )
         .then((res) => {
-          setCategories((currentCategories) => {
-            const newCategories = currentCategories;
-            return newCategories.map((thiscategory) => {
-              if (thiscategory._id === category._id) {
-                thiscategory.title = res.data.title;
-              }
-              return thiscategory;
+          axios
+            .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
+            .then((res) => {
+              setCategories(res.data);
             });
-          });
         })
         .catch((err) => {
           console.log(err);
@@ -76,14 +78,15 @@ function AdminCategoryForm() {
     const deleteCategory = (e) => {
       e.preventDefault();
       axios
-        .delete(`http://localhost:3001/api/categories/${category._id}`)
+        .delete(
+          `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/${category._id}`,
+        )
         .then((res) => {
-          setCategories((currentCategories) => {
-            const newCategories = currentCategories;
-            return newCategories.filter(
-              (thiscategory) => thiscategory._id !== category._id,
-            );
-          });
+          axios
+            .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
+            .then((res) => {
+              setCategories(res.data);
+            });
         })
         .catch((err) => {
           console.log(err);
@@ -124,7 +127,7 @@ function AdminCategoryForm() {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     axios
-      .get('http://localhost:3001/api/categories')
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
       .then((res) => {
         setCategories(res.data);
       })
