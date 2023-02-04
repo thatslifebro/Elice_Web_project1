@@ -8,7 +8,7 @@ function CategoryProducts() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/categories`)
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
       .then((res) => {
         setCategories(res.data);
       })
