@@ -1,44 +1,23 @@
 import React, { useState } from 'react';
 import { Button, Form, Row, Col, Container, Nav } from 'react-bootstrap';
+import axios from 'axios';
 
 function LoginForm() {
-  const admin = {
-    id: 'admin',
-    password: 1234,
-  };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(false);
-  const [error, setError] = useState('');
 
-  const validateEmail = (email) => {
-    if (email !== admin.id) {
-      setError('ID error');
-      return false;
-    }
-    return true;
-  };
-
-  const validatePassword = (password) => {
-    if (password !== admin.password) {
-      setError('password error');
-      return false;
-    }
-    return true;
-  };
-
-  const validateForm = (form) => {
-    validateEmail(form.email);
-    validatePassword(form.password);
-  };
-
-  const handleSubmit = () => {
-    const formData = { email, password };
-    const inputStatus = validateForm(formData);
-    if (!inputStatus) {
-      alert(error);
-    }
-    setIsLogin(true);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userData = { email, password };
+    console.log('check');
+    axios
+      .post(`http://localhost:3000/api/auth/login`, userData)
+      .then((res) => {
+        console.log(res.data.token);
+        setIsLogin(true);
+      })
+      .catch(() => console.log('error'));
   };
 
   return (
@@ -75,21 +54,15 @@ function LoginForm() {
             </Col>
           </Form.Group>
           <br />
-
-          <Button
-            variant="primary"
-            type="submit"
-            size="xl"
-            onClick={handleSubmit}
-          >
-            로그인
-          </Button>
-          <br />
-          <Button variant="secondary" type="submit" size="xl">
-            <Nav.Link href="/register">회원 가입하기</Nav.Link>
-          </Button>
+          <div className="d-grid gap-1">
+            <Button variant="primary" type="submit" onClick={handleSubmit}>
+              로그인
+            </Button>
+            <Button variant="secondary" type="submit">
+              <Nav.Link href="/register">회원 가입하기</Nav.Link>
+            </Button>
+          </div>
         </Form>
-        {isLogin && <h2>Login Success</h2>}
       </Container>
     </div>
   );
