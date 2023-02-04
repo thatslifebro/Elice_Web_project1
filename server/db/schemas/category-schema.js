@@ -13,4 +13,4 @@ const CategorySchema = new Schema(
   },
 );
 
-export { CategorySchema };
+export default CategorySchema;

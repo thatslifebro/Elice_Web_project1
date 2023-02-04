@@ -2,10 +2,16 @@ import './App.css';
 import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginForm from './component/users/LoginForm';
+import AddProduct from './component/AddProduct';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import AdminCategoryForm from './component/AdminCategory';
+import AdminProductUD from './component/AdminProductUD';
 import UserData from './component/users/UserData';
 import UserWithdrawal from './component/users/UserWithdrawal';
 import ChangePassword from './component/users/ChangePassword';
+import CategoryProducts from './component/product/CategoryProducts';
+import Product from './component/product/Product';
+import AdminCategory from './component/product/AdminCategory';
 
 function App() {
   return (
@@ -19,11 +25,35 @@ function App() {
       </header>
       <Routes>
         <Route path="/" />
+        <Route path="/login" element={<LoginForm />}>
+          로그인 화면
+        </Route>
+        <Route path="/register" element={<RegisterForm />}>
+          회원가입 화면
+        </Route>
+        <Route path="/admin/category" element={<AdminCategoryForm />}>
+          관리자 카테고리 화면
+        </Route>
+        <Route path="/admin/product" element={<AdminProductUD />}>
+          관리자 product update delete 화면
+        </Route>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/userdata" element={<UserData />} />
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/userwithdrawal" element={<UserWithdrawal />} />
+        <Route path="/AddProduct" element={<AddProduct />}></Route>
+        <Route path="/product" element={<CategoryProducts />}>
+          카테고리별 상품목록
+        </Route>
+        <Route path="/product/:id" element={<Product />}>
+          상품상세
+        </Route>
+
+        <Route path="/adminCategory" element={<AdminCategory />}>
+          상품상세
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
