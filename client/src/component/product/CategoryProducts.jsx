@@ -3,8 +3,9 @@ import { Container, Row, DropdownButton, Dropdown } from 'react-bootstrap';
 import axios from 'axios';
 import ProductCard from './ProductCard';
 
-function CategoryProducts({ categoryId }) {
+function CategoryProducts() {
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
   useEffect(() => {
     axios
       .get(`http://localhost:3001/api/categories`)
@@ -15,7 +16,7 @@ function CategoryProducts({ categoryId }) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [categories]);
 
   return (
     <Container fluid>
@@ -23,13 +24,13 @@ function CategoryProducts({ categoryId }) {
         <DropdownButton id="dropdown-basic-button" title="카테고리">
           {categories.map((category) => {
             return (
-              <Dropdown.Item Key={category._id}>{category.title}</Dropdown.Item>
+              <Dropdown.Item key={category._id}>{category.title}</Dropdown.Item>
             );
           })}
         </DropdownButton>
       </Row>
       <Row>
-        <ProductCard />
+        <ProductCard />;
       </Row>
     </Container>
   );
