@@ -7,7 +7,7 @@ function CategoryProducts({ categoryId }) {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/categories`)
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
       .then((res) => {
         setCategories(res.data);
       })
@@ -23,7 +23,7 @@ function CategoryProducts({ categoryId }) {
         <DropdownButton id="dropdown-basic-button" title="카테고리">
           {categories.map((category) => {
             return (
-              <Dropdown.Item Key={category._id}>{category.title}</Dropdown.Item>
+              <Dropdown.Item key={category._id}>{category.title}</Dropdown.Item>
             );
           })}
         </DropdownButton>

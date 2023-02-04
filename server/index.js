@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: process.env.CLIENT_ADDRESS }));
 
 import usersRouter from './router/users';
 import productRouter from './router/products';
@@ -19,7 +19,7 @@ mongoose
   .connect(
     `mongodb+srv://${process.env.DB_ADDRESS}/?retryWrites=true&w=majority`,
   )
-  .then(console.log('db연결 성공'))
+  .then(() => console.log('db연결 성공'))
   .catch((err) => console.log(err));
 
 //req.body로 데이터 받아오려면 써야하는 것
