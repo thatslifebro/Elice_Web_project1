@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { User } from '../db/model';
-import { asyncHandler } from '../util/async-handler';
+import asyncHandler from '../util/async-handler';
 
 const router = Router();
 

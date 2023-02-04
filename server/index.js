@@ -2,8 +2,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 const app = express();
+<<<<<<< HEAD
 app.use(cors({ origin: 'http://localhost:3000' }));
 //const productRouter = require('./router/product');
+=======
+
+app.use(cors({ origin: process.env.CLIENT_ADDRESS }));
+
+>>>>>>> origin/feature
 import usersRouter from './router/users';
 import productRouter from './router/products';
 import authRouter from './router/auth';
@@ -18,7 +24,7 @@ mongoose
   .connect(
     `mongodb+srv://${process.env.DB_ADDRESS}/?retryWrites=true&w=majority`,
   )
-  .then(console.log('db연결 성공'))
+  .then(() => console.log('db연결 성공'))
   .catch((err) => console.log(err));
 
 //req.body로 데이터 받아오려면 써야하는 것
@@ -26,7 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-  console.log(req.body);
+  res.send('asdf');
 });
 
 //라우터
@@ -41,6 +47,6 @@ app.use((err, req, res, next) => {
 });
 
 //서버열기 'localhost:3001'
-app.listen(3001, (req, res) => {
+app.listen(3000, (req, res) => {
   console.log('시작');
 });

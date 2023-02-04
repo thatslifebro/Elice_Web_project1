@@ -4,7 +4,7 @@ const saltRounds = 10;
 
 import signToken from '../util/sign-token';
 
-export class authService {
+export default class authService {
   static async login(email, password) {
     const user = await User.findOne({ email });
     if (!user) {
@@ -48,6 +48,13 @@ export class authService {
     if (!match) {
       throw new Error('비번이 틀림');
     }
-    await User.findByIdAndDelete(id);
+    const deletedUser = await User.findByIdAndDelete(id);
+    const filtered = {
+      email: deletedUser.email,
+      address: deletedUser.address,
+      fullName: deletedUser.fullName,
+      role: deletedUser.role,
+    };
+    return filtered;
   }
 }
