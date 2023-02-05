@@ -18,25 +18,20 @@ export default class authService {
     return token;
   }
 
-  static async register(email, password, address, fullName, role) {
+  static async register({ email, password, address, fullName, role }) {
     const user = await User.findOne({ email });
     if (user) {
       throw new Error('이미 있는 이메일');
     }
-    const newuser = await User.create({
+    const newUser = await User.create({
       email,
       address,
       fullName,
       password: await bcrypt.hash(password, saltRounds),
       role,
     });
-    const filtered = {
-      email: newuser.email,
-      address: newuser.address,
-      fullName: newuser.fullName,
-      role: newuser.role,
-    };
-    return filtered;
+    const { password, ...restOfUser } = newUser;
+    return restOfUser;
   }
 
   static async withdrawal(id, role, password) {
@@ -49,12 +44,7 @@ export default class authService {
       throw new Error('비번이 틀림');
     }
     const deletedUser = await User.findByIdAndDelete(id);
-    const filtered = {
-      email: deletedUser.email,
-      address: deletedUser.address,
-      fullName: deletedUser.fullName,
-      role: deletedUser.role,
-    };
-    return filtered;
+    const { password, ...restOfUser } = deletedUser;
+    return restOfUser;
   }
 }

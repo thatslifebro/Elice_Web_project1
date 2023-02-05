@@ -3,8 +3,7 @@ const { Category } = require('../db/model');
 export default class CategoriesService {
   //전체카테고리목록
   static async getAllCategories() {
-    const readCategories = await Category.find({});
-    return readCategories;
+    return Category.find({});
   }
 
   //id로 카테고리 가져오기
@@ -24,10 +23,14 @@ export default class CategoriesService {
   }
 
   //id로 카테고리 수정하기
-  static async updateCategoryById(id, categoryInfo) {
-    const updateCategory = await Category.findByIdAndUpdate(id, categoryInfo, {
-      new: true,
-    });
+  static async updateCategoryById(id, title) {
+    const updateCategory = await Category.findByIdAndUpdate(
+      id,
+      { title },
+      {
+        new: true,
+      },
+    );
     if (updateCategory) {
       throw new Error('해당 카테고리는 없습니다.');
     }

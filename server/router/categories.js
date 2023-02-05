@@ -28,7 +28,7 @@ router.post(
     const createdCategory = await CategoriesService.addCategory({
       title,
     });
-    res.status(200).json(createdCategory);
+    res.status(201).json(createdCategory);
   }),
 );
 
@@ -36,11 +36,12 @@ router.put(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const { title } = req.body;
     const updatedCategory = await CategoriesService.updateCategoryById(
       id,
-      req.body,
+      title,
     );
-    res.status(200).json(updatedCategory);
+    res.status(201).json(updatedCategory);
   }),
 );
 
