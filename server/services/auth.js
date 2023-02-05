@@ -30,8 +30,13 @@ export default class authService {
       password: await bcrypt.hash(password, saltRounds),
       role,
     });
-    const { password, ...restOfUser } = newUser;
-    return restOfUser;
+    const filtered = {
+      email: newUser.email,
+      address: newUser.address,
+      fullName: newUser.fullName,
+      role: newUser.role,
+    };
+    return filtered;
   }
 
   static async withdrawal(id, role, password) {
@@ -44,7 +49,12 @@ export default class authService {
       throw new Error('비번이 틀림');
     }
     const deletedUser = await User.findByIdAndDelete(id);
-    const { password, ...restOfUser } = deletedUser;
-    return restOfUser;
+    const filtered = {
+      email: deletedUser.email,
+      address: deletedUser.address,
+      fullName: deletedUser.fullName,
+      role: deletedUser.role,
+    };
+    return filtered;
   }
 }

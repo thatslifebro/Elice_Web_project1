@@ -3,7 +3,7 @@ const { Category } = require('../db/model');
 export default class CategoriesService {
   //전체카테고리목록
   static async getAllCategories() {
-    return Category.find({});
+    return await Category.find({});
   }
 
   //id로 카테고리 가져오기
