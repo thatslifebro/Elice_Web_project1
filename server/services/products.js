@@ -2,16 +2,16 @@ const { Product, Category } = require('../db/model');
 
 export default class ProductsService {
   static async getAllProduct(title) {
-    const products = await Product.find();
-    if (!title) {
-      return products;
-    } else {
+    if (title) {
       const category = await Category.find({ title });
       const products = await Product.find({ categoryId: category.id });
       if (!products) {
         throw new Error('존재하지 않는 제품입니다');
       }
       return products;
+    } else {
+      const allProducts = await Product.find();
+      return allProducts;
     }
   }
 

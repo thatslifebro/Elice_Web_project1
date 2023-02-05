@@ -9,7 +9,7 @@ const router = Router();
 router.get(
   '/',
   asyncHandler(async (req, res) => {
-    const category = req.query.category;
+    const { category } = req.query;
     const products = await ProductsService.getAllProduct(category);
     return res.status(200).json(products);
   }),
