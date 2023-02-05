@@ -34,7 +34,7 @@ function UserData() {
           </Form.Group>
           <br />
           <Button variant="warning" size="lg">
-            <Nav.Link href="/changepassword">비밀번호 수정</Nav.Link>
+            <Nav.Link href="/change-password">비밀번호 수정</Nav.Link>
           </Button>
           <br />
           <br />
@@ -47,7 +47,7 @@ function UserData() {
           <br />
 
           <Button variant="danger" size="lg">
-            <Nav.Link href="/userwithdrawal">회원 탈퇴</Nav.Link>
+            <Nav.Link href="/user-withdrawal">회원 탈퇴</Nav.Link>
           </Button>
         </Form>
       </Container>

@@ -13,27 +13,27 @@ import {
 } from 'react-bootstrap';
 
 function AddProduct() {
-  //등록하기 버튼
+  //하단 버튼
   const [show, setShow] = useState(false);
-  //취소하기 버튼
   const [show2, setShow2] = useState(false);
-
   //등록하기 버튼 핸들러
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   //작성취소 버튼 핸들러
   const handleShow2 = () => setShow2(true);
+  const handleClose2 = () => setShow2(false);
 
-  const [category, setCategory] = useState('');
+  const [categoryId, setCategoryId] = useState('');
   const [title, setTitle] = useState();
   const [price, setPrice] = useState('');
-  const [shortDiscription, setShortDiscription] = useState('');
-  const [discription, setDiscription] = useState('');
+  const [shortDescription, setShortDescription] = useState('');
+  const [detailDescription, setDetailDescription] = useState('');
+  const [inventory, setInventory] = useState('');
   const [file, setFile] = useState('');
 
   const handleCategory = (event) => {
     event.preventDefault();
-    setCategory(event.target.value);
+    setCategoryId(event.target.value);
   };
   const handleTitle = (event) => {
     event.preventDefault();
@@ -41,21 +41,24 @@ function AddProduct() {
   };
   const handlePrice = (event) => {
     event.preventDefault();
-    setPrice(event.target.value);
+    setPrice(Number(event.target.value));
+  };
+  const handleInventory = (event) => {
+    event.preventDefault();
+    setInventory(Number(event.target.value));
   };
   const handleShortdisc = (event) => {
     event.preventDefault();
-    setShortDiscription(event.target.value);
+    setShortDescription(event.target.value);
   };
   const handleDisc = (event) => {
     event.preventDefault();
-    setDiscription(event.target.value);
+    setDetailDescription(event.target.value);
   };
 
   const onChangeImg = (e) => {
     e.preventDefault();
     const formData = new FormData();
-
     if (e.target.files) {
       const uploadFile = e.target.files[0];
       formData.append('file', uploadFile);
@@ -65,34 +68,28 @@ function AddProduct() {
       console.log(file);
     }
   };
-  const onPrint = () => {
-    console.log(file);
-  };
+  const onClickEvent = (e) => {
+    const data = {
+      categoryId,
+      title,
+      price,
+      shortDescription,
+      detailDescription,
+      inventory,
+      imageKey: 'image',
+    };
 
-  //버튼 클릭 후 post 전송 핸들러
-  const onClickPost = (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('category', category);
-    formData.append('title', title);
-    formData.append('price', price);
-    formData.append('shortDiscription', shortDiscription);
-    formData.append('discription', discription);
-    formData.append('file', 'image');
-    axios({
-      method: 'post',
-      url: 'http://localhost:3001/api/Products',
-      data: formData,
-    })
-      .then((result) => {
-        console.log('요청성공');
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log('요청실패');
-        console.log(error);
-      });
+    axios.post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`, data);
+    return setShow(false);
   };
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
+      .then((res) => {
+        setCategories(res.data);
+      });
+  }, []);
 
   return (
     <Container fluid="md">
@@ -108,12 +105,16 @@ function AddProduct() {
           onChange={handleCategory}
         >
           <option>카테고리를 선택해주세요</option>
-          <option value="과일류">과일류</option>
-          <option value="육류">육류</option>
-          <option value="채소류">채소류</option>
+          {categories.map((data) => {
+            return (
+              <option key={data._id} value={data._id}>
+                {data.title}
+              </option>
+            );
+          })}
         </Form.Select>
       </div>
-      <Stack gap={2}>
+      <Stack gap={1}>
         <div>
           <Form.Label htmlFor="ProductTitle">제품이름</Form.Label>
           <FloatingLabel
@@ -127,23 +128,41 @@ function AddProduct() {
         </div>
       </Stack>
       <Stack gap={2}>
-        <div>
-          <Form.Label htmlFor="ProductTitle">제품가격</Form.Label>
-          <FloatingLabel
-            controlId="floatingTextarea"
-            label="제품의 가격을 적어주세요"
-            className="mb-4"
-            type="Number"
-            onChange={handlePrice}
-          >
-            <Form.Control
-              type="text"
-              onChange={handleShortdisc}
-              as="textarea"
-              placeholder="Leave a comment here"
-            />
-          </FloatingLabel>
-        </div>
+        <Row>
+          <Col>
+            <Form.Label htmlFor="ProductTitle">제품가격</Form.Label>
+            <FloatingLabel
+              controlId="floatingTextarea"
+              label="제품의 가격을 적어주세요"
+              className="mb-4"
+              type="Number"
+              onChange={handlePrice}
+            >
+              <Form.Control
+                type="text"
+                onChange={handleShortdisc}
+                as="textarea"
+                placeholder="Leave a comment here"
+              />
+            </FloatingLabel>
+          </Col>
+          <Col>
+            <Form.Label htmlFor="ProductTitle">제품 수량</Form.Label>
+            <FloatingLabel
+              controlId="floatingTextarea"
+              label="제품의 수량을 확인하세요"
+              className="mb-4"
+              type="Number"
+              onChange={handleInventory}
+            >
+              <Form.Control
+                type="text"
+                as="textarea"
+                placeholder="Leave a comment here"
+              />
+            </FloatingLabel>
+          </Col>
+        </Row>
       </Stack>
       <Stack gap={2}>
         <div>
@@ -170,7 +189,6 @@ function AddProduct() {
               style={{ height: '110px' }}
               className="mb-4"
               type="text"
-              onChange={handleDisc}
             />
           </FloatingLabel>
         </div>
@@ -196,8 +214,8 @@ function AddProduct() {
           </Modal.Header>
           <Modal.Body>바로 제품을 등록하시겠습니까?</Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" type="submit" onClick={onClickPost}>
-              등록하기
+            <Button variant="primary" type="submit" onClick={onClickEvent}>
+              <Nav.Link href="/admin/product">등록하기</Nav.Link>
             </Button>
             <Button variant="secondary" onClick={handleClose}>
               취소하기
@@ -208,17 +226,16 @@ function AddProduct() {
         <Button variant="secondary" onClick={handleShow2}>
           취소하기
         </Button>
-
-        <Modal show={show2} onHide={handleClose} animation={false}>
-          <Modal.Header closeButton>
+        <Modal show={show2} onHide={handleClose2} animation={false}>
+          <Modal.Header closeButton2>
             <Modal.Title>제품 취소 확인</Modal.Title>
           </Modal.Header>
           <Modal.Body>작성중인 작업을 취소하시겠습니까?</Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleClose}>
+            <Button variant="primary" onClick={handleClose2}>
               계속해서 작성하기
             </Button>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" onClick={handleClose2}>
               작성 취소
             </Button>
           </Modal.Footer>
@@ -227,5 +244,4 @@ function AddProduct() {
     </Container>
   );
 }
-
 export default AddProduct;

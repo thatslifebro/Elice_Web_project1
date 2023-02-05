@@ -8,8 +8,8 @@ import {
   Nav,
   InputGroup,
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-// **** input 받는 부분에서 onChange로 state를 세팅하는 부분이 사라졌으니 새로 코딩할것 ****
+import axios from 'axios';
+
 function RegisterForm() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -17,7 +17,7 @@ function RegisterForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const validateEmail = (email) => {
+  const validateEmail = () => {
     const emailForm = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
     if (emailForm.test(email) == false) {
       console.log('invalide Email Address');
@@ -26,7 +26,7 @@ function RegisterForm() {
     return true;
   };
 
-  const validateName = (name) => {
+  const validateName = () => {
     if (name.length < 1) {
       console.log('please input name');
       return false;
@@ -34,7 +34,7 @@ function RegisterForm() {
     return true;
   };
 
-  const validateAddress = (address) => {
+  const validateAddress = () => {
     if (address.length < 1) {
       console.log('please input address');
       return false;
@@ -42,7 +42,7 @@ function RegisterForm() {
     return true;
   };
 
-  const validatePassword = (password, confirmPassword) => {
+  const validatePassword = () => {
     if (password !== confirmPassword) {
       console.log('password is not confirmed');
       return false;
@@ -50,16 +50,34 @@ function RegisterForm() {
     return true;
   };
 
-  const validateForm = (form) => {
-    validateEmail(form.email);
-    validateName(form.name);
-    //validateAddress(form.address);
-    validatePassword(form.password, form.confirmPassword);
+  const validateForm = () => {
+    return (
+      validateEmail() &&
+      validateName() &&
+      validateAddress() &&
+      validatePassword()
+    );
   };
 
-  const handleSubmit = () => {
-    const formData = { email, name, address, password, confirmPassword };
-    const inputStatus = validateForm(formData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userData = {
+      email,
+      fullName: name,
+      address: { postalCode: '1', address1: 'a', address2: 'a' },
+      password,
+    };
+    const inputStatus = validateForm();
+    if (inputStatus) {
+      axios
+        .post(`http://localhost:3000/api/auth/register`, userData)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch(() => console.log('error'));
+    } else {
+      alert('Invalid Form');
+    }
   };
 
   return (
@@ -68,7 +86,11 @@ function RegisterForm() {
         <Form>
           <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
             <Col sm>
-              <Form.Control type="email" placeholder="Email Address" />
+              <Form.Control
+                type="email"
+                placeholder="Email Address"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Col>
           </Form.Group>
 
@@ -78,7 +100,11 @@ function RegisterForm() {
             controlId="formPlaintextPassword"
           >
             <Col sm>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Col>
           </Form.Group>
 
@@ -88,25 +114,36 @@ function RegisterForm() {
             controlId="formPlaintextPassword"
           >
             <Col sm>
-              <Form.Control type="password" placeholder="Confirm Password" />
+              <Form.Control
+                type="password"
+                placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
             </Col>
           </Form.Group>
 
           <Form.Group as={Row} className="mb-3" controlId="formPlaintextName">
             <Col sm>
-              <Form.Control type="name" placeholder="Name" />
+              <Form.Control
+                type="name"
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
+              />
             </Col>
           </Form.Group>
 
           <InputGroup as={Col} className="mb-3">
-            <Form.Control placeholder="Address1" />
+            <Form.Control
+              placeholder="Address1"
+              onChange={(e) => setAddress(e.target.value)}
+            />
             <Form.Control placeholder="Address2" />
           </InputGroup>
 
           <br />
 
           <div className="d-grid gap-1">
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" onClick={handleSubmit}>
               회원가입
             </Button>
             <Button variant="secondary" type="submit">
