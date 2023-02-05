@@ -36,8 +36,6 @@ function App() {
         <Route path="/admin/product" element={<AdminProductUD />}>
           관리자 product update delete 화면
         </Route>
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />} />
         <Route path="/userdata" element={<UserData />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/user-withdrawal" element={<UserWithdrawal />} />

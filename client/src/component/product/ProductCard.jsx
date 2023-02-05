@@ -5,7 +5,7 @@ import Product from './Product';
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const navigateToPurchase = () => {
-    navigate(`/product/Product/?${product._id}`);
+    navigate(`/product/${product._id}`);
   };
   return (
     <Container fluid>
