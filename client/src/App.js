@@ -2,17 +2,16 @@ import './App.css';
 import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginForm from './component/users/LoginForm';
-import AddProduct from './component/AddProduct';
+import AddProduct from './component/Admin/AddProduct';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import AdminCategoryForm from './component/AdminCategory';
-import AdminProductUD from './component/AdminProductUD';
+import AdminCategoryForm from './component/Admin/AdminCategory';
+import AdminProductUD from './component/Admin/AdminProductUD';
 import UserData from './component/users/UserData';
 import { Nav } from 'react-bootstrap';
 import UserWithdrawal from './component/users/UserWithdrawal';
 import ChangePassword from './component/users/ChangePassword';
 import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
-import AdminCategory from './component/product/AdminCategory';
 
 function App() {
   return (
@@ -48,10 +47,6 @@ function App() {
           카테고리별 상품목록
         </Route>
         <Route path="/product/:id" element={<Product />}>
-          상품상세
-        </Route>
-
-        <Route path="/adminCategory" element={<AdminCategory />}>
           상품상세
         </Route>
 

@@ -59,7 +59,25 @@ router.put(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const updatedProduct = await ProductsService.updatedProductById(id);
+    const {
+      title,
+      categoryId,
+      shortDescription,
+      detailDescription,
+      imageKey,
+      inventory,
+      price,
+    } = req.body;
+    const updatedProduct = await ProductsService.updateProductById({
+      id,
+      title,
+      categoryId,
+      shortDescription,
+      detailDescription,
+      imageKey,
+      inventory,
+      price,
+    });
     res.json(updatedProduct);
     return;
   }),

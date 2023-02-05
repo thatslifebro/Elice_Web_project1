@@ -1,4 +1,4 @@
-const { Product } = require('../db/model');
+const { Product, Category } = require('../db/model');
 
 export default class ProductsService {
   static async getAllProduct(title) {
@@ -55,11 +55,33 @@ export default class ProductsService {
     return createdProduct;
   }
 
-  static async updateProductById(id) {
-    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    if (!updatedProducts) {
+  static async updateProductById({
+    id,
+    title,
+    categoryId,
+    shortDescription,
+    detailDescription,
+    imageKey,
+    inventory,
+    price,
+  }) {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        id,
+        title,
+        categoryId,
+        shortDescription,
+        detailDescription,
+        imageKey,
+        inventory,
+        price,
+      },
+      {
+        new: true,
+      },
+    );
+    if (!updatedProduct) {
       throw new Error('존재하지 않는 제품 입니다');
     }
     return updatedProduct;
