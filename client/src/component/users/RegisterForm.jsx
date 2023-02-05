@@ -70,7 +70,10 @@ function RegisterForm() {
     const inputStatus = validateForm();
     if (inputStatus) {
       axios
-        .post(`http://localhost:3000/api/auth/register`, userData)
+        .post(
+          `${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/register`,
+          userData,
+        )
         .then((res) => {
           console.log(res.data);
         })

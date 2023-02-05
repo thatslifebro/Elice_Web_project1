@@ -8,7 +8,7 @@ const CategorySchema = new Schema(
     },
   },
   {
-    collection: 'categorys',
+    collection: 'categories',
     timestamps: true,
   },
 );

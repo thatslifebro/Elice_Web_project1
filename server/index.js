@@ -1,34 +1,26 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-const app = express();
-
-app.use(cors({ origin: process.env.CLIENT_ADDRESS }));
-
 import usersRouter from './router/users';
 import productRouter from './router/products';
 import authRouter from './router/auth';
 import categoryRouter from './router/categories';
+import { SERVER_PORT, DB_ADDRESS, CLIENT_ADDRESS } from './constants/env';
 
-import dotenv from 'dotenv';
-dotenv.config();
+const app = express();
+
+app.use(cors({ origin: CLIENT_ADDRESS }));
 
 //mongodb 연결
 mongoose.set('strictQuery', false);
 mongoose
-  .connect(
-    `mongodb+srv://${process.env.DB_ADDRESS}/?retryWrites=true&w=majority`,
-  )
+  .connect(`mongodb+srv://${DB_ADDRESS}/?retryWrites=true&w=majority`)
   .then(() => console.log('db연결 성공'))
   .catch((err) => console.log(err));
 
 //req.body로 데이터 받아오려면 써야하는 것
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.get('/', (req, res) => {
-  res.send('asdf');
-});
 
 //라우터
 app.use('/api/users', usersRouter);
@@ -42,6 +34,6 @@ app.use((err, req, res, next) => {
 });
 
 //서버열기 'localhost:3001'
-app.listen(3000, (req, res) => {
+app.listen(SERVER_PORT, (req, res) => {
   console.log('시작');
 });

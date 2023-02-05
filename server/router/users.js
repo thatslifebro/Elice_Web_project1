@@ -10,8 +10,7 @@ router.get(
   '/',
   asyncHandler(async (req, res) => {
     const users = await User.find().select('email address fullName role');
-    res.json(users);
-    return;
+    return res.status(200).json(users);
   }),
 );
 
@@ -25,8 +24,7 @@ router.get(
     if (!user) {
       throw new Error('없는 사용자 입니다');
     }
-    res.json(user);
-    return;
+    return res.status(200).json(user);
   }),
 );
 
@@ -40,7 +38,7 @@ router.put(
     if (!user) {
       throw new Error('없는 사용자 입니다');
     }
-    return;
+    return res.status(201);
   }),
 );
 
@@ -54,7 +52,7 @@ router.delete(
     if (!user) {
       throw new Error('없는 사용자 입니다');
     }
-    return;
+    return res.status(200);
   }),
 );
 

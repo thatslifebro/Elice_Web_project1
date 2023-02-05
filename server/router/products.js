@@ -11,8 +11,7 @@ router.get(
   asyncHandler(async (req, res) => {
     const category = req.query.category;
     const products = await ProductsService.getAllProduct(category);
-    res.json(products);
-    return;
+    return res.status(200).json(products);
   }),
 );
 
@@ -22,8 +21,7 @@ router.get(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const product = await ProductsService.getProductById(id);
-    res.json(product);
-    return;
+    return res.status(200).json(product);
   }),
 );
 
@@ -49,8 +47,7 @@ router.post(
       inventory,
       price,
     });
-    res.status(200).json(createdProduct);
-    return;
+    return res.status(201).json(createdProduct);
   }),
 );
 
@@ -78,8 +75,7 @@ router.put(
       inventory,
       price,
     });
-    res.json(updatedProduct);
-    return;
+    return res.status(201).json(updatedProduct);
   }),
 );
 
@@ -89,8 +85,7 @@ router.delete(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const deletedProuct = await ProductsService.deleteProductById(id);
-    res.json(deletedProuct);
-    return;
+    return res.status(200).json(deletedProuct);
   }),
 );
 

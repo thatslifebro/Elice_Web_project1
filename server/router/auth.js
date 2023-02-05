@@ -2,7 +2,7 @@ import { Router } from 'express';
 import asyncHandler from '../util/async-handler';
 import authService from '../services/auth';
 
-import verifyToken from '../db/middleware/verify-token';
+import verifyToken from '../middleware/verify-token';
 
 const router = Router();
 
@@ -12,8 +12,7 @@ router.post(
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const token = await authService.login(email, password);
-    res.json(token);
-    return;
+    return res.status(200).json(token);
   }),
 );
 
@@ -29,8 +28,7 @@ router.post(
       fullName,
       role,
     );
-    res.json(createdUser);
-    return;
+    return res.status(201).json(createdUser);
   }),
 );
 
@@ -45,8 +43,7 @@ router.delete(
       role,
       req.body.password,
     );
-    res.json(deletedUser);
-    return;
+    return res.status(200).json(deletedUser);
   }),
 );
 

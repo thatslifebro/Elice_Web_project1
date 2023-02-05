@@ -8,7 +8,7 @@ router.get(
   '/',
   asyncHandler(async (req, res) => {
     const categories = await CategoriesService.getAllCategories();
-    res.status(200).json(categories);
+    return res.status(200).json(categories);
   }),
 );
 
@@ -17,7 +17,7 @@ router.get(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const category = await CategoriesService.getCategoryById(id);
-    res.status(200).json(category);
+    return res.status(200).json(category);
   }),
 );
 
@@ -28,7 +28,7 @@ router.post(
     const createdCategory = await CategoriesService.addCategory({
       title,
     });
-    res.status(200).json(createdCategory);
+    return res.status(201).json(createdCategory);
   }),
 );
 
@@ -36,11 +36,12 @@ router.put(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const { title } = req.body;
     const updatedCategory = await CategoriesService.updateCategoryById(
       id,
-      req.body,
+      title,
     );
-    res.status(200).json(updatedCategory);
+    return res.status(201).json(updatedCategory);
   }),
 );
 
@@ -49,7 +50,7 @@ router.delete(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const deletedCategory = await CategoriesService.deleteCategoryById(id);
-    res.status(200).json(deletedCategory);
+    return res.status(200).json(deletedCategory);
   }),
 );
 

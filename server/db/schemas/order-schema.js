@@ -1,5 +1,26 @@
 import { Schema } from 'mongoose';
 
+const OrderItemSchema = new Schema(
+  {
+    //상품 아이디
+    productId: {
+      type: String,
+      required: true,
+    },
+    //수량
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    //총 가격
+    price: {
+      type: Number,
+      required: true,
+    },
+  },
+  { _id: false },
+);
+
 const OrderSchema = new Schema(
   {
     userId: {
@@ -7,28 +28,9 @@ const OrderSchema = new Schema(
       ref: 'users',
       required: true,
     },
-    productItem: {
-      type: Schema.Types.ObjectId,
+    items: {
+      type: [OrderItemSchema],
       required: true,
-    },
-    Order: {
-      type: new Schema({
-        //상품 아이디
-        productId: {
-          type: [String],
-          required: true,
-        },
-        //수량
-        quantity: {
-          type: [Number],
-          required: true,
-        },
-        //총 가격
-        totalPrice: {
-          type: Number,
-          required: true,
-        },
-      }),
     },
     address: {
       type: new Schema(
