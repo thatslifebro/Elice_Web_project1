@@ -49,7 +49,6 @@ function App() {
         <Route path="/product/:id" element={<Product />}>
           상품상세
         </Route>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
