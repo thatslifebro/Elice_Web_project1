@@ -14,6 +14,7 @@ import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
 import AdminOrder from './component/admin/AdminOrder';
 import OrdersList from './component/order/OrdersList';
+import AdminMain from './component/admin/AdminMain';
 import Header from './component/Header';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/product/:id" element={<Product />} />
         <Route path="/orders/list" element={<OrdersList />} />
         <Route path="/admin/orders" element={<AdminOrder />} />
+        <Route path="/admin" element={<AdminMain />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
