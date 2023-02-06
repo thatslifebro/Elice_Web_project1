@@ -12,7 +12,7 @@ function LoginForm() {
     const userData = { email, password };
     console.log('check');
     axios
-      .post(`http://localhost:3000/api/auth/login`, userData)
+      .post(`http://localhost:3001/api/auth/login`, userData)
       .then((res) => {
         console.log(res.data.token);
         setIsLogin(true);
