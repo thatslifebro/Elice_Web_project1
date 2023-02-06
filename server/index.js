@@ -5,6 +5,7 @@ import usersRouter from './router/users';
 import productRouter from './router/products';
 import authRouter from './router/auth';
 import categoryRouter from './router/categories';
+import orderRouter from './router/orders';
 import { SERVER_PORT, DB_ADDRESS, CLIENT_ADDRESS } from './constants/env';
 
 const app = express();
@@ -27,6 +28,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/products', productRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/categories', categoryRouter);
+app.use('/api/orders', orderRouter);
 
 app.use((err, req, res, next) => {
   console.log(err);

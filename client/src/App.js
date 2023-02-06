@@ -1,4 +1,5 @@
 import './App.css';
+
 import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginForm from './component/users/LoginForm';
@@ -11,17 +12,15 @@ import UserWithdrawal from './component/users/UserWithdrawal';
 import ChangePassword from './component/users/ChangePassword';
 import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
+import AdminOrder from './component/admin/AdminOrder';
+import OrdersList from './component/order/OrdersList';
+import Header from './component/Header';
 
 function App() {
   return (
     <Router>
-      <header>
-        test head
-        <br />
-        <br />
-        <br />
-        test head
-      </header>
+      <Header />
+
       <Routes>
         <Route path="/" />
         <Route path="/login" element={<LoginForm />}>
@@ -40,12 +39,10 @@ function App() {
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/user-withdrawal" element={<UserWithdrawal />} />
         <Route path="/AddProduct" element={<AddProduct />}></Route>
-        <Route path="/product" element={<CategoryProducts />}>
-          카테고리별 상품목록
-        </Route>
-        <Route path="/product/:id" element={<Product />}>
-          상품상세
-        </Route>
+        <Route path="/product" element={<CategoryProducts />} />
+        <Route path="/product/:id" element={<Product />} />
+        <Route path="/orders/list" element={<OrdersList />} />
+        <Route path="/admin/orders" element={<AdminOrder />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

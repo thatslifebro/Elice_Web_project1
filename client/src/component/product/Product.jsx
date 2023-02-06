@@ -6,14 +6,11 @@ import axios from 'axios';
 function Product() {
   const [product, setProduct] = useState([]);
   const { id } = useParams();
+  console.log('productId', { id });
 
   useEffect(() => {
     axios
-      .get(
-        `${
-          process.env.REACT_APP_SERVER_ADDRESS
-        }/api/products/${'63de6a9bcabe8ada4b7d7717'}`,
-      )
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products/${id}`)
       .then((res) => {
         setProduct(res.data);
       })
