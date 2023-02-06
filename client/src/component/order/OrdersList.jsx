@@ -101,16 +101,6 @@ function OrdersList() {
             </thead>
             <tbody>
               <tr key="testkey" onClick={SelectedRow}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>{order.userId}</td>
-                <td>@mdo</td>
-                <td>Thornton</td>
-                <td>{order.status}</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>2</td>
                 <td>Jacob</td>
                 <td>Thornton</td>
                 <td>@fat</td>

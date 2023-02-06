@@ -14,6 +14,7 @@ import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
 import AdminOrder from './component/admin/AdminOrder';
 import OrdersList from './component/order/OrdersList';
+import AdminMain from './component/admin/AdminMain';
 import Header from './component/Header';
 import OrderComplete from './component/order/OrderComplete';
 import Order from './component/order/Order';
@@ -52,6 +53,7 @@ function App() {
         <Route path="/orderComplete" element={<OrderComplete />}>
           주문 완료 페이지
         </Route>
+        <Route path="/admin" element={<AdminMain />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
