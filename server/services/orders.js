@@ -19,7 +19,7 @@ export default class OrdersService {
     const order = await Order.findById(id);
     if (!order) {
       throw new Error('주문이력이 없습니다.');
-    } else if (role === 'ADMIN' || order.userId === userId) {
+    } else if (role === 'ADMIN' || order.userId == userId) {
       return order;
     } else {
       throw new Error('권한이 없습니다');
