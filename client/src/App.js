@@ -11,17 +11,13 @@ import UserWithdrawal from './component/users/UserWithdrawal';
 import ChangePassword from './component/users/ChangePassword';
 import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
+import OrderComplete from './component/order/OrderComplete';
+import Order from './component/order/Order';
 
 function App() {
   return (
     <Router>
-      <header>
-        test head
-        <br />
-        <br />
-        <br />
-        test head
-      </header>
+      <h1>이부분이 헤드입니다</h1>
       <Routes>
         <Route path="/" />
         <Route path="/login" element={<LoginForm />}>
@@ -45,6 +41,12 @@ function App() {
         </Route>
         <Route path="/product/:id" element={<Product />}>
           상품상세
+        </Route>
+        <Route path="/order" element={<Order />}>
+          주문페이지
+        </Route>
+        <Route path="/orderComplete" element={<OrderComplete />}>
+          주문 완료 페이지
         </Route>
 
         <Route path="*" element={<NotFound />} />

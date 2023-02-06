@@ -94,7 +94,7 @@ function AddProduct() {
   return (
     <Container fluid="md">
       <div>
-        <h1 className="mb-4">상품 추가 페이지</h1>
+        <h1 className="p-3 mb-3 bg-secondary text-white">상품 추가 페이지</h1>
       </div>
       <div>
         <Form.Label htmlFor="SelectCategory">카테고리</Form.Label>
