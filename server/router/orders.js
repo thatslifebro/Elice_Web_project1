@@ -12,7 +12,7 @@ router.get(
   verifyToken,
   asyncHandler(async (req, res) => {
     const { userId, role } = req.decoded;
-    const { id } = req.query.userId;
+    const id = req.query.userId;
     const orders = await OrdersService.getOrdersList({ userId, role, id });
     return res.status(200).json(orders);
   }),
@@ -24,8 +24,62 @@ router.get(
   verifyToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const orders = await OrdersService.getOrderByOrderId({ id });
+    const { role, userId } = req.decoded;
+    const orders = await OrdersService.getOrderByOrderId({ id, role, userId });
     return res.status(200).json(orders);
+  }),
+);
+
+//주문 수정
+router.put(
+  '/:id',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { userId, role } = req.decoded;
+    const { id } = req.params;
+    const { items, address, status } = req.body;
+    const updatedOrder = await OrdersService.updateOrderById({
+      id,
+      userId,
+      items,
+      address,
+      status,
+      role,
+    });
+    return res.status(201).json(updatedOrder);
+  }),
+);
+
+//특정 주문 삭제(관리자 및 회원)
+router.delete(
+  '/:id',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { userId, role } = req.decoded;
+    const { id } = req.params;
+    const deleteOrder = await OrdersService.deleteOrderById({
+      id,
+      userId,
+      role,
+    });
+    return res.status(200).json(deleteOrder);
+  }),
+);
+
+//개인 주문 생성
+router.post(
+  '/',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { userId, role } = req.decoded;
+    const { items, address, status } = req.body;
+    const createdOrder = await OrdersService.addOrderById({
+      userId,
+      items,
+      address,
+      status,
+    });
+    return res.status(201).json(createdOrder);
   }),
 );
 
