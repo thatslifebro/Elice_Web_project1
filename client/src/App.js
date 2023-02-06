@@ -15,12 +15,15 @@ import Product from './component/product/Product';
 import AdminOrder from './component/admin/AdminOrder';
 import OrdersList from './component/order/OrdersList';
 import Header from './component/Header';
+import OrderComplete from './component/order/OrderComplete';
+import Order from './component/order/Order';
 
 function App() {
   return (
     <Router>
       <Header />
 
+      <h1>이부분이 헤드입니다</h1>
       <Routes>
         <Route path="/" />
         <Route path="/login" element={<LoginForm />}>
@@ -43,6 +46,12 @@ function App() {
         <Route path="/product/:id" element={<Product />} />
         <Route path="/orders/list" element={<OrdersList />} />
         <Route path="/admin/orders" element={<AdminOrder />} />
+        <Route path="/order" element={<Order />}>
+          주문페이지
+        </Route>
+        <Route path="/orderComplete" element={<OrderComplete />}>
+          주문 완료 페이지
+        </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
