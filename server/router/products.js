@@ -2,8 +2,18 @@ import { Router } from 'express';
 import { Product, Category } from '../db/model';
 import asyncHandler from '../util/async-handler';
 import ProductsService from '../services/products';
+import { upload } from '../middleware/save-image';
+
 const router = Router();
-// ---- 모든 유저(관리자 및 회원) ----
+
+router.post(
+  '/img',
+  upload.single('imageKey'),
+  asyncHandler((req, res) => {
+    res.sendFile(process.cwd() + '/images/' + req.body.imageKey);
+    //res.json(req.body);
+  }),
+);
 
 //모든 물품 목록 가져오기)
 router.get(
@@ -28,6 +38,7 @@ router.get(
 //새로운 물품 등록하기
 router.post(
   '/',
+  upload.single('imageKey'),
   asyncHandler(async (req, res) => {
     const {
       title,

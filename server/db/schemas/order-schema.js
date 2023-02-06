@@ -47,7 +47,7 @@ const OrderSchema = new Schema(
       ),
       required: true,
     },
-    //배송상태 ??
+    //배송상태 '상품 준비 중, 배송 중, 배송 완료'
     status: {
       type: String,
       required: false,

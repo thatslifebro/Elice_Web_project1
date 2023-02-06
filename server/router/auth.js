@@ -3,6 +3,7 @@ import asyncHandler from '../util/async-handler';
 import authService from '../services/auth';
 
 import verifyToken from '../middleware/verify-token';
+import { verify } from 'jsonwebtoken';
 
 const router = Router();
 
@@ -44,6 +45,15 @@ router.delete(
       req.body.password,
     );
     return res.status(200).json(deletedUser);
+  }),
+);
+
+router.get(
+  '/verify',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { role } = req.decoded;
+    return res.status(200).json({ role });
   }),
 );
 
