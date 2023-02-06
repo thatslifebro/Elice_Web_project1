@@ -11,17 +11,14 @@ import UserWithdrawal from './component/users/UserWithdrawal';
 import ChangePassword from './component/users/ChangePassword';
 import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
+import Main from './component/main/Main';
+import NavBar from './component/main/NavBar';
 
 function App() {
   return (
     <Router>
-      <header>
-        test head
-        <br />
-        <br />
-        <br />
-        test head
-      </header>
+      <NavBar />
+
       <Routes>
         <Route path="/" />
         <Route path="/login" element={<LoginForm />}>
@@ -45,6 +42,9 @@ function App() {
         </Route>
         <Route path="/product/:id" element={<Product />}>
           상품상세
+        </Route>
+        <Route path="/main" element={<Main />}>
+          메인
         </Route>
 
         <Route path="*" element={<NotFound />} />
