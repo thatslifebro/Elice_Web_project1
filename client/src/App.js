@@ -18,13 +18,14 @@ import AdminMain from './component/admin/AdminMain';
 import Header from './component/Header';
 import OrderComplete from './component/order/OrderComplete';
 import Order from './component/order/Order';
+import Main from './component/main/Main';
+import NavBar from './component/main/NavBar';
 
 function App() {
   return (
     <Router>
-      <Header />
+      <NavBar />
 
-      <h1>이부분이 헤드입니다</h1>
       <Routes>
         <Route path="/" />
         <Route path="/login" element={<LoginForm />}>
@@ -54,6 +55,9 @@ function App() {
           주문 완료 페이지
         </Route>
         <Route path="/admin" element={<AdminMain />} />
+        <Route path="/main" element={<Main />}>
+          메인
+        </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
