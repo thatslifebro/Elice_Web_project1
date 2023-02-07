@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 
 import axios from 'axios';
 
 function AdminOrder() {
+  const [ordersList, setOrdersList] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/orders/`)
+      .then((res) => {
+        setOrdersList(res.data);
+      })
+      .then(console.log('ordersList', ordersList))
+      // .then(() => {
+      //   axios
+      //     .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/orders/${id}`)
+      //     .then((res) => {
+      //       setCategories(res.data);
+      //     });
+      // })
+      .catch((err) => {
+        console.log('err', err);
+      });
+  }, []);
   return (
     <Container fluid>
       <Row>
@@ -22,19 +41,20 @@ function AdminOrder() {
               </tr>
             </thead>
             <tbody>
-              {/* {orders.map((order) => {
+              {ordersList.map((order) => {
                 return (
                   <tr key={order._id} value={order._id}>
+                    <td>#</td>
                     <td>{order._id}</td>
                     <td>{order.userId}</td>
-                    <td>{order._id}</td>
-                    <td>{order._id}</td>
-                    <td>{order._id}</td>
-                    <td>{order._id}</td>
-                    <td>{order._id}</td>
+                    <td>{order.items.price}</td>
+                    <td>{order.items.productId}</td>
+                    <td>{order.items.quantity}</td>
+                    <td>{order.status}</td>
+                    <td>{order.updatedAt}</td>
                   </tr>
                 );
-              })} */}
+              })}
               <tr>
                 <td>1</td>
                 <td>Mark</td>

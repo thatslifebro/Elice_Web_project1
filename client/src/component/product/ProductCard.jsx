@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import Product from './Product';
+
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const navigateToPurchase = () => {
     navigate(`/product/${product._id}`);
+    console.log('card_product:', product._id);
   };
   return (
     <Container fluid>
@@ -25,8 +26,6 @@ function ProductCard({ product }) {
                 {product?.shortDescription}
               </Card.Subtitle>
               <Card.Text>{product?.price}</Card.Text>
-              <Card.Text>categoryId는 {product?.categoryId} 입니다.</Card.Text>
-              <Card.Text>productId는 {product?._id} 입니다.</Card.Text>
             </Card.Body>
           </Card>
         </Col>

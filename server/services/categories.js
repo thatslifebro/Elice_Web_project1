@@ -1,4 +1,5 @@
 const { Category } = require('../db/model');
+const { Product } = require('../db/model');
 
 export default class CategoriesService {
   //전체카테고리목록
@@ -44,5 +45,14 @@ export default class CategoriesService {
       throw new Error('해당 카테고리는 없습니다.');
     }
     return deletedCategory;
+  }
+
+  //id로 상품 가져오기
+  static async getAllProduct({ id }) {
+    const products = await Product.find({ categoryId: id });
+    if (!products) {
+      throw new Error('카테고리에 해당하는 제품가 없습니다.');
+    }
+    return products;
   }
 }
