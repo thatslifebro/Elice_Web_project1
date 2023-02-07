@@ -5,7 +5,6 @@ import axios from 'axios';
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,8 +13,10 @@ function LoginForm() {
     axios
       .post(`http://localhost:3001/api/auth/login`, userData)
       .then((res) => {
-        console.log(res.data.token);
-        setIsLogin(true);
+        const { accessToken } = res.data;
+        axios.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${accessToken}`;
       })
       .catch(() => console.log('error'));
   };
