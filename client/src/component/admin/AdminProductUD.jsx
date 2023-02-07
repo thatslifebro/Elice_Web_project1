@@ -10,31 +10,67 @@ import {
   FloatingLabel,
 } from 'react-bootstrap';
 import { useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
 
 function AdminProductUD() {
   const ProductTable = ({ product }) => {
     const category = categories.find((data) => data._id === product.categoryId);
-    const [title, setTitle] = useState();
-    const [shortDescription, setShortDescription] = useState();
-    const [detailDescription, setDetailDescription] = useState();
-    const [price, setPrice] = useState();
-    const [inventory, setInventory] = useState();
-    const [categoryId, setCategoryId] = useState();
+    const [title, setTitle] = useState(product.title);
+    const [shortDescription, setShortDescription] = useState(
+      product.shortDescription,
+    );
+    const [detailDescription, setDetailDescription] = useState(
+      product.detailDescription,
+    );
+    const [price, setPrice] = useState(product.price);
+    const [inventory, setInventory] = useState(product.inventory);
+    const [categoryId, setCategoryId] = useState(product.categorId);
+    const [imgSrc, setImgSrc] = useState('');
+    const [currentImgSrc, setCurrentImgSrc] = useState('');
+    const [file, setFile] = useState('');
+    useEffect(() => {
+      axios
+        .get(
+          `${process.env.REACT_APP_SERVER_ADDRESS}/api/products/img/${product.imageKey}`,
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+            responseType: 'blob',
+          },
+        )
+        .then((res) => {
+          const file = new File([res.data], product.imageKey);
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const previewImage = String(event.target?.result);
+            setCurrentImgSrc(previewImage);
+          };
+          reader.readAsDataURL(file);
+        });
+    }, []);
 
     const updateHandler = (e) => {
       e.preventDefault();
+      if (!file) {
+        return;
+      }
+      const formdata = new FormData();
+      formdata.append('imageKey', file);
+      formdata.append('categoryId', categoryId);
+      formdata.append('title', title);
+      formdata.append('price', price);
+      formdata.append('shortDescription', shortDescription);
+      formdata.append('detailDescription', detailDescription);
+      formdata.append('inventory', inventory);
+      console.log(formdata);
       axios
         .put(
           `${process.env.REACT_APP_SERVER_ADDRESS}/api/products/${product._id}`,
+          formdata,
           {
-            title,
-            shortDescription,
-            detailDescription,
-            price,
-            inventory,
-            categoryId,
-            imageKey: product.imageKey,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
           },
         )
         .then(() => {
@@ -59,41 +95,40 @@ function AdminProductUD() {
             });
         });
     };
-    const [imgSrc, setImgSrc] = useState('');
+
     return (
       <tr>
         <td style={{ width: '400px' }}>
-          <img style={{ width: '100%' }} src={imgSrc} />
-          <Form encType="multipart/form-data">
-            <input
-              type="file"
-              name="image"
-              onChange={(e) => {
-                e.preventDefault();
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onloadend = () => {
-                  setImgSrc(reader.result);
-                };
-              }}
-            />
-            <br />
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setImgSrc('');
-              }}
-              type="submit"
-            >
-              Reset
-            </button>
-          </Form>
+          <img style={{ width: '100%' }} src={currentImgSrc} alt="current" />
+          <img style={{ width: '100%' }} src={imgSrc} alt="change" />
+          <Form.Control
+            type="file"
+            onChange={(e) => {
+              e.preventDefault();
+              const file = e.target.files[0];
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onloadend = () => {
+                setImgSrc(reader.result);
+                console.log('changed');
+              };
+              setFile(file);
+            }}
+          />
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setImgSrc('');
+            }}
+            type="submit"
+          >
+            Reset
+          </button>
         </td>
         <td style={{ width: '600px' }}>
           <FloatingLabel label="Title" className="">
             <Form.Control
-              defaultValue={product.title}
+              //defaultValue={product.title}
               value={title}
               onChange={(e) => {
                 e.preventDefault();
@@ -103,7 +138,7 @@ function AdminProductUD() {
           </FloatingLabel>
           <FloatingLabel label="Short Description" className="">
             <Form.Control
-              defaultValue={product.shortDescription}
+              // defaultValue={product.shortDescription}
               value={shortDescription}
               onChange={(e) => {
                 e.preventDefault();
@@ -114,7 +149,7 @@ function AdminProductUD() {
 
           <FloatingLabel label="Detail" className="">
             <Form.Control
-              defaultValue={product.detailDescription}
+              // defaultValue={product.detailDescription}
               value={detailDescription}
               onChange={(e) => {
                 e.preventDefault();
@@ -125,7 +160,7 @@ function AdminProductUD() {
 
           <FloatingLabel label="Price" className="">
             <Form.Control
-              defaultValue={product.price}
+              // defaultValue={product.price}
               value={price}
               onChange={(e) => {
                 e.preventDefault();
@@ -136,7 +171,7 @@ function AdminProductUD() {
 
           <FloatingLabel label="Inventory">
             <Form.Control
-              defaultValue={product.inventory}
+              // defaultValue={product.inventory}
               value={inventory}
               onChange={(e) => {
                 e.preventDefault();
@@ -152,7 +187,7 @@ function AdminProductUD() {
             />
           </FloatingLabel>
           <Form.Select
-            defaultValue={product.categoryId}
+            defaultValue={product.kategoryId}
             value={categoryId}
             onChange={(e) => {
               e.preventDefault();
@@ -183,11 +218,7 @@ function AdminProductUD() {
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const a = useLocation();
-  const b = useParams();
   useEffect(() => {
-    console.log(a);
-    console.log(b);
     axios
       .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
       .then((res) => {

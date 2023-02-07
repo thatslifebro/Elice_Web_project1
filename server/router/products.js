@@ -6,12 +6,12 @@ import { upload } from '../middleware/save-image';
 
 const router = Router();
 
-router.post(
-  '/img',
+router.get(
+  '/img/:key',
   upload.single('imageKey'),
   asyncHandler((req, res) => {
-    res.sendFile(process.cwd() + '/images/' + req.body.imageKey);
-    //res.json(req.body);
+    const { key } = req.params;
+    res.sendFile(process.cwd() + '/images/' + key);
   }),
 );
 
@@ -65,6 +65,7 @@ router.post(
 //id로 물품 정보 수정하기
 router.put(
   '/:id',
+  upload.single('imageKey'),
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const {

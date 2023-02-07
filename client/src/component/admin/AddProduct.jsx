@@ -58,29 +58,33 @@ function AddProduct() {
 
   const onChangeImg = (e) => {
     e.preventDefault();
-    const formData = new FormData();
     if (e.target.files) {
       const uploadFile = e.target.files[0];
-      formData.append('file', uploadFile);
       setFile(uploadFile);
-      console.log(uploadFile);
-      console.log('===useState===');
-      console.log(file);
     }
   };
   const onClickEvent = (e) => {
-    const data = {
-      categoryId,
-      title,
-      price,
-      shortDescription,
-      detailDescription,
-      inventory,
-      imageKey: 'image',
-    };
-
-    axios.post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`, data);
-    return setShow(false);
+    if (!file) {
+      return;
+    }
+    const formdata = new FormData();
+    formdata.append('imageKey', file);
+    formdata.append('categoryId', categoryId);
+    formdata.append('title', title);
+    formdata.append('price', price);
+    formdata.append('shortDescription', shortDescription);
+    formdata.append('detailDescription', detailDescription);
+    formdata.append('inventory', inventory);
+    console.log(formdata);
+    axios
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`, formdata, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
   };
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -215,7 +219,7 @@ function AddProduct() {
           <Modal.Body>바로 제품을 등록하시겠습니까?</Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit" onClick={onClickEvent}>
-              <Nav.Link href="/admin/product">등록하기</Nav.Link>
+              {/* <Nav.Link href="/admin/product">등록하기</Nav.Link> */}
             </Button>
             <Button variant="secondary" onClick={handleClose}>
               취소하기

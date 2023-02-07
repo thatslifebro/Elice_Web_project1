@@ -1,69 +1,83 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col, Container, Nav } from 'react-bootstrap';
 import axios from 'axios';
+import { verifyTokken } from '../../util/verify';
+import NavBar from '../main/NavBar';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(false);
-
+  const [auth, setAuth] = useState('NOTUSER');
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = { email, password };
-    console.log('check');
     axios
-      .post(`http://localhost:3001/api/auth/login`, userData)
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/login`, userData)
       .then((res) => {
-        console.log(res.data.token);
-        setIsLogin(true);
+        localStorage.setItem('jwt', res.data);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${res.data}`;
       })
-      .catch(() => console.log('error'));
+      .then(verifyTokken)
+      .then((role) => {
+        setAuth(role);
+        navigate('/main');
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
   };
-
+  useEffect(() => {
+    verifyTokken().then(setAuth);
+  }, []);
   return (
     <div>
-      <Container className="panel">
-        <Form>
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextPassword"
-          >
-            <Col sm>
-              <Form.Control
-                type="id"
-                placeholder="UserID"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Col>
-          </Form.Group>
+      {auth === 'NOTUSER' ? (
+        <Container className="panel">
+          <Form>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextPassword"
+            >
+              <Col sm>
+                <Form.Control
+                  type="id"
+                  placeholder="UserID"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Col>
+            </Form.Group>
 
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextPassword"
-          >
-            <Col sm>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Col>
-          </Form.Group>
-          <br />
-          <div className="d-grid gap-1">
-            <Button variant="primary" type="submit" onClick={handleSubmit}>
-              로그인
-            </Button>
-            <Button variant="secondary" type="submit">
-              <Nav.Link href="/register">회원 가입하기</Nav.Link>
-            </Button>
-          </div>
-        </Form>
-      </Container>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextPassword"
+            >
+              <Col sm>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Col>
+            </Form.Group>
+            <br />
+            <div className="d-grid gap-1">
+              <Button variant="primary" type="submit" onClick={handleSubmit}>
+                로그인
+              </Button>
+              <Button variant="secondary" type="submit">
+                <Nav.Link href="/register">회원 가입하기</Nav.Link>
+              </Button>
+            </div>
+          </Form>
+        </Container>
+      ) : (
+        <span>로그인된 사용자 입니다.</span>
+      )}
     </div>
   );
 }
