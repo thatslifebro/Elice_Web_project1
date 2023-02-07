@@ -1,28 +1,39 @@
-import { Container, Nav, Navbar, Button } from 'react-bootstrap';
+import { Container, Nav, Navbar, Button, NavDropdown } from 'react-bootstrap';
+import './NavBar.css';
 
 function NavBar() {
   return (
     <header>
       <div>
-        <>
-          <Navbar bg="primary" variant="dark">
-            <Container>
-              <Navbar.Brand href="/home">Home</Navbar.Brand>
+        <Navbar fixed="top" bg="light" style={{ variant: 'dark' }}>
+          <Container>
+            <Nav className="me-auto">
+              <Navbar.Brand href="/main" className="main">
+                육쾌상쾌
+              </Navbar.Brand>
+              <Nav.Link href="/main">Home</Nav.Link>
 
-              <Nav className="category">
-                <Nav.Link href="/fruit">과일</Nav.Link>
-                <Nav.Link href="/vegatable">야채</Nav.Link>
-                <Nav.Link href="/fast">냉동식품</Nav.Link>
-                <Nav.Link href="/diet">다이어트</Nav.Link>
-              </Nav>
+              <NavDropdown title="Category" id="basic-nav-dropdown">
+                <NavDropdown.Item href="/fruit">과일</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/vegatable">야채</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/fast">냉동식품</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/diet">다이어트</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
 
-              <Nav>
-                <Nav.Link href="#basket">장바구니</Nav.Link>
-                <Button variant="outline-dark">로그인</Button>
-              </Nav>
-            </Container>
-          </Navbar>
-        </>
+            <Nav>
+              <Nav.Link href="/user-withdrawal" style={{ color: '#000000' }}>
+                장바구니
+              </Nav.Link>
+              <Button href="/login" variant="outline-dark">
+                Login
+              </Button>
+            </Nav>
+          </Container>
+        </Navbar>
       </div>
     </header>
   );

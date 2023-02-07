@@ -20,6 +20,7 @@ import OrderComplete from './component/order/OrderComplete';
 import Order from './component/order/Order';
 import Main from './component/main/Main';
 import NavBar from './component/main/NavBar';
+import Footer from './component/main/Footer';
 
 function App() {
   return (
@@ -61,6 +62,8 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+
+      <Footer />
     </Router>
   );
 }
