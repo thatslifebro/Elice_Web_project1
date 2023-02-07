@@ -54,4 +54,14 @@ router.delete(
   }),
 );
 
+//id별 상품조회
+router.get(
+  '/products/:id',
+  asyncHandler(async (req, res) => {
+    const { category } = req.params;
+    const products = await CategoriesService.getAllProduct(category);
+    return res.status(200).json(products);
+  }),
+);
+
 export default router;

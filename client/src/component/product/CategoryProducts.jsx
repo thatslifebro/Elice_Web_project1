@@ -7,6 +7,7 @@ function CategoryProducts() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [categoryId, setCategoryId] = useState('');
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
@@ -19,37 +20,41 @@ function CategoryProducts() {
       });
   }, []);
 
-  const handleCategory = (event) => {
+  //
+  //const ProductCard = ({ product }) => {
+  const selectCategoryHandler = (event) => {
     event.preventDefault();
+    console.log('categoryId:', event.target.value);
     setCategoryId(event.target.value);
-    console.log(categoryId);
-    console.log(event.currentTarget.value);
-  };
-
-  //카테고리Id로 물품정보를 모두 가져오는 로직 필요
-  //우선 물품정보 모두 가져와서 card로 보이기
-  useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
+      .get(
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/products/${categoryId}`,
+      )
       .then((res) => {
         setProducts(res.data);
+        console.log(res.data);
       })
       .then(console.log(products))
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
+  // };
+
   return (
     <Container fluid>
+      <div>
+        <h1 className="p-3 text-success">상품목록</h1>
+      </div>
       <Row>
         <Col className="mb-2 ms-3 mr-5 ">
           <Form>
-            <Form.Label htmlFor="SelectCategory">카테고리</Form.Label>
+            <Form.Label htmlFor="SelectCategory">상품카테고리</Form.Label>
             <Form.Select
               className="mb-4"
               id="SelectCategory"
               aria-label="Default select example"
-              onChange={handleCategory}
+              onChange={selectCategoryHandler}
             >
               <option>카테고리를 선택해주세요</option>
               {categories.map((category) => {
