@@ -128,7 +128,7 @@ function OrdersList() {
                 <td>@fat</td>
                 <td>Thornton</td>
                 <td>@fat</td>
-              </tr>{' '}
+              </tr>
               <tr>
                 <td>5</td>
                 <td>Mark</td>

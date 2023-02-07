@@ -52,7 +52,7 @@ function Product() {
                 </Card.Title>
                 <Badge bg="warning" text="dark">
                   추천
-                </Badge>{' '}
+                </Badge>
                 <Card.Subtitle className="mb-2 mt-2 text-muted">
                   {product?.shortDescription}
                 </Card.Subtitle>
@@ -70,13 +70,13 @@ function Product() {
               }}
             >
               장바구니 추가
-            </Button>{' '}
+            </Button>
             <Button variant="outline-primary">
               사용자모드에서만 보일 바로구매
-            </Button>{' '}
+            </Button>
             <Button variant="outline-primary">
               관리자모드에서만 보일 수정버튼
-            </Button>{' '}
+            </Button>
           </Col>
         </Row>
       </Stack>

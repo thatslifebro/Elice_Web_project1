@@ -115,7 +115,7 @@ function AdminCategoryForm() {
             onClick={updateCategory}
           >
             수정
-          </Button>{' '}
+          </Button>
           <Button variant="danger" onClick={deleteCategory}>
             삭제
           </Button>

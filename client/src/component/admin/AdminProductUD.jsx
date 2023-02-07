@@ -207,7 +207,7 @@ function AdminProductUD() {
         <td>
           <Button variant="warning" onClick={updateHandler}>
             수정
-          </Button>{' '}
+          </Button>
           <Button variant="danger" onClick={deleteHandler}>
             삭제
           </Button>

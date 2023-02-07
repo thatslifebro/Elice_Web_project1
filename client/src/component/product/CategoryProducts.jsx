@@ -8,22 +8,17 @@ function CategoryProducts() {
   const [products, setProducts] = useState([]);
   const [categoryId, setCategoryId] = useState('');
 
+  const a = async () => {
+    const [cres, pres] = await Promise.all([
+      axios.get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`),
+      axios.get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`),
+    ]);
+    setCategories(cres.data);
+    setProducts(pres.data);
+  };
+
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
-      .then((res) => {
-        setCategories(res.data);
-      })
-      .then(() => {
-        axios
-          .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
-          .then((res) => {
-            setProducts(res.data);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    a();
   }, []);
 
   //
@@ -31,10 +26,9 @@ function CategoryProducts() {
   const selectCategoryHandler = (event) => {
     event.preventDefault();
     setCategoryId(event.target.value);
-
     axios
       .get(
-        `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/?categoryId=${categoryId}`,
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/?categoryId=${event.target.value}`,
       )
       .then((res) => {
         setProducts(res.data);

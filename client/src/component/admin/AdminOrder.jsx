@@ -6,22 +6,22 @@ import axios from 'axios';
 function AdminOrder() {
   const [ordersList, setOrdersList] = useState([]);
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/orders/`)
-      .then((res) => {
-        setOrdersList(res.data);
-      })
-      .then(console.log('ordersList', ordersList))
-      // .then(() => {
-      //   axios
-      //     .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/orders/${id}`)
-      //     .then((res) => {
-      //       setCategories(res.data);
-      //     });
-      // })
-      .catch((err) => {
-        console.log('err', err);
-      });
+    // axios
+    //   .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/orders/`)
+    //   .then((res) => {
+    //     setOrdersList(res.data);
+    //   })
+    //   .then(console.log('ordersList', ordersList))
+    //   .then(() => {
+    //     axios
+    //       .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/orders/${id}`)
+    //       .then((res) => {
+    //         setCategories(res.data);
+    //       });
+    //   })
+    //   .catch((err) => {
+    //     console.log('err', err);
+    //   });
   }, []);
   return (
     <Container fluid>
@@ -41,7 +41,7 @@ function AdminOrder() {
               </tr>
             </thead>
             <tbody>
-              {ordersList.map((order) => {
+              {/* {ordersList.map((order) => {
                 return (
                   <tr key={order._id} value={order._id}>
                     <td>#</td>
@@ -53,8 +53,8 @@ function AdminOrder() {
                     <td>{order.status}</td>
                     <td>{order.updatedAt}</td>
                   </tr>
-                );
-              })}
+                ); */}
+              {/* })} */}
               <tr>
                 <td>1</td>
                 <td>Mark</td>
@@ -64,10 +64,10 @@ function AdminOrder() {
                 <td>
                   <Button variant="success" size="sm">
                     발송
-                  </Button>{' '}
+                  </Button>
                   <Button variant="secondary" size="sm">
                     취소
-                  </Button>{' '}
+                  </Button>
                 </td>
                 <td>@fat</td>
               </tr>
