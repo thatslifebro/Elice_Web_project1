@@ -9,7 +9,7 @@ function Main() {
         <Carousel.Item>
           <Image
             style={{
-              height: 500,
+              height: 550,
               width: '100%',
               marginTop: 10,
               marginBottom: 50,
@@ -23,7 +23,7 @@ function Main() {
         <Carousel.Item>
           <Image
             style={{
-              height: 500,
+              height: 550,
               width: '100%',
               marginTop: 10,
               marginBottom: 50,
@@ -37,12 +37,35 @@ function Main() {
 
       <Figure>
         <Figure.Caption>
-          <h1>추천상품</h1>
+          <h1 className="rec">추천상품</h1>
         </Figure.Caption>
 
         <Figure.Image
           width={171}
           height={180}
+          style={{
+            marginLeft: 50,
+          }}
+          alt="recommend"
+          src="https://picsum.photos/600/600/?random"
+        />
+
+        <Figure.Image
+          width={171}
+          height={180}
+          style={{
+            marginLeft: 30,
+          }}
+          alt="recommend"
+          src="https://picsum.photos/600/600/?random"
+        />
+
+        <Figure.Image
+          width={171}
+          height={180}
+          style={{
+            marginLeft: 30,
+          }}
           alt="recommend"
           src="https://picsum.photos/600/600/?random"
         />
