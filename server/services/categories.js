@@ -1,10 +1,19 @@
 const { Category } = require('../db/model');
 const { Product } = require('../db/model');
+import mongoose from 'mongoose';
 
 export default class CategoriesService {
   //전체카테고리목록
-  static async getAllCategories() {
-    return await Category.find({});
+  static async getAllCategories(categoryId) {
+    if (!categoryId) {
+      return await Category.find({});
+    } else {
+      const products = await Product.find({ categoryId });
+      if (!products) {
+        throw new Error('카테고리에 해당하는 제품가 없습니다.');
+      }
+      return products;
+    }
   }
 
   //id로 카테고리 가져오기
@@ -48,8 +57,12 @@ export default class CategoriesService {
   }
 
   //id로 상품 가져오기
-  static async getAllProduct({ id }) {
-    const products = await Product.find({ categoryId: id });
+  static async getAllProduct(id) {
+    const ObjectId = mongoose.Types.ObjectId;
+    const obj_id = new ObjectId(id);
+    const category = await Category.findById(obj_id);
+    return category;
+    const products = await Product.find({ categoryId: category._id });
     if (!products) {
       throw new Error('카테고리에 해당하는 제품가 없습니다.');
     }

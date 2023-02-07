@@ -62,8 +62,14 @@ function Product() {
                 <Card.Text>{product?.price}</Card.Text>
               </Card.Body>
             </Card>
-            <Button variant="outline-primary">
-              사용자모드에서만 보일 장바구니
+            <Button
+              variant="outline-primary"
+              onClick={(e) => {
+                e.preventDefault();
+                localStorage.setItem('productId', product._id);
+              }}
+            >
+              장바구니 추가
             </Button>{' '}
             <Button variant="outline-primary">
               사용자모드에서만 보일 바로구매

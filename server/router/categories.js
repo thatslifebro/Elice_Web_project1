@@ -7,7 +7,8 @@ const router = Router();
 router.get(
   '/',
   asyncHandler(async (req, res) => {
-    const categories = await CategoriesService.getAllCategories();
+    const { categoryId } = req.query;
+    const categories = await CategoriesService.getAllCategories(categoryId);
     return res.status(200).json(categories);
   }),
 );
@@ -56,10 +57,10 @@ router.delete(
 
 //id별 상품조회
 router.get(
-  '/products/:id',
+  '/prod/:id',
   asyncHandler(async (req, res) => {
-    const { category } = req.params;
-    const products = await CategoriesService.getAllProduct(category);
+    const { id } = req.params;
+    const products = await CategoriesService.getAllProduct(id);
     return res.status(200).json(products);
   }),
 );

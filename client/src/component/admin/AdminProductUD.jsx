@@ -187,7 +187,7 @@ function AdminProductUD() {
             />
           </FloatingLabel>
           <Form.Select
-            defaultValue={product.kategoryId}
+            defaultValue={product.categoryId}
             value={categoryId}
             onChange={(e) => {
               e.preventDefault();

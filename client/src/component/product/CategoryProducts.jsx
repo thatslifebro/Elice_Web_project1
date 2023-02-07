@@ -14,7 +14,13 @@ function CategoryProducts() {
       .then((res) => {
         setCategories(res.data);
       })
-      .then(console.log(categories))
+      .then(() => {
+        axios
+          .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
+          .then((res) => {
+            setProducts(res.data);
+          });
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -24,17 +30,16 @@ function CategoryProducts() {
   //const ProductCard = ({ product }) => {
   const selectCategoryHandler = (event) => {
     event.preventDefault();
-    console.log('categoryId:', event.target.value);
     setCategoryId(event.target.value);
+
     axios
       .get(
-        `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/products/${categoryId}`,
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/?categoryId=${categoryId}`,
       )
       .then((res) => {
         setProducts(res.data);
         console.log(res.data);
       })
-      .then(console.log(products))
       .catch((err) => {
         console.log(err);
       });
@@ -55,6 +60,7 @@ function CategoryProducts() {
               id="SelectCategory"
               aria-label="Default select example"
               onChange={selectCategoryHandler}
+              value={categoryId}
             >
               <option>카테고리를 선택해주세요</option>
               {categories.map((category) => {
