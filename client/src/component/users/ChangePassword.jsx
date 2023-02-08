@@ -21,7 +21,7 @@ function ChangePassword() {
     console.log('check');
     if (validatePassword()) {
       instance
-        .post(`/api`, password)
+        .post(`/api`, { password: newPassword })
         .then((res) => console.log(res.data))
         .catch(() => console.log('error'));
     }

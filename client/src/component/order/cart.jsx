@@ -2,21 +2,39 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import instance from '../../util/axios-setting';
 const Cart = ({ order }) => {
   const ProductList = ({ product }) => {
+    const [imgSrc, setImgSrc] = useState('');
+
+    useEffect(() => {
+      instance.get(`/api/products/${product.productId}`).then((res) => {
+        instance
+          .get(`/api/products/img/${res.data.imageKey}`, {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+            responseType: 'blob',
+          })
+          .then((res) => {
+            const getfile = new File([res.data], product.imageKey);
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const previewImage = String(event.target?.result);
+
+              setImgSrc(previewImage);
+            };
+            reader.readAsDataURL(getfile);
+          });
+      });
+    }, []);
+
     return (
       <tr>
-        <th scope="row" className="border-0">
-          <img
-            src="https://therichpost.com/wp-content/uploads/2021/05/dummyimage400x300.jpg"
-            alt=""
-            width="70"
-            className="img-fluid rounded shadow-sm"
-          />
-          <td className="border-0 align-middle">
-            <strong>{product.title}</strong>
-          </td>
-        </th>
+        <td scope="row" className="border-0">
+          <img style={{ width: '70px' }} src={imgSrc} alt="current" />
+          <strong>{product.title}</strong>
+        </td>
         <td className="border-0 align-middle">
           <strong>{product.price} 원</strong>
         </td>
@@ -87,16 +105,20 @@ const Cart = ({ order }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {products[0]?.productId !== undefined
-                      ? products.map((product) => {
-                          return (
-                            <ProductList
-                              key={product.productId}
-                              product={product}
-                            />
-                          );
-                        })
-                      : '물품이 없습니다'}
+                    {products[0]?.productId !== undefined ? (
+                      products.map((product) => {
+                        return (
+                          <ProductList
+                            key={product.productId}
+                            product={product}
+                          />
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <th>'물품이 없습니다'</th>
+                      </tr>
+                    )}
                     <tr className="d-flex justify-content-between py-3 border-bottom">
                       <th className="text-muted">총 가격</th>
                       <th className="fw-bold">{totalPrice}원</th>

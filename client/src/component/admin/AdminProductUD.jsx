@@ -30,20 +30,18 @@ function AdminProductUD() {
     const [file, setFile] = useState('');
     useEffect(() => {
       instance
-        .get(
-          `${process.env.REACT_APP_SERVER_ADDRESS}/api/products/img/${product.imageKey}`,
-          {
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8',
-            },
-            responseType: 'blob',
+        .get(`/api/products/img/${product.imageKey}`, {
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
           },
-        )
+          responseType: 'blob',
+        })
         .then((res) => {
           const getfile = new File([res.data], product.imageKey);
           const reader = new FileReader();
           reader.onload = (event) => {
             const previewImage = String(event.target?.result);
+            console.log(previewImage);
             setCurrentImgSrc(previewImage);
           };
           reader.readAsDataURL(getfile);
@@ -76,36 +74,26 @@ function AdminProductUD() {
         formdata.append('inventory', inventory);
       }
       instance
-        .put(
-          `${process.env.REACT_APP_SERVER_ADDRESS}/api/products/${product._id}`,
-          formdata,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+        .put(`/api/products/${product._id}`, formdata, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
           },
-        )
+        })
         .then(() => {
-          instance
-            .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
-            .then((res) => {
-              setProducts(res.data);
-            });
+          instance.get(`/api/products`).then((res) => {
+            setProducts(res.data);
+          });
         });
     };
     const deleteHandler = (e) => {
       e.preventDefault();
-      instance
-        .delete(
-          `${process.env.REACT_APP_SERVER_ADDRESS}/api/products/${product._id}`,
-        )
-        .then((res) => {
-          instance
-            .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
-            .then((res) => {
-              setProducts(res.data);
-            });
-        });
+      instance.delete(`/api/products/${product._id}`).then((res) => {
+        instance
+          .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
+          .then((res) => {
+            setProducts(res.data);
+          });
+      });
     };
 
     return (
@@ -233,16 +221,14 @@ function AdminProductUD() {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     instance
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
+      .get(`/api/products`)
       .then((res) => {
         setProducts(res.data);
       })
       .then(() => {
-        instance
-          .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
-          .then((res) => {
-            setCategories(res.data);
-          });
+        instance.get(`/api/categories`).then((res) => {
+          setCategories(res.data);
+        });
       })
       .catch((err) => {
         console.log(err);

@@ -15,7 +15,7 @@ import Product from './component/product/Product';
 import AdminOrder from './component/admin/AdminOrder';
 import OrdersList from './component/order/OrdersList';
 import AdminMain from './component/admin/AdminMain';
-import OrderComplete from './component/order/OrderComplete';
+import OrderById from './component/order/OrderComplete';
 import Order from './component/order/Order';
 import Cart from './component/order/cart';
 import Main from './component/main/Main';
@@ -55,7 +55,7 @@ function App() {
         <Route path="/order" element={<Order />}>
           주문페이지
         </Route>
-        <Route path="/orderComplete" element={<OrderComplete />}>
+        <Route path="/order/:id" element={<OrderById />}>
           주문 완료 페이지
         </Route>
         <Route path="/admin" element={<AdminMain />} />

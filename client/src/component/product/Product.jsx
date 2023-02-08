@@ -13,15 +13,47 @@ import axios from 'axios';
 import instance from '../../util/axios-setting';
 
 function Product() {
-  const [product, setProduct] = useState([]);
+  const [categoryId, setCategoryId] = useState('');
+  const [productId, setProductId] = useState('');
+  const [title, setTitle] = useState('');
+  const [price, setPrice] = useState('');
+  const [shortDescription, setShortDescription] = useState('');
+  const [detailDescription, setDetailDescription] = useState('');
+  const [inventory, setInventory] = useState('');
   const [quantity, setQuantity] = useState(0);
+  const [imageKey, setImageKey] = useState('');
   const { id } = useParams();
+
+  const [imgSrc, setImgSrc] = useState('');
 
   useEffect(() => {
     instance
       .get(`/api/products/${id}`)
       .then((res) => {
-        setProduct(res.data);
+        setProductId(res.data._id);
+        setCategoryId(res.data.categoryId);
+        setTitle(res.data.title);
+        setPrice(res.data.price);
+        setShortDescription(res.data.shortDescription);
+        setDetailDescription(res.data.detailDescription);
+        setInventory(res.data.inventory);
+        setCategoryId(res.data.imageKey);
+        instance
+          .get(`/api/products/img/${res.data.imageKey}`, {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+            responseType: 'blob',
+          })
+          .then((res) => {
+            const getfile = new File([res.data], '');
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const previewImage = String(event.target?.result);
+              setImgSrc(previewImage);
+            };
+            reader.readAsDataURL(getfile);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -37,29 +69,23 @@ function Product() {
         <Row xs={1} md={2}>
           <Col sm={8}>
             <Card>
-              <Card.Img
-                variant="top"
-                src="https://picsum.photos/600/600/?random"
-                alt="랜덤사진"
-              />
+              <Card.Img variant="top" src={imgSrc} alt="랜덤사진" />
             </Card>
           </Col>
           <Col sm={4}>
             <Card>
               <Card.Body>
                 <Card.Title className="mb-2 mt-5 text-large">
-                  <h1>{product?.title}</h1>
+                  <h1>{title}</h1>
                 </Card.Title>
                 <Badge bg="warning" text="dark">
                   추천
                 </Badge>
                 <Card.Subtitle className="mb-2 mt-2 text-muted">
-                  {product?.shortDescription}
+                  {shortDescription}
                 </Card.Subtitle>
-                <Card.Text className="mb-2 mt-5">
-                  {product?.detailDescription}
-                </Card.Text>
-                <Card.Text>{product?.price}</Card.Text>
+                <Card.Text className="mb-2 mt-5">{detailDescription}</Card.Text>
+                <Card.Text>{price}</Card.Text>
               </Card.Body>
             </Card>
 
@@ -71,11 +97,11 @@ function Product() {
 
                 if (items) {
                   const check = items.find(
-                    (item) => item.productId === product._id,
+                    (item) => item.productId === productId,
                   );
                   if (check !== undefined) {
                     const newItems = items.map((item, idx) => {
-                      if (item.productId === product._id) {
+                      if (item.productId === productId) {
                         item.quantity = quantity;
                       }
                       return item;
@@ -88,10 +114,10 @@ function Product() {
                     JSON.stringify([
                       ...items,
                       {
-                        productId: product._id,
+                        productId,
                         quantity,
-                        price: product.price,
-                        title: product.title,
+                        price,
+                        title,
                       },
                     ]),
                   );
@@ -101,10 +127,10 @@ function Product() {
                     'items',
                     JSON.stringify([
                       {
-                        productId: product._id,
+                        productId,
                         quantity,
-                        price: product.price,
-                        title: product.title,
+                        price,
+                        title,
                       },
                     ]),
                   );
@@ -130,7 +156,7 @@ function Product() {
         </Row>
       </Stack>
       <Row>
-        <Col sm>상품상세 설명{product?.detailDescription}</Col>
+        <Col sm>상품상세 설명{detailDescription}</Col>
         <Col sm></Col>
       </Row>
     </Container>

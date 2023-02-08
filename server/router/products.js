@@ -9,7 +9,6 @@ const router = Router();
 
 router.get(
   '/img/:key',
-  upload.single('imageKey'),
   asyncHandler((req, res) => {
     const { key } = req.params;
     res.sendFile(process.cwd() + '/images/' + key);
