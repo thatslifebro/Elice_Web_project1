@@ -9,7 +9,7 @@ const signToken = async (id, role) => {
     },
     JWT_SECRET,
     {
-      expiresIn: '1h', //1분
+      expiresIn: '100h', //1분
       issuer: '6team',
     },
   );

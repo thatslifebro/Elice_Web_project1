@@ -31,6 +31,7 @@ export default class ProductsService {
     imageKey,
     inventory,
     price,
+    role,
   }) {
     if (
       !title ||
@@ -43,16 +44,20 @@ export default class ProductsService {
     ) {
       throw new Error('필수 항목이 모두 채워지지 않았습니다.');
     }
-    const createdProduct = await Product.create({
-      title,
-      categoryId,
-      shortDescription,
-      detailDescription,
-      imageKey,
-      inventory,
-      price,
-    });
-    return createdProduct;
+    if (role === 'ADMIN') {
+      const createdProduct = await Product.create({
+        title,
+        categoryId,
+        shortDescription,
+        detailDescription,
+        imageKey,
+        inventory,
+        price,
+      });
+      return createdProduct;
+    } else {
+      throw new Error('권한이 없습니다.');
+    }
   }
 
   static async updateProductById({
@@ -64,34 +69,43 @@ export default class ProductsService {
     imageKey,
     inventory,
     price,
+    role,
   }) {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      id,
-      {
+    if (role === 'ADMIN') {
+      const updatedProduct = await Product.findByIdAndUpdate(
         id,
-        title,
-        categoryId,
-        shortDescription,
-        detailDescription,
-        imageKey,
-        inventory,
-        price,
-      },
-      {
-        new: true,
-      },
-    );
-    if (!updatedProduct) {
-      throw new Error('존재하지 않는 제품 입니다');
+        {
+          id,
+          title,
+          categoryId,
+          shortDescription,
+          detailDescription,
+          imageKey,
+          inventory,
+          price,
+        },
+        {
+          new: true,
+        },
+      );
+      if (!updatedProduct) {
+        throw new Error('존재하지 않는 제품 입니다');
+      }
+      return updatedProduct;
+    } else {
+      throw new Error('권한이 없습니다.');
     }
-    return updatedProduct;
   }
 
-  static async deleteProductById(id) {
-    const deletedProduct = await Product.findByIdAndDelete(id);
-    if (!deletedProduct) {
-      throw new Error('존재하지 않는 제품 입니다');
+  static async deleteProductById(id, role) {
+    if (role === 'ADMIN') {
+      const deletedProduct = await Product.findByIdAndDelete(id);
+      if (!deletedProduct) {
+        throw new Error('존재하지 않는 제품 입니다');
+      }
+      return deletedProduct;
+    } else {
+      throw new Error('권한이 없습니다.');
     }
-    return deletedProduct;
   }
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Button, Form, Row, Col, Container } from 'react-bootstrap';
 import { useEffect } from 'react';
+import instance from '../../util/axios-setting';
 
 function AdminCategoryForm() {
   const CreateCategory = () => {
@@ -27,18 +28,17 @@ function AdminCategoryForm() {
             title={newTitle}
             onClick={(e) => {
               e.preventDefault();
-              axios
-                .post(
-                  `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`,
-                  {
-                    title: e.target.title,
-                  },
-                )
+              instance
+                .post(`/api/categories`, {
+                  title: e.target.title,
+                })
                 .then((res) => {
-                  setCategories((currentCategories) => {
-                    const newCategories = currentCategories;
-                    return [...newCategories, res.data];
-                  });
+                  if (res.data.title) {
+                    setCategories((currentCategories) => {
+                      const newCategories = currentCategories;
+                      return [...newCategories, res.data];
+                    });
+                  }
                 })
                 .catch((err) => {
                   console.log(err);

@@ -3,6 +3,7 @@ import { Product, Category } from '../db/model';
 import asyncHandler from '../util/async-handler';
 import ProductsService from '../services/products';
 import { upload } from '../middleware/save-image';
+import verifyToken from '../middleware/verify-token';
 
 const router = Router();
 
@@ -38,6 +39,7 @@ router.get(
 //새로운 물품 등록하기
 router.post(
   '/',
+  verifyToken,
   upload.single('imageKey'),
   asyncHandler(async (req, res) => {
     const {
@@ -49,6 +51,7 @@ router.post(
       inventory,
       price,
     } = req.body;
+    const { role } = req.decoded;
     const createdProduct = await ProductsService.addProduct({
       title,
       categoryId,
@@ -57,6 +60,7 @@ router.post(
       imageKey,
       inventory,
       price,
+      role,
     });
     return res.status(201).json(createdProduct);
   }),
@@ -66,6 +70,7 @@ router.post(
 router.put(
   '/:id',
   upload.single('imageKey'),
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const {
@@ -77,6 +82,7 @@ router.put(
       inventory,
       price,
     } = req.body;
+    const { role } = req.decoded;
     const updatedProduct = await ProductsService.updateProductById({
       id,
       title,
@@ -86,6 +92,7 @@ router.put(
       imageKey,
       inventory,
       price,
+      role,
     });
     return res.status(201).json(updatedProduct);
   }),
@@ -94,9 +101,11 @@ router.put(
 //id로 물품 정보 삭제하기
 router.delete(
   '/:id',
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const deletedProuct = await ProductsService.deleteProductById(id);
+    const { role } = req.decoded;
+    const deletedProuct = await ProductsService.deleteProductById(id, role);
     return res.status(200).json(deletedProuct);
   }),
 );

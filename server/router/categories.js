@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import asyncHandler from '../util/async-handler';
 import CategoriesService from '../services/categories';
+import verifyToken from '../middleware/verify-token';
 
 const router = Router();
 
@@ -24,10 +25,13 @@ router.get(
 
 router.post(
   '/',
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { title } = req.body;
+    const { role } = req.decoded;
     const createdCategory = await CategoriesService.addCategory({
       title,
+      role,
     });
     return res.status(201).json(createdCategory);
   }),
@@ -35,22 +39,30 @@ router.post(
 
 router.put(
   '/:id',
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { title } = req.body;
-    const updatedCategory = await CategoriesService.updateCategoryById(
+    const { role } = req.decoded;
+    const updatedCategory = await CategoriesService.updateCategoryById({
       id,
       title,
-    );
+      role,
+    });
     return res.status(201).json(updatedCategory);
   }),
 );
 
 router.delete(
   '/:id',
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const deletedCategory = await CategoriesService.deleteCategoryById(id);
+    const { role } = req.decoded;
+    const deletedCategory = await CategoriesService.deleteCategoryById(
+      id,
+      role,
+    );
     return res.status(200).json(deletedCategory);
   }),
 );
