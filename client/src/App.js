@@ -16,7 +16,7 @@ import OrdersList from './component/order/OrdersList';
 import AdminMain from './component/admin/AdminMain';
 import OrderById from './component/order/OrderComplete';
 import Order from './component/order/Order';
-import Cart from './component/order/Cart';
+import cart from './component/order/cart';
 import Main from './component/main/Main';
 import Footer from './component/main/Footer';
 import HeaderJJ from './component/main/HeaderJJ';
@@ -60,7 +60,7 @@ function App() {
         <Route path="/main" element={<Main />}>
           메인
         </Route>
-        <Route path="/cart" element={<Cart />}>
+        <Route path="/cart" element={<cart />}>
           장바구니
         </Route>
 
