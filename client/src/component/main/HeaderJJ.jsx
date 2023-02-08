@@ -25,9 +25,23 @@ const Header = () => {
   const onClickCategoryHandler = (e) => {
     e.preventDefault();
   };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container px-4 px-lg-5">
+      <div className="container px-4 px-lg-1">
+        <Navbar bg="white">
+          <Container>
+            <Navbar.Brand href="/main">
+              <img
+                src="http://pngimg.com/uploads/apple_logo/apple_logo_PNG19674.png"
+                width="40"
+                height="30"
+                className="d-inline-block align-top bg-white"
+                alt="React Bootstrap logo"
+              />
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
         <Link className="navbar-brand" to={'/main'}>
           6team Shop
         </Link>
@@ -71,10 +85,16 @@ const Header = () => {
           </ul>
 
           {auth !== 'NOTUSER' ? (
-            <Button className="btn btn-outline-dark" onClick={handleLogout}>
-              <i className="bi-cart-fill me-1"></i>
-              Logout
-            </Button>
+            <>
+              <Button variant="outline-dark" onClick={handleLogout}>
+                <i className="bi-cart-fill me-1"></i>
+                Logout
+              </Button>
+              <Link className="btn btn-outline-dark" to={'/admin'}>
+                <i className="bi-cart-fill me-1"></i>
+                Admin
+              </Link>
+            </>
           ) : (
             <Link className="btn btn-outline-dark" to={'/login'}>
               <i className="bi-cart-fill me-1"></i>
@@ -84,8 +104,8 @@ const Header = () => {
           <Link className="btn btn-outline-dark ms-lg-1" to={'/cart'}>
             <i className="bi-cart-fill me-1 "></i>
             Cart
-            <span className="badge bg-dark text-white ms-1 rounded-pill">
-              0
+            <span className="badge bg-white text-white ms-1 rounded-pill">
+              <text>🛒</text>
             </span>
           </Link>
         </div>
