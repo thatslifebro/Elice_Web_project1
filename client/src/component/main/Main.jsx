@@ -6,6 +6,7 @@ import MultipleItems from './multipleItems';
 
 import main1 from './mainImage/main1.jpg';
 import main2 from './mainImage/main2.jpg';
+import main3 from './mainImage/main3.jpg';
 
 import './Main.css';
 function Main() {
@@ -32,7 +33,7 @@ function Main() {
           className="w-100 d-block mb-5"
           height={500}
           itemId={3}
-          src="https://cdn.pixabay.com/photo/2014/12/02/03/11/grapes-553464_960_720.jpg"
+          src={main3}
           alt="..."
         ></MDBCarouselItem>
       </MDBCarousel>
