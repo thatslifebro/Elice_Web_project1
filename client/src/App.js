@@ -1,5 +1,4 @@
 import './App.css';
-
 import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginForm from './component/users/LoginForm';
@@ -19,7 +18,6 @@ import OrderComplete from './component/order/OrderComplete';
 import Order from './component/order/Order';
 import Cart from './component/order/cart';
 import Main from './component/main/Main';
-import NavBar from './component/main/NavBar';
 import Footer from './component/main/Footer';
 import HeaderJJ from './component/main/HeaderJJ';
 import AdminUserDB from './component/admin/AdminUserDB';
