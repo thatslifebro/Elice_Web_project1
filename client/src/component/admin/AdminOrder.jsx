@@ -1,131 +1,114 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Modal } from 'react-bootstrap';
 
 import axios from 'axios';
 
 function AdminOrder() {
   const [ordersList, setOrdersList] = useState([]);
+  const [ordersUser, setOrdersUser] = useState([]);
+  const [ordersProduct, setOrdersProduct] = useState([]);
+
   useEffect(() => {
-    // axios
-    //   .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/orders/`)
-    //   .then((res) => {
-    //     setOrdersList(res.data);
-    //   })
-    //   .then(console.log('ordersList', ordersList))
-    //   .then(() => {
-    //     axios
-    //       .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/orders/${id}`)
-    //       .then((res) => {
-    //         setCategories(res.data);
-    //       });
-    //   })
-    //   .catch((err) => {
-    //     console.log('err', err);
-    //   });
+    axios
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/orders/`)
+      .then((res) => {
+        setOrdersList(res.data);
+      })
+
+      .then(() => {
+        axios
+          .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/users/`)
+          .then((res) => {
+            setOrdersUser(res.data);
+          });
+      })
+      .then(() => {
+        axios
+          .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/products/`)
+          .then((res) => {
+            setOrdersProduct(res.data);
+          });
+      })
+      .catch((err) => {
+        console.log('err', err);
+      });
   }, []);
+
+  const onRowClick = (e) => {
+    setLgShow(true);
+  };
+
+  const [lgShow, setLgShow] = useState(false);
+  const handleClose = () => setLgShow(false);
+
+  const objOrder = {
+    header: [
+      '#',
+      '주문번호',
+      '회원아이디',
+      '주문상품',
+      '총주문가격',
+      '주문상태',
+      '주문날짜',
+    ],
+  };
+
   return (
     <Container fluid>
       <Row>
         <Col className="mb-2 ms-3 mr-5">
           <h1>관리자모드 주문 내역 (준비중)</h1>
+
           <Table striped bordered hover>
             <thead className="table-success">
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">주문번호</th>
-                <th scope="col">회원아이디</th>
-                <th scope="col">총주문가격</th>
-                <th scope="col">주문상품</th>
-                <th scope="col">주문상태</th>
-                <th scope="col">주문날짜</th>
+                {objOrder.header.map((item) => {
+                  return <th>{item}</th>;
+                })}
               </tr>
             </thead>
             <tbody>
-              {/* {ordersList.map((order) => {
+              {ordersList.map((order) => {
                 return (
-                  <tr key={order._id} value={order._id}>
+                  <tr key={order._id} value={order._id} onClick={onRowClick}>
                     <td>#</td>
                     <td>{order._id}</td>
                     <td>{order.userId}</td>
-                    <td>{order.items.price}</td>
-                    <td>{order.items.productId}</td>
-                    <td>{order.items.quantity}</td>
+                    <td>{order.items[0].productId}</td>
+                    {/* <td>{order.items[1].quantity}</td> */}
+                    <td>{order.items[0].price}</td>
                     <td>{order.status}</td>
-                    <td>{order.updatedAt}</td>
+                    <td>{order.createdAt}</td>
                   </tr>
-                ); */}
-              {/* })} */}
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Thornton</td>
-                <td>
-                  <Button variant="success" size="sm">
-                    발송
-                  </Button>
-                  <Button variant="secondary" size="sm">
-                    취소
-                  </Button>
-                </td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Thornton</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@fat</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@fat</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>{' '}
-              <tr>
-                <td>5</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@fat</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
+                );
+              })}
               <tr>
                 <td>#</td>
-                <td colSpan={2}>Larry the Bird</td>
-                <td>@twitter</td>
-                <td colSpan={4}>Larry the Bird</td>
+                <td colSpan={3}></td>
+                <td>\</td>
+                <td></td>
+                <td colSpan={2}></td>
               </tr>
             </tbody>
           </Table>
         </Col>
       </Row>
+      <Modal
+        size="lg"
+        show={lgShow}
+        onHide={() => setLgShow(false)}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">주문상세</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>... 상세내역 ... </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }

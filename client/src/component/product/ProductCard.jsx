@@ -18,7 +18,7 @@ function ProductCard({ product }) {
                 <Card.Img
                   variant="top"
                   src="https://picsum.photos/600/600/?random"
-                  alt="랜덤사진"
+                  alt="상품사진"
                 />
               </Card.Link>
               <Card.Title>{product?.title}</Card.Title>
@@ -26,6 +26,9 @@ function ProductCard({ product }) {
                 {product?.shortDescription}
               </Card.Subtitle>
               <Card.Text>{product?.price}</Card.Text>
+              <Card.Text>imageKey: {product?.imageKey}</Card.Text>
+              <Card.Text>categoryId: {product?.categoryId}</Card.Text>
+              <Card.Text>productId: {product?._id}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
