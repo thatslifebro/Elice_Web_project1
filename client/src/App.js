@@ -23,6 +23,7 @@ import Main from './component/main/Main';
 import NavBar from './component/main/NavBar';
 import Footer from './component/main/Footer';
 import HeaderJJ from './component/main/HeaderJJ';
+import AdminUserDB from './component/admin/AdminUserDB';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/admin/product" element={<AdminProductUD />}>
           관리자 product update delete 화면
         </Route>
+        <Route path="/admin/users" element={<AdminUserDB />} />
         <Route path="/userdata" element={<UserData />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/user-withdrawal" element={<UserWithdrawal />} />
