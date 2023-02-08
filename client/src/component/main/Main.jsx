@@ -1,40 +1,36 @@
 import React from 'react';
-import { Carousel, Figure, Image } from 'react-bootstrap';
-import './Main.css';
+import { Figure, Image } from 'react-bootstrap';
+import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 
+import './Main.css';
 function Main() {
   return (
-    <div>
-      <Carousel>
-        <Carousel.Item>
-          <Image
-            style={{
-              height: 550,
-              width: '100%',
-              marginTop: 10,
-              marginBottom: 50,
-            }}
-            className="product1"
-            src="https://picsum.photos/600/600/?random"
-            alt="First Slide"
-          />
-        </Carousel.Item>
+    <>
+      <MDBCarousel showIndicators showControls fade>
+        <MDBCarouselItem
+          className="w-100 d-block"
+          height={500}
+          itemId={1}
+          src="https://image.newdaily.co.kr/site/data/img/2020/09/21/2020092100085_0.jpg"
+          alt="..."
+        ></MDBCarouselItem>
 
-        <Carousel.Item>
-          <Image
-            style={{
-              height: 550,
-              width: '100%',
-              marginTop: 10,
-              marginBottom: 50,
-            }}
-            className="product2"
-            src="https://picsum.photos/600/600/?random"
-            alt="Second slide"
-          />
-        </Carousel.Item>
-      </Carousel>
+        <MDBCarouselItem
+          className="w-100 d-block"
+          height={500}
+          itemId={2}
+          src="https://www.hipp.co.kr/fileadmin/_processed_/6/0/csm_fruit_cultivation_raspberries_ffe5a5a1f4.jpg"
+          alt="..."
+        ></MDBCarouselItem>
 
+        <MDBCarouselItem
+          className="w-100 d-block"
+          height={500}
+          itemId={3}
+          src="https://image.newdaily.co.kr/site/data/img/2020/09/21/2020092100085_0.jpg"
+          alt="..."
+        ></MDBCarouselItem>
+      </MDBCarousel>
       <Figure>
         <Figure.Caption>
           <h1 className="rec">추천상품</h1>
@@ -70,7 +66,7 @@ function Main() {
           src="https://picsum.photos/600/600/?random"
         />
       </Figure>
-    </div>
+    </>
   );
 }
 
