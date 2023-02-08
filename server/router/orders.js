@@ -72,12 +72,11 @@ router.post(
   verifyToken,
   asyncHandler(async (req, res) => {
     const { userId, role } = req.decoded;
-    const { items, address, status } = req.body;
+    const { items, address } = req.body;
     const createdOrder = await OrdersService.addOrderById({
       userId,
       items,
       address,
-      status,
     });
     return res.status(201).json(createdOrder);
   }),

@@ -11,6 +11,8 @@ import {
   FloatingLabel,
   Modal,
 } from 'react-bootstrap';
+import instance from '../../util/axios-setting';
+import { useNavigate } from 'react-router-dom';
 
 function AddProduct() {
   //하단 버튼
@@ -30,6 +32,8 @@ function AddProduct() {
   const [detailDescription, setDetailDescription] = useState('');
   const [inventory, setInventory] = useState('');
   const [file, setFile] = useState('');
+
+  const navigate = useNavigate();
 
   const handleCategory = (event) => {
     event.preventDefault();
@@ -64,7 +68,16 @@ function AddProduct() {
     }
   };
   const onClickEvent = (e) => {
-    if (!file) {
+    e.preventDefault();
+    if (
+      !file ||
+      !categoryId ||
+      !title ||
+      !price ||
+      !shortDescription ||
+      !detailDescription ||
+      !inventory
+    ) {
       return;
     }
     const formdata = new FormData();
@@ -75,24 +88,21 @@ function AddProduct() {
     formdata.append('shortDescription', shortDescription);
     formdata.append('detailDescription', detailDescription);
     formdata.append('inventory', inventory);
-    console.log(formdata);
-    axios
-      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`, formdata, {
+    instance
+      .post(`/api/products`, formdata, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
       .then((res) => {
-        console.log(res.data);
+        window.location.reload();
       });
   };
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
-      .then((res) => {
-        setCategories(res.data);
-      });
+    instance.get(`/api/categories`).then((res) => {
+      setCategories(res.data);
+    });
   }, []);
 
   return (
@@ -218,8 +228,10 @@ function AddProduct() {
           </Modal.Header>
           <Modal.Body>바로 제품을 등록하시겠습니까?</Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" type="submit" onClick={onClickEvent}>
-              {/* <Nav.Link href="/admin/product">등록하기</Nav.Link> */}
+            <Button variant="primary" type="submit">
+              <Nav.Link onClick={onClickEvent} href="/admin/product">
+                등록하기
+              </Nav.Link>
             </Button>
             <Button variant="secondary" onClick={handleClose}>
               취소하기

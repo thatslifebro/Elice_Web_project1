@@ -10,6 +10,7 @@ import {
   FloatingLabel,
 } from 'react-bootstrap';
 import { useEffect } from 'react';
+import instance from '../../util/axios-setting';
 
 function AdminProductUD() {
   const ProductTable = ({ product }) => {
@@ -28,7 +29,7 @@ function AdminProductUD() {
     const [currentImgSrc, setCurrentImgSrc] = useState('');
     const [file, setFile] = useState('');
     useEffect(() => {
-      axios
+      instance
         .get(
           `${process.env.REACT_APP_SERVER_ADDRESS}/api/products/img/${product.imageKey}`,
           {
@@ -39,31 +40,42 @@ function AdminProductUD() {
           },
         )
         .then((res) => {
-          const file = new File([res.data], product.imageKey);
+          const getfile = new File([res.data], product.imageKey);
           const reader = new FileReader();
           reader.onload = (event) => {
             const previewImage = String(event.target?.result);
             setCurrentImgSrc(previewImage);
           };
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(getfile);
         });
     }, []);
 
     const updateHandler = (e) => {
       e.preventDefault();
-      if (!file) {
-        return;
-      }
+
       const formdata = new FormData();
-      formdata.append('imageKey', file);
-      formdata.append('categoryId', categoryId);
-      formdata.append('title', title);
-      formdata.append('price', price);
-      formdata.append('shortDescription', shortDescription);
-      formdata.append('detailDescription', detailDescription);
-      formdata.append('inventory', inventory);
-      console.log(formdata);
-      axios
+      if (file) {
+        formdata.append('imageKey', file);
+      }
+      if (categoryId !== product.categorId) {
+        formdata.append('categoryId', categoryId);
+      }
+      if (title !== product.title) {
+        formdata.append('title', title);
+      }
+      if (price !== product.price) {
+        formdata.append('price', price);
+      }
+      if (shortDescription !== product.shortDescription) {
+        formdata.append('shortDescription', shortDescription);
+      }
+      if (detailDescription !== product.detailDescription) {
+        formdata.append('detailDescription', detailDescription);
+      }
+      if (inventory !== product.inventory) {
+        formdata.append('inventory', inventory);
+      }
+      instance
         .put(
           `${process.env.REACT_APP_SERVER_ADDRESS}/api/products/${product._id}`,
           formdata,
@@ -74,7 +86,7 @@ function AdminProductUD() {
           },
         )
         .then(() => {
-          axios
+          instance
             .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
             .then((res) => {
               setProducts(res.data);
@@ -83,12 +95,12 @@ function AdminProductUD() {
     };
     const deleteHandler = (e) => {
       e.preventDefault();
-      axios
+      instance
         .delete(
           `${process.env.REACT_APP_SERVER_ADDRESS}/api/products/${product._id}`,
         )
         .then((res) => {
-          axios
+          instance
             .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
             .then((res) => {
               setProducts(res.data);
@@ -105,20 +117,21 @@ function AdminProductUD() {
             type="file"
             onChange={(e) => {
               e.preventDefault();
-              const file = e.target.files[0];
+              const upfile = e.target.files[0];
               const reader = new FileReader();
-              reader.readAsDataURL(file);
+              reader.readAsDataURL(upfile);
               reader.onloadend = () => {
                 setImgSrc(reader.result);
                 console.log('changed');
               };
-              setFile(file);
+              setFile(upfile);
             }}
           />
           <button
             onClick={(e) => {
               e.preventDefault();
               setImgSrc('');
+              setFile('');
             }}
             type="submit"
           >
@@ -219,13 +232,13 @@ function AdminProductUD() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    axios
+    instance
       .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`)
       .then((res) => {
         setProducts(res.data);
       })
       .then(() => {
-        axios
+        instance
           .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
           .then((res) => {
             setCategories(res.data);

@@ -1,5 +1,5 @@
 import './App.css';
-import axios from 'axios';
+
 import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginForm from './component/users/LoginForm';
@@ -25,10 +25,6 @@ import Footer from './component/main/Footer';
 import HeaderJJ from './component/main/HeaderJJ';
 
 function App() {
-  const instance = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_ADDRESS,
-  });
-
   return (
     <Router>
       <HeaderJJ></HeaderJJ>

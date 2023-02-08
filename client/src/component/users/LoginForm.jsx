@@ -4,6 +4,7 @@ import { Button, Form, Row, Col, Container, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import { verifyTokken } from '../../util/verify';
 import NavBar from '../main/NavBar';
+import instance from '../../util/axios-setting';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -13,11 +14,10 @@ function LoginForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = { email, password };
-    axios
-      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/login`, userData)
+    instance
+      .post(`/api/auth/login`, userData)
       .then((res) => {
         localStorage.setItem('jwt', res.data);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${res.data}`;
       })
       .then(verifyTokken)
       .then((role) => {

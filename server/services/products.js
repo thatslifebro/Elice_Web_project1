@@ -75,14 +75,13 @@ export default class ProductsService {
       const updatedProduct = await Product.findByIdAndUpdate(
         id,
         {
-          id,
-          title,
-          categoryId,
-          shortDescription,
-          detailDescription,
-          imageKey,
-          inventory,
-          price,
+          ...(title && { title }),
+          ...(categoryId && { categoryId }),
+          ...(shortDescription && { shortDescription }),
+          ...(detailDescription && { detailDescription }),
+          ...(imageKey && { imageKey }),
+          ...(inventory && { inventory }),
+          ...(price && { price }),
         },
         {
           new: true,

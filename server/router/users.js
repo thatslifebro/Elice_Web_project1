@@ -17,6 +17,16 @@ router.get(
   }),
 );
 
+router.get(
+  '/me',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { userId } = req.decoded;
+    const user = await usersService.getUserMe(userId);
+    return res.status(200).json(user);
+  }),
+);
+
 //특정 유저 정보
 router.get(
   '/:id',

@@ -56,19 +56,14 @@ function AdminCategoryForm() {
     const [newTitle, setNewTitle] = useState('');
     const updateCategory = (e) => {
       e.preventDefault();
-      axios
-        .put(
-          `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/${category._id}`,
-          {
-            title: e.target.title,
-          },
-        )
+      instance
+        .put(`/api/categories/${category._id}`, {
+          title: e.target.title,
+        })
         .then((res) => {
-          axios
-            .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
-            .then((res) => {
-              setCategories(res.data);
-            });
+          instance.get(`/api/categories`).then((res) => {
+            setCategories(res.data);
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -77,16 +72,12 @@ function AdminCategoryForm() {
 
     const deleteCategory = (e) => {
       e.preventDefault();
-      axios
-        .delete(
-          `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/${category._id}`,
-        )
+      instance
+        .delete(`/api/categories/${category._id}`)
         .then((res) => {
-          axios
-            .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
-            .then((res) => {
-              setCategories(res.data);
-            });
+          instance.get(`/api/categories`).then((res) => {
+            setCategories(res.data);
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -126,8 +117,8 @@ function AdminCategoryForm() {
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
+    instance
+      .get(`/api/categories`)
       .then((res) => {
         setCategories(res.data);
       })

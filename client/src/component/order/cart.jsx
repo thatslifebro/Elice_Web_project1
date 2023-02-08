@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-const Cart = () => {
+const Cart = ({ order }) => {
   const ProductList = ({ product }) => {
     return (
       <tr>
@@ -107,14 +107,18 @@ const Cart = () => {
             </div>
           </div>
         </div>
-        <a href="/order" className="d-grid gap-2 col-9 mx-auto">
-          <button
-            className="btn btn-dark rounded-pill py-2 d-md-block"
-            type="button"
-          >
-            구매 하러가기
-          </button>
-        </a>
+        {order ? (
+          ''
+        ) : (
+          <a href="/order" className="d-grid gap-2 col-9 mx-auto">
+            <button
+              className="btn btn-dark rounded-pill py-2 d-md-block"
+              type="button"
+            >
+              구매 하러가기
+            </button>
+          </a>
+        )}
       </section>
     </div>
   );

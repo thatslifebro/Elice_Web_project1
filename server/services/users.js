@@ -14,6 +14,13 @@ export default class usersService {
     }
   }
 
+  static async getUserMe(userId) {
+    const user = await User.findById(userId).select(
+      '_id email address fullName role',
+    );
+    return user;
+  }
+
   static async getUserById({ id, userId, role }) {
     if (id === userId || role === 'ADMIN') {
       const user = await User.findById(id).select(

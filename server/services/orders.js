@@ -32,9 +32,9 @@ export default class OrdersService {
       const updateOrder = await Order.findByIdAndUpdate(
         id,
         {
-          items,
-          address,
-          status,
+          ...(items && { items }),
+          ...(address && { address }),
+          ...(status && { status }),
         },
         { new: true },
       );
@@ -76,8 +76,13 @@ export default class OrdersService {
   }
 
   //주문등록
-  static async addOrderById({ userId, items, address, status }) {
-    const addOrder = await Order.create({ userId, items, address, status });
+  static async addOrderById({ userId, items, address }) {
+    const addOrder = await Order.create({
+      userId,
+      items,
+      address,
+      status: '상품 준비 중',
+    });
     return addOrder;
   }
 }

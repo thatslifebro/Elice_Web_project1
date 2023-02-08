@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Container, Nav, Navbar, Button, NavDropdown } from 'react-bootstrap';
 import { verifyTokken } from '../../util/verify';
 import { Link } from 'react-router-dom';
+import instance from '../../util/axios-setting';
 const Header = () => {
   const [auth, setAuth] = useState('NOTUSER');
   useEffect(() => {
@@ -12,6 +13,7 @@ const Header = () => {
     e.preventDefault();
     localStorage.removeItem('jwt');
     setAuth('NOTUSER');
+    instance.defaults.headers.common['Authorization'] = null;
   };
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
