@@ -4,6 +4,9 @@ import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 import { NavLink } from 'react-router-dom';
 import MultipleItems from './multipleItems';
 
+import main1 from './mainImage/main1.jpg';
+import main2 from './mainImage/main2.jpg';
+
 import './Main.css';
 function Main() {
   return (
@@ -13,7 +16,7 @@ function Main() {
           className="w-100 d-block mb-5"
           height={500}
           itemId={1}
-          src="./main/mainImage/main1.jpg"
+          src={main1}
           alt="..."
         ></MDBCarouselItem>
 
@@ -21,7 +24,7 @@ function Main() {
           className="w-100 d-block mb-5"
           height={500}
           itemId={2}
-          src="./mainImage/main2.jpg"
+          src={main2}
           alt="..."
         ></MDBCarouselItem>
 

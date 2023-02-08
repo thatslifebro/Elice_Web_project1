@@ -16,7 +16,7 @@ import OrdersList from './component/order/OrdersList';
 import AdminMain from './component/admin/AdminMain';
 import OrderById from './component/order/OrderComplete';
 import Order from './component/order/Order';
-import Cart from './component/order/cart';
+import Cart from './component/order/Cart';
 import Main from './component/main/Main';
 import Footer from './component/main/Footer';
 import HeaderJJ from './component/main/HeaderJJ';

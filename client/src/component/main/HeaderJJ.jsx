@@ -90,10 +90,14 @@ const Header = () => {
                 <i className="bi-cart-fill me-1"></i>
                 Logout
               </Button>
-              <Link className="btn btn-outline-dark" to={'/admin'}>
-                <i className="bi-cart-fill me-1"></i>
-                Admin
-              </Link>
+              {auth === 'ADMIN' ? (
+                <Link className="btn btn-outline-dark" to={'/admin'}>
+                  <i className="bi-cart-fill me-1"></i>
+                  Admin
+                </Link>
+              ) : (
+                ''
+              )}
             </>
           ) : (
             <Link className="btn btn-outline-dark" to={'/login'}>

@@ -19,7 +19,6 @@ function LoginForm() {
       .then((res) => {
         localStorage.setItem('jwt', res.data);
       })
-      .then(verifyTokken)
       .then((role) => {
         setAuth(role);
         navigate('/main');

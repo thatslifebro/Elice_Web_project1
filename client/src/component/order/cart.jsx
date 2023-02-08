@@ -21,7 +21,6 @@ const Cart = ({ order }) => {
             const reader = new FileReader();
             reader.onload = (event) => {
               const previewImage = String(event.target?.result);
-
               setImgSrc(previewImage);
             };
             reader.readAsDataURL(getfile);
@@ -67,6 +66,7 @@ const Cart = ({ order }) => {
   };
 
   const [products, setProducts] = useState([{}]);
+
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
     setTotalPrice(0);
