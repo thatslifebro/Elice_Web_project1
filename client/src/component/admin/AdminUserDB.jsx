@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import instance from '../../util/axios-setting';
 
 function AdminUserDB() {
   const token = localStorage.getItem('jwt');
-  axios
-    .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/users`, {
+  instance
+    .get(`/api/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

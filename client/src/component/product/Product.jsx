@@ -10,6 +10,7 @@ import {
   Stack,
 } from 'react-bootstrap';
 import axios from 'axios';
+import instance from '../../util/axios-setting';
 
 function Product() {
   const [product, setProduct] = useState([]);
@@ -17,8 +18,8 @@ function Product() {
   const { id } = useParams();
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products/${id}`)
+    instance
+      .get(`/api/products/${id}`)
       .then((res) => {
         setProduct(res.data);
       })

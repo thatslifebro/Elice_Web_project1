@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Row, Col, Container } from 'react-bootstrap';
 import axios from 'axios';
+import instance from '../../util/axios-setting';
 
 function ChangePassword() {
   const [password, setPassword] = useState('');
@@ -19,8 +20,8 @@ function ChangePassword() {
     e.preventDefault();
     console.log('check');
     if (validatePassword()) {
-      axios
-        .post(`http://localhost:3000/api/`, password)
+      instance
+        .post(`/api`, password)
         .then((res) => console.log(res.data))
         .catch(() => console.log('error'));
     }

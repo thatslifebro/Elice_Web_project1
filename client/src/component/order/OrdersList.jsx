@@ -3,6 +3,7 @@ import { Container, Row, Col, Table } from 'react-bootstrap';
 import { useLocation, useParams } from 'react-router-dom';
 
 import axios from 'axios';
+import instance from '../../util/axios-setting';
 
 // - 주문 조회 - 사용자는 개인 페이지에서 자신의 주문 내역을 조회할 수 있다.
 // - 주문 조회 - 관리자는 관리 페이지에서 사용자들의 주문 내역을 조회할 수 있다.
@@ -23,15 +24,15 @@ function OrdersList() {
   useEffect(() => {
     // console.log('location', location);
     // console.log('params', params);
-    axios
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/orders/`)
+    instance
+      .get(`/api/orders/`)
       .then((res) => {
         setOrdersList(res.data);
       })
       .then(console.log(ordersList))
       // .then(() => {
-      //   axios
-      //     .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/orders/${id}`)
+      //   instance
+      //     .get(`/api/orders/${id}`)
       //     .then((res) => {
       //       setCategories(res.data);
       //     });

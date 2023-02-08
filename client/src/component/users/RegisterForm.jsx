@@ -9,6 +9,7 @@ import {
   InputGroup,
 } from 'react-bootstrap';
 import axios from 'axios';
+import instance from '../../util/axios-setting';
 
 function RegisterForm() {
   const [email, setEmail] = useState('');
@@ -69,11 +70,8 @@ function RegisterForm() {
     };
     const inputStatus = validateForm();
     if (inputStatus) {
-      axios
-        .post(
-          `${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/register`,
-          userData,
-        )
+      instance
+        .post(`/api/auth/register`, userData)
         .then((res) => {
           console.log(res.data);
         })

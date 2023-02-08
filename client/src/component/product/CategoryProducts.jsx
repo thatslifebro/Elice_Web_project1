@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Form, Col } from 'react-bootstrap';
 import axios from 'axios';
 import ProductCard from './ProductCard';
+import instance from '../../util/axios-setting';
 
 function CategoryProducts() {
   const [categories, setCategories] = useState([]);
@@ -10,8 +11,8 @@ function CategoryProducts() {
 
   const a = async () => {
     const [cres, pres] = await Promise.all([
-      axios.get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`),
-      axios.get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/products`),
+      instance.get(`/api/categories`),
+      instance.get(`/api/products`),
     ]);
     setCategories(cres.data);
     setProducts(pres.data);
@@ -26,10 +27,8 @@ function CategoryProducts() {
   const selectCategoryHandler = (event) => {
     event.preventDefault();
     setCategoryId(event.target.value);
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/?categoryId=${event.target.value}`,
-      )
+    instance
+      .get(`/api/categories/?categoryId=${event.target.value}`)
       .then((res) => {
         setProducts(res.data);
         console.log(res.data);

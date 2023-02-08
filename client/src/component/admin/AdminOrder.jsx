@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Container, Row, Col, Table, Button, Modal } from 'react-bootstrap';
 
 import axios from 'axios';
+import instance from '../../util/axios-setting';
 
 function AdminOrder() {
   const [ordersList, setOrdersList] = useState([]);
@@ -9,25 +10,21 @@ function AdminOrder() {
   const [ordersProduct, setOrdersProduct] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/orders/`)
+    instance
+      .get(`/api/orders/`)
       .then((res) => {
         setOrdersList(res.data);
       })
 
       .then(() => {
-        axios
-          .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/users/`)
-          .then((res) => {
-            setOrdersUser(res.data);
-          });
+        instance.get(`/api/users/`).then((res) => {
+          setOrdersUser(res.data);
+        });
       })
       .then(() => {
-        axios
-          .get(`process.env.REACT_APP_SERVER_ADDRESS}/api/products/`)
-          .then((res) => {
-            setOrdersProduct(res.data);
-          });
+        instance.get(`/api/products/`).then((res) => {
+          setOrdersProduct(res.data);
+        });
       })
       .catch((err) => {
         console.log('err', err);

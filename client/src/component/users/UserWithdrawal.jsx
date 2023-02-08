@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Row, Col, Container } from 'react-bootstrap';
 import axios from 'axios';
+import instance from '../../util/axios-setting';
 
 function UserWithdrawal() {
   const [isChecked, setIsChecked] = useState(false);
@@ -13,8 +14,8 @@ function UserWithdrawal() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('check');
-    axios
-      .delete(`http://localhost:3000/api/auth/withdrawal`, password)
+    instance
+      .delete(`/api/auth/withdrawal`, password)
       .then((res) => console.log(res.data))
       .catch(() => console.log('error'));
   };
