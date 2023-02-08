@@ -1,8 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Container, Nav, Navbar, Button, NavDropdown } from 'react-bootstrap';
+import axios from 'axios';
 import { verifyTokken } from '../../util/verify';
 import { Link } from 'react-router-dom';
+
 const Header = () => {
   const [auth, setAuth] = useState('NOTUSER');
   useEffect(() => {
@@ -12,6 +14,17 @@ const Header = () => {
     e.preventDefault();
     localStorage.removeItem('jwt');
     setAuth('NOTUSER');
+  };
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/categories`)
+      .then((res) => {
+        setCategories(res.data);
+      });
+  }, []);
+  const onClickCategoryHandler = (e) => {
+    e.preventDefault();
   };
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -38,28 +51,39 @@ const Header = () => {
                 Home
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link active" to={'/product'}>
+                Product
+              </Link>
+            </li>
             <NavDropdown title="Category" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/fruit">과일</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="/vegatable">야채</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="/fast">냉동식품</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="/diet">다이어트</NavDropdown.Item>
+              {categories.map((data) => {
+                return (
+                  <NavDropdown.Item
+                    key={data._id}
+                    value={data._id}
+                    href={`/product/:${data._id}`}
+                  >
+                    {data.title}
+                  </NavDropdown.Item>
+                );
+              })}
             </NavDropdown>
           </ul>
 
           {auth !== 'NOTUSER' ? (
-            <Button className="btn btn-outline-dark" onClick={handleLogout}>
-              로그아웃
-            </Button>
+            <Link className="btn btn-outline-dark" onClick={handleLogout}>
+              <i className="bi-cart-fill me-1"></i>
+              Logout
+            </Link>
           ) : (
-            <Button className="btn btn-outline-dark">
-              <Nav.Link href="/login">로그인</Nav.Link>
-            </Button>
+            <Link className="btn btn-outline-dark" to={'/login'}>
+              <i className="bi-cart-fill me-1"></i>
+              Login
+            </Link>
           )}
-          <Link className="btn btn-outline-dark" to={'/cart'}>
-            <i className="bi-cart-fill me-1"></i>
+          <Link className="btn btn-outline-dark ms-lg-1" to={'/cart'}>
+            <i className="bi-cart-fill me-1 "></i>
             Cart
             <span className="badge bg-dark text-white ms-1 rounded-pill">
               0
