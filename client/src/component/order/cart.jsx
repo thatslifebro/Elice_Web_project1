@@ -196,6 +196,7 @@ const Cart = ({ order }) => {
                       >
                         {totalPrice}원
                       </th>
+                      <Button>전체 삭제</Button>
                     </tr>
                   </tbody>
                 </table>
