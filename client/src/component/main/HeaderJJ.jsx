@@ -30,7 +30,6 @@ const Header = () => {
     <>
       {auth !== 'ADMIN' ? (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          )
           <div className="container px-4 px-lg-1">
             <Navbar bg="white">
               <Container>
