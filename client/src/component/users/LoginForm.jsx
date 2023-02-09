@@ -11,6 +11,8 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [auth, setAuth] = useState('NOTUSER');
   const navigate = useNavigate();
+  const [correct, setCorrect] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = { email, password };
@@ -27,6 +29,7 @@ function LoginForm() {
       })
       .catch((err) => console.log(err));
   };
+
   useEffect(() => {
     verifyTokken().then(setAuth);
   }, []);
@@ -46,8 +49,24 @@ function LoginForm() {
                     type="id"
                     placeholder="UserID"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      const emailForm =
+                        /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z0-9\.\-]+/;
+                      if (emailForm.test(e.target.value) === false) {
+                        setCorrect(false);
+                      } else {
+                        setCorrect(true);
+                      }
+                    }}
                   />
+                  {correct ? (
+                    <div style={{ color: 'red' }}>
+                      이메일이 형식에 맞지 않습니다.
+                    </div>
+                  ) : (
+                    ''
+                  )}
                 </Col>
               </Form.Group>
 

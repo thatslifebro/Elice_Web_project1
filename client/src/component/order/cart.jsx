@@ -126,7 +126,10 @@ const Cart = ({ order }) => {
   };
 
   const deleteAll = (e) => {
-    return;
+    localStorage.removeItem('items');
+    setProducts([]);
+    setEmpty(true);
+    setTotalPrice(0);
   };
 
   const [products, setProducts] = useState([{}]);
@@ -136,7 +139,9 @@ const Cart = ({ order }) => {
   useEffect(() => {
     setTotalPrice(0);
     const array = JSON.parse(localStorage.getItem('items'));
-    if (array.length !== 0) {
+    if (array === null) {
+      setEmpty(true);
+    } else if (array.length !== 0) {
       setEmpty(false);
       setProducts(array);
       const total = array.reduce((price, product) => {

@@ -30,7 +30,6 @@ const Header = () => {
     <>
       {auth !== 'ADMIN' ? (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          )
           <div className="container px-4 px-lg-1">
             <Navbar bg="white">
               <Container>
@@ -81,7 +80,7 @@ const Header = () => {
                       <NavDropdown.Item
                         key={data._id}
                         value={data._id}
-                        href={`/product/:${data._id}`}
+                        href={`/product/?category=${data._id}`}
                       >
                         {data.title}
                       </NavDropdown.Item>
@@ -173,7 +172,7 @@ const Header = () => {
                       <NavDropdown.Item
                         key={data._id}
                         value={data._id}
-                        href={`/product/:${data._id}`}
+                        href={`/product/?category=${data._id}}`}
                       >
                         {data.title}
                       </NavDropdown.Item>
