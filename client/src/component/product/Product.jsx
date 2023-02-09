@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
   Row,
@@ -21,11 +21,13 @@ function Product() {
   const [shortDescription, setShortDescription] = useState('');
   const [detailDescription, setDetailDescription] = useState('');
   const [inventory, setInventory] = useState('');
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [imageKey, setImageKey] = useState('');
   const { id } = useParams();
 
   const [imgSrc, setImgSrc] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     instance
@@ -146,20 +148,89 @@ function Product() {
             >
               장바구니 추가
             </Button>
-            <Button variant="dark">바로 구매</Button>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+
+                const items = JSON.parse(localStorage.getItem('items'));
+
+                if (items) {
+                  const check = items.find(
+                    (item) => item.productId === productId,
+                  );
+
+                  if (check !== undefined) {
+                    const newItems = items.map((item) => {
+                      if (item.productId === productId) {
+                        item.quantity = quantity;
+                      }
+                      return item;
+                    });
+                    localStorage.setItem('items', JSON.stringify(newItems));
+                    navigate('/order');
+                    return;
+                  }
+                  localStorage.setItem(
+                    'items',
+                    JSON.stringify([
+                      ...items,
+                      {
+                        productId,
+                        quantity,
+                        price,
+                        title,
+                      },
+                    ]),
+                  );
+                }
+                if (!items) {
+                  localStorage.setItem(
+                    'items',
+                    JSON.stringify([
+                      {
+                        productId,
+                        quantity,
+                        price,
+                        title,
+                      },
+                    ]),
+                  );
+                }
+                navigate('/order');
+              }}
+              variant="dark"
+            >
+              바로 구매
+            </Button>
             <br />
 
-            <input
-              value={quantity}
-              onChange={(e) => {
-                e.preventDefault();
-                const a = e.target.value;
-                console.log(inventory);
-                if (a >= 0 && a <= inventory) {
-                  setQuantity(a);
-                }
+            <input value={quantity}></input>
+            <button
+              onClick={() => {
+                setQuantity((cur) => {
+                  const tmp = cur;
+                  if (tmp >= inventory) {
+                    return tmp;
+                  }
+                  return tmp + 1;
+                });
               }}
-            ></input>
+            >
+              +
+            </button>
+            <button
+              onClick={() => {
+                setQuantity((cur) => {
+                  const tmp = cur;
+                  if (tmp <= 1) {
+                    return tmp;
+                  }
+                  return tmp - 1;
+                });
+              }}
+            >
+              -
+            </button>
           </Col>
         </Row>
       </Stack>

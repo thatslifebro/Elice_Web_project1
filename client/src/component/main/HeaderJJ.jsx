@@ -81,7 +81,7 @@ const Header = () => {
                       <NavDropdown.Item
                         key={data._id}
                         value={data._id}
-                        href={`/product/:${data._id}`}
+                        href={`/product/?category=${data._id}`}
                       >
                         {data.title}
                       </NavDropdown.Item>
@@ -173,7 +173,7 @@ const Header = () => {
                       <NavDropdown.Item
                         key={data._id}
                         value={data._id}
-                        href={`/product/:${data._id}`}
+                        href={`/product/?category=${data._id}}`}
                       >
                         {data.title}
                       </NavDropdown.Item>

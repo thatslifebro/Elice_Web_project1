@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Form } from 'react-bootstrap';
 import ProductCard from './ProductCard';
 import instance from '../../util/axios-setting';
+import queryString from 'query-string';
 
 function CategoryProducts() {
+  let qs = queryString.parse(window.location.search);
+
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [categoryId, setCategoryId] = useState('');
@@ -14,7 +17,14 @@ function CategoryProducts() {
       instance.get(`/api/products`),
     ]);
     setCategories(cres.data);
-    setProducts(pres.data);
+    if (qs.category) {
+      const res = await instance.get(
+        `/api/categories/?categoryId=${qs.category}`,
+      );
+      setProducts(res.data);
+    } else {
+      setProducts(pres.data);
+    }
   };
 
   useEffect(() => {
@@ -23,7 +33,11 @@ function CategoryProducts() {
 
   const selectCategoryHandler = (event) => {
     event.preventDefault();
+
     setCategoryId(event.target.value);
+    if (event.target.value === '카테고리를 선택해주세요') {
+      return;
+    }
     instance
       .get(`/api/categories/?categoryId=${event.target.value}`)
       .then((res) => {
