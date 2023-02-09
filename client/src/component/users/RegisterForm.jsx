@@ -12,6 +12,7 @@ import axios from 'axios';
 import instance from '../../util/axios-setting';
 
 function RegisterForm() {
+  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
@@ -21,7 +22,7 @@ function RegisterForm() {
   const validateEmail = () => {
     const emailForm = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
     if (emailForm.test(email) == false) {
-      console.log('invalide Email Address');
+      setError('invalide Email Address');
       return false;
     }
     return true;
@@ -29,7 +30,7 @@ function RegisterForm() {
 
   const validateName = () => {
     if (name.length < 1) {
-      console.log('please input name');
+      setError('please input name');
       return false;
     }
     return true;
@@ -37,7 +38,7 @@ function RegisterForm() {
 
   const validateAddress = () => {
     if (address.length < 1) {
-      console.log('please input address');
+      setError('please input address');
       return false;
     }
     return true;
@@ -45,7 +46,7 @@ function RegisterForm() {
 
   const validatePassword = () => {
     if (password !== confirmPassword) {
-      console.log('password is not confirmed');
+      setError('password is not confirmed');
       return false;
     }
     return true;
@@ -74,10 +75,11 @@ function RegisterForm() {
         .post(`/api/auth/register`, userData)
         .then((res) => {
           console.log(res.data);
+          alert('Register Success!');
         })
         .catch(() => console.log('error'));
     } else {
-      alert('Invalid Form');
+      alert(error);
     }
   };
 

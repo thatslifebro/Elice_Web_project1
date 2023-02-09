@@ -41,9 +41,23 @@ function UserData() {
           </Form.Group>
 
           <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
-            <Col sm>
+            <Col sm xs={3}>
               <Form.Label>Address</Form.Label>
               <Form.Control type="address" placeholder={code} />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
+            <Col sm>
+              <Form.Label>Address</Form.Label>
+              <Form.Control type="address" placeholder={address1} />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
+            <Col sm>
+              <Form.Label>Address</Form.Label>
+              <Form.Control type="address" placeholder={address2} />
             </Col>
           </Form.Group>
           <br />
