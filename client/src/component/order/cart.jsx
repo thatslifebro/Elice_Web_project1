@@ -31,7 +31,13 @@ const Cart = ({ order }) => {
     return (
       <tr>
         <td scope="row" className="border-0">
-          <img style={{ width: '70px' }} src={imgSrc} alt="current" />
+          <img
+            style={{ width: '100px', height: '100px' }}
+            src={imgSrc}
+            alt="current"
+          />
+        </td>
+        <td className="border-0 align-middle">
           <strong>{product.title}</strong>
         </td>
         <td className="border-0 align-middle">
@@ -56,9 +62,9 @@ const Cart = ({ order }) => {
                 return newProducts;
               });
             }}
-            className="bi bi-trash"
+            variant="outline-light"
           >
-            삭제
+            <text>🗑️</text>
           </Button>
         </td>
       </tr>
@@ -94,6 +100,9 @@ const Cart = ({ order }) => {
                         <div className="p-2 px-3 text-uppercase">상품목록</div>
                       </th>
                       <th scope="col" className="border-0 bg-light">
+                        <div className="p-2 px-3 text-uppercase">상품이름</div>
+                      </th>
+                      <th scope="col" className="border-0 bg-light">
                         <div className="py-2 text-uppercase">가격</div>
                       </th>
                       <th scope="col" className="border-0 bg-light">
@@ -116,12 +125,21 @@ const Cart = ({ order }) => {
                       })
                     ) : (
                       <tr>
-                        <th>'물품이 없습니다'</th>
+                        <th scope="col" className="border-1 bg-light">
+                          <div className="py-4 text-uppercase">
+                            장바구니가 비었습니다
+                          </div>
+                        </th>
                       </tr>
                     )}
                     <tr className="d-flex justify-content-between py-3 border-bottom">
-                      <th className="text-muted">총 가격</th>
-                      <th className="fw-bold">{totalPrice}원</th>
+                      <th className="text-muted border-0 bg-light">총 가격</th>
+                      <th
+                        style={{ color: 'red' }}
+                        className="fw-bold border-0 bg-light"
+                      >
+                        {totalPrice}원
+                      </th>
                     </tr>
                   </tbody>
                 </table>

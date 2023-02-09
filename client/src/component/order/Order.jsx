@@ -169,7 +169,15 @@ function Order() {
                                     />
                                   </PopupDom>
                                 )}
-                                <Button onClick={closePostCode}>닫기</Button>
+                                <Button
+                                  onClick={closePostCode}
+                                  className="mb-1"
+                                  variant="secondary"
+                                  size="sm"
+                                  type="button"
+                                >
+                                  닫기
+                                </Button>
                               </div>
                             </div>
                             <Row>
