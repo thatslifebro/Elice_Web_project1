@@ -9,7 +9,7 @@ function ChangePassword() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const validatePassword = () => {
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       console.log('password is not confirmed');
       return false;
     }
@@ -18,11 +18,21 @@ function ChangePassword() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('check');
     if (validatePassword()) {
       instance
-        .post(`/api`, { password: newPassword })
-        .then((res) => console.log(res.data))
+        .get(`api/users/me`)
+        .then((res) => {
+          const userID = res.data._id;
+          instance
+            .put(`/api/users/${userID}/password`, {
+              password: password,
+              newPassword: newPassword,
+            })
+            .then((res) => {
+              console.log(res.data);
+              alert('Update Success');
+            });
+        })
         .catch(() => console.log('error'));
     }
   };
