@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Form, Col } from 'react-bootstrap';
-import axios from 'axios';
+import { Container, Row, Form } from 'react-bootstrap';
 import ProductCard from './ProductCard';
 import instance from '../../util/axios-setting';
 
@@ -9,7 +8,7 @@ function CategoryProducts() {
   const [products, setProducts] = useState([]);
   const [categoryId, setCategoryId] = useState('');
 
-  const a = async () => {
+  const categoryProduct = async () => {
     const [cres, pres] = await Promise.all([
       instance.get(`/api/categories`),
       instance.get(`/api/products`),
@@ -19,11 +18,9 @@ function CategoryProducts() {
   };
 
   useEffect(() => {
-    a();
+    categoryProduct();
   }, []);
 
-  //
-  //const ProductCard = ({ product }) => {
   const selectCategoryHandler = (event) => {
     event.preventDefault();
     setCategoryId(event.target.value);
@@ -37,40 +34,76 @@ function CategoryProducts() {
         console.log(err);
       });
   };
-  // };
 
   return (
-    <Container>
-      <Row>
-        <Col className="mb-2 ms-3 mr-5 ">
-          <Form>
-            <Form.Label htmlFor="SelectCategory">상품카테고리</Form.Label>
+    <>
+      <div className="cart">
+        <h1 className="container px-4 px-lg-5 my-5"></h1>
+        <section className="py-1">
+          <div className="container px-4 px-lg-5 my-1">
+            <div className="row">
+              <div className="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+                <div className="table-responsive">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th scope="col" className="border-0 bg-light">
+                          <div className="p-2 px-3 text-uppercase">
+                            <Form>
+                              <Form.Label htmlFor="SelectCategory">
+                                상품카테고리
+                              </Form.Label>
 
-            <Form.Select
-              className="mb-4"
-              id="SelectCategory"
-              aria-label="Default select example"
-              onChange={selectCategoryHandler}
-              value={categoryId}
-            >
-              <option>카테고리를 선택해주세요</option>
-              {categories.map((category) => {
-                return (
-                  <option key={category._id} value={category._id}>
-                    {category.title}
-                  </option>
-                );
-              })}
-            </Form.Select>
-          </Form>
-        </Col>
-      </Row>
-      <Row md={3} className="align-top align-left">
-        {products.map((product) => {
-          return <ProductCard key={product._id} product={product} />;
-        })}
-      </Row>
-    </Container>
+                              <Form.Select
+                                className="mb-4"
+                                id="SelectCategory"
+                                aria-label="Default select example"
+                                onChange={selectCategoryHandler}
+                                value={categoryId}
+                                style={{ width: '18rem' }}
+                              >
+                                <option>카테고리를 선택해주세요</option>
+                                {categories.map((category) => {
+                                  return (
+                                    <option
+                                      key={category._id}
+                                      value={category._id}
+                                    >
+                                      {category.title}
+                                    </option>
+                                  );
+                                })}
+                              </Form.Select>
+                            </Form>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <Container>
+                        <Row
+                          xs={3}
+                          className="justify-content-md-center align-top align-left"
+                        >
+                          {products.map((product) => {
+                            return (
+                              <ProductCard
+                                key={product._id}
+                                product={product}
+                              />
+                            );
+                          })}
+                        </Row>
+                      </Container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
 
