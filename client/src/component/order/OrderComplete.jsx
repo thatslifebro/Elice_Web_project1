@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
   Row,
@@ -8,8 +8,10 @@ import {
   Button,
   Badge,
   BreadcrumbItem,
+  Form,
 } from 'react-bootstrap';
 import instance from '../../util/axios-setting';
+import { verifyTokken } from '../../util/verify';
 
 function OrderComplete() {
   const ProductList = ({ item }) => {
@@ -41,7 +43,7 @@ function OrderComplete() {
     return (
       <tr>
         <td scope="row" className="border-0">
-          <img style={{ width: '70px' }} src={imgSrc} alt="current" />
+          <img style={{ width: '70px' }} src={imgSrc} key={item.productId} />
           <strong>{title}</strong>
         </td>
         <td className="border-0 align-middle">
@@ -63,8 +65,20 @@ function OrderComplete() {
   const [items, setItems] = useState([]);
   const [email, setEmail] = useState();
   const [totalPrice, setTotalPrice] = useState();
+  const [status, setStatus] = useState();
+  const [role, setRole] = useState();
+  const navigate = useNavigate();
+
+  const deleteThisOrder = () => {
+    if (status === '상품 준비 중') {
+      instance.delete(`/api/orders/${id}`).then(() => {
+        navigate('/admin/orders');
+      });
+    }
+  };
 
   useEffect(() => {
+    verifyTokken().then(setRole);
     instance
       .get(`/api/orders/${id}`)
       .then((res) => {
@@ -79,6 +93,7 @@ function OrderComplete() {
         setReceiverName(res.data.address.receiverName);
         setReceiverPhoneNumber(res.data.address.receiverPhoneNumber);
         setItems(res.data.items);
+        setStatus(res.data.status);
         return res.data.userId;
       })
       .then((id) => {
@@ -175,6 +190,33 @@ function OrderComplete() {
                         </tbody>
                       </table>
                     </div>
+                    <div>
+                      주문 상태
+                      <Form.Select
+                        style={{ width: '500px' }}
+                        aria-label="Default select example"
+                        value={status}
+                        onChange={(e) => {
+                          setStatus(e.target.value);
+                          console.log(e.target.value);
+                        }}
+                      >
+                        <option value="상품 준비 중">상품 준비 중</option>
+                        <option value="배송 중">배송 중</option>
+                        <option value="배송 완료">배송 완료</option>
+                      </Form.Select>
+                    </div>
+                    {status === '상품 준비 중' || role === 'ADMIN' ? (
+                      <button
+                        className="btn btn-dark rounded-pill py-2 d-md-block"
+                        type="button"
+                        onClick={deleteThisOrder}
+                      >
+                        삭제
+                      </button>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>
                 <a href="/main" className="d-grid gap-2 col-9 mx-auto">

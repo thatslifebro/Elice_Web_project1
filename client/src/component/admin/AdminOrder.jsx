@@ -3,40 +3,112 @@ import { Container, Row, Col, Table, Button, Modal } from 'react-bootstrap';
 
 import axios from 'axios';
 import instance from '../../util/axios-setting';
+import { verifyTokken } from '../../util/verify';
+import { useNavigate } from 'react-router-dom';
 
 function AdminOrder() {
+  const OneItem = ({ item }) => {
+    const [quantity, setQuantity] = useState();
+    const [price, setPrice] = useState();
+    const [imgSrc, setImgSrc] = useState();
+    const [title, setTitle] = useState();
+
+    useEffect(() => {
+      setQuantity(item.quantity);
+      setPrice(item.price);
+      instance.get(`/api/products/${item.productId}`).then((res) => {
+        setTitle(res.data.title);
+        instance
+          .get(`/api/products/img/${res.data.imageKey}`, {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+            responseType: 'blob',
+          })
+          .then((res) => {
+            const getfile = new File([res.data], '');
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const previewImage = String(event.target?.result);
+              setImgSrc(previewImage);
+            };
+            reader.readAsDataURL(getfile);
+          });
+      });
+    }, []);
+    return (
+      <tr>
+        <td>
+          <img src={imgSrc} width="80px" />
+          <div>{title}</div>
+          <div>수량 : {quantity}</div>
+          <div>개당 가격 : {price}</div>
+        </td>
+      </tr>
+    );
+  };
+  const OneOrder = ({ order }) => {
+    const [orderId, setOrderId] = useState();
+    const [userId, setUserId] = useState();
+    const [totalPrice, setTotalPrice] = useState();
+    const [status, setStatus] = useState();
+    const [orderDate, setOrderDate] = useState();
+    useEffect(() => {
+      console.log(order);
+      setOrderId(order._id);
+      setUserId(order.userId);
+      setStatus(order.status);
+      setOrderDate(order.createdAt);
+      setTotalPrice(
+        order.items.reduce((total, item) => {
+          return total + item.price * item.quantity;
+        }, 0),
+      );
+    }, []);
+
+    const orderClick = (e) => {
+      navigate(`/order/${order._id}`);
+    };
+
+    return (
+      <tr onClick={orderClick}>
+        <td>#</td>
+        <td>{orderId}</td>
+        <td>{userId}</td>
+        <td>
+          {order.items.map((item) => {
+            return <OneItem item={item} />;
+          })}
+        </td>
+        <td>{totalPrice}</td>
+        <td>{status}</td>
+        <td>{orderDate}</td>
+      </tr>
+    );
+  };
+
   const [ordersList, setOrdersList] = useState([]);
-  const [ordersUser, setOrdersUser] = useState([]);
-  const [ordersProduct, setOrdersProduct] = useState([]);
+  const [noOrder, setNoOrder] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    verifyTokken().then((role) => {
+      if (role === 'NOTUSER') {
+        navigate('/main');
+      }
+    });
     instance
-      .get(`/api/orders/`)
+      .get(`/api/orders`)
       .then((res) => {
+        if (!res.data) {
+          setNoOrder(true);
+        }
         setOrdersList(res.data);
-      })
-
-      .then(() => {
-        instance.get(`/api/users/`).then((res) => {
-          setOrdersUser(res.data);
-        });
-      })
-      .then(() => {
-        instance.get(`/api/products/`).then((res) => {
-          setOrdersProduct(res.data);
-        });
       })
       .catch((err) => {
         console.log('err', err);
       });
   }, []);
-
-  const onRowClick = (e) => {
-    setLgShow(true);
-  };
-
-  const [lgShow, setLgShow] = useState(false);
-  const handleClose = () => setLgShow(false);
 
   const objOrder = {
     header: [
@@ -65,20 +137,11 @@ function AdminOrder() {
               </tr>
             </thead>
             <tbody>
-              {ordersList.map((order) => {
-                return (
-                  <tr key={order._id} value={order._id} onClick={onRowClick}>
-                    <td>#</td>
-                    <td>{order._id}</td>
-                    <td>{order.userId}</td>
-                    <td>{order.items[0].productId}</td>
-                    {/* <td>{order.items[1].quantity}</td> */}
-                    <td>{order.items[0].price}</td>
-                    <td>{order.status}</td>
-                    <td>{order.createdAt}</td>
-                  </tr>
-                );
-              })}
+              {noOrder
+                ? ''
+                : ordersList.map((order) => {
+                    return <OneOrder key={order._id} order={order} />;
+                  })}
               <tr>
                 <td>#</td>
                 <td colSpan={3}></td>
@@ -90,22 +153,6 @@ function AdminOrder() {
           </Table>
         </Col>
       </Row>
-      <Modal
-        size="lg"
-        show={lgShow}
-        onHide={() => setLgShow(false)}
-        aria-labelledby="example-modal-sizes-title-lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-lg">주문상세</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>... 상세내역 ... </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </Container>
   );
 }

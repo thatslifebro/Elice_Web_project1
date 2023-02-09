@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { resolvePath } from 'react-router-dom';
 
 export const verifyTokken = () => {
   const jwt = localStorage.getItem('jwt');
   if (!jwt) {
-    return new Promise(() => {
-      return 'NOTUSER';
+    return new Promise((resolve, reject) => {
+      resolve('NOTUSER');
     });
   }
   const tokken = 'Bearer ' + jwt;
