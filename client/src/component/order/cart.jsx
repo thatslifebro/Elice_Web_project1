@@ -6,8 +6,10 @@ import instance from '../../util/axios-setting';
 const Cart = ({ order }) => {
   const ProductList = ({ product }) => {
     const [imgSrc, setImgSrc] = useState('');
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
+      setCount(Number(product.quantity));
       instance.get(`/api/products/${product.productId}`).then((res) => {
         instance
           .get(`/api/products/img/${res.data.imageKey}`, {
@@ -44,7 +46,56 @@ const Cart = ({ order }) => {
           <strong>{product.price} 원</strong>
         </td>
         <td className="border-0 align-middle">
-          <strong>{product.quantity} 개</strong>
+          <strong>{count} 개</strong>
+          <button
+            onClick={() => {
+              setCount((now) => {
+                const tmp = now;
+                return Number(tmp) + 1;
+              });
+
+              const array = products.map((i) => {
+                if (i.productId === product.productId) {
+                  i.quantity = Number(product.quantity) + 1;
+                }
+                return i;
+              });
+              setProducts(array);
+              localStorage.setItem('items', JSON.stringify(array));
+
+              setTotalPrice((cur) => {
+                const tmp = cur;
+                return tmp + product.price;
+              });
+            }}
+          >
+            +
+          </button>
+          <button
+            onClick={() => {
+              if (count === 1) {
+                return;
+              }
+              setCount((now) => {
+                const tmp = now;
+                return Number(tmp) - 1;
+              });
+              const array = products.map((i) => {
+                if (i.productId === product.productId) {
+                  i.quantity = Number(product.quantity) - 1;
+                }
+                return i;
+              });
+              setProducts(array);
+              localStorage.setItem('items', JSON.stringify(array));
+              setTotalPrice((cur) => {
+                const tmp = cur;
+                return tmp - product.price;
+              });
+            }}
+          >
+            -
+          </button>
         </td>
         <td className="border-0 align-middle">
           <Button
@@ -59,6 +110,9 @@ const Cart = ({ order }) => {
                 }, 0);
                 setTotalPrice(total);
                 localStorage.setItem('items', JSON.stringify(newProducts));
+                if (newProducts.length === 0) {
+                  setEmpty(true);
+                }
                 return newProducts;
               });
             }}
@@ -72,12 +126,14 @@ const Cart = ({ order }) => {
   };
 
   const [products, setProducts] = useState([{}]);
+  const [empty, setEmpty] = useState(true);
 
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
     setTotalPrice(0);
     const array = JSON.parse(localStorage.getItem('items'));
-    if (array !== null) {
+    if (array.length !== 0) {
+      setEmpty(false);
       setProducts(array);
       const total = array.reduce((price, product) => {
         return price + product.price * product.quantity;
@@ -147,7 +203,7 @@ const Cart = ({ order }) => {
             </div>
           </div>
         </div>
-        {order ? (
+        {order || empty ? (
           ''
         ) : (
           <a href="/order" className="d-grid gap-2 col-9 mx-auto">

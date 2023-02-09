@@ -28,6 +28,7 @@ function Order() {
   const [detailAddress, setdetailAddress] = useState('');
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState('');
+  const [empty, setEmpty] = useState(true);
   const navigate = useNavigate();
   // 팝업창 열기
   const openPostCode = () => {
@@ -39,7 +40,11 @@ function Order() {
     setIsPopupOpen(false);
   };
   useEffect(() => {
-    setProducts(JSON.parse(localStorage.getItem('items')));
+    const array = JSON.parse(localStorage.getItem('items'));
+    setProducts(array);
+    if (array.length !== 0) {
+      setEmpty(false);
+    }
     instance.get('/api/users/me').then((res) => {
       setUser(res.data);
       setName(res.data.fullName);
@@ -239,15 +244,19 @@ function Order() {
                 </div>
               </div>
             </div>
-            <a href="/orderComplete" class="d-grid gap-2 col-9 mx-auto">
-              <button
-                class="btn btn-dark rounded-pill py-2 d-md-block"
-                type="button"
-                onClick={handleOrder}
-              >
-                구매하기
-              </button>
-            </a>
+            {empty ? (
+              ''
+            ) : (
+              <a href="/orderComplete" class="d-grid gap-2 col-9 mx-auto">
+                <button
+                  class="btn btn-dark rounded-pill py-2 d-md-block"
+                  type="button"
+                  onClick={handleOrder}
+                >
+                  구매하기
+                </button>
+              </a>
+            )}
           </div>
         </section>
       </div>

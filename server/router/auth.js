@@ -39,11 +39,12 @@ router.delete(
   verifyToken,
   asyncHandler(async (req, res) => {
     const { userId, role } = req.decoded;
-    const deletedUser = await authService.withdrawal(
+    const { password } = req.body;
+    const deletedUser = await authService.withdrawal({
       userId,
       role,
-      req.body.password,
-    );
+      password,
+    });
     return res.status(200).json(deletedUser);
   }),
 );

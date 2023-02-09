@@ -149,7 +149,11 @@ function Product() {
               value={quantity}
               onChange={(e) => {
                 e.preventDefault();
-                setQuantity(e.target.value);
+                const a = e.target.value;
+                console.log(inventory);
+                if (a >= 0 && a <= inventory) {
+                  setQuantity(a);
+                }
               }}
             ></input>
           </Col>

@@ -39,16 +39,16 @@ export default class authService {
     return filtered;
   }
 
-  static async withdrawal(id, role, password) {
+  static async withdrawal({ userId, role, password }) {
     if (role !== 'USER') {
       throw new Error('권한이 없다');
     }
-    const user = await User.findOne({ id });
+    const user = await User.findOne({ _id: userId });
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       throw new Error('비번이 틀림');
     }
-    const deletedUser = await User.findByIdAndDelete(id);
+    const deletedUser = await User.findByIdAndDelete(userId);
     const filtered = {
       email: deletedUser.email,
       address: deletedUser.address,

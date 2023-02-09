@@ -193,7 +193,7 @@ function OrderComplete() {
                     <div>주문 상태 : {status}</div>
                   </div>
                 </div>
-                <a href="/main" className="d-grid gap-2 col-9 mx-auto">
+                <a href="/orders" className="d-grid gap-2 col-9 mx-auto">
                   <button
                     className="btn btn-dark rounded-pill py-2 d-md-block"
                     type="button"

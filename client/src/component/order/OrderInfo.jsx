@@ -203,9 +203,8 @@ function OrderComplete() {
     <>
       <Container>
         <div className="p-3 mb-3 bg-secondary text-white">
-          <h1>주문 완료</h1>
+          <h1>주문 정보</h1>
         </div>
-        <div className="mb-5">주문해 주셔서 감사합니다.</div>
         <Container>
           <div className="cart">
             <section className="py-3">
@@ -260,40 +259,46 @@ function OrderComplete() {
                               <div className="p-2 px-3 text-uppercase">
                                 주소
                               </div>
-                              <Button
-                                className="mb-1"
-                                variant="secondary"
-                                size="sm"
-                                type="button"
-                                onClick={() => {
-                                  setIsPopupOpen(true);
-                                }}
-                              >
-                                우편번호 검색
-                              </Button>
-                              <div id="popupDom">
-                                {isPopupOpen && (
-                                  <PopupDom>
-                                    <PopupPostCode
-                                      done={(data) => {
-                                        setPostalCode(data.zonecode);
-                                        setAddress1(data.address);
+                              {status === '상품 준비 중' || role === 'ADMIN' ? (
+                                <div>
+                                  <Button
+                                    className="mb-1"
+                                    variant="secondary"
+                                    size="sm"
+                                    type="button"
+                                    onClick={() => {
+                                      setIsPopupOpen(true);
+                                    }}
+                                  >
+                                    우편번호 검색
+                                  </Button>
+                                  <div id="popupDom">
+                                    {isPopupOpen && (
+                                      <PopupDom>
+                                        <PopupPostCode
+                                          done={(data) => {
+                                            setPostalCode(data.zonecode);
+                                            setAddress1(data.address);
+                                          }}
+                                        />
+                                      </PopupDom>
+                                    )}
+                                    <Button
+                                      onClick={() => {
+                                        setIsPopupOpen(false);
                                       }}
-                                    />
-                                  </PopupDom>
-                                )}
-                                <Button
-                                  onClick={() => {
-                                    setIsPopupOpen(false);
-                                  }}
-                                  className="mb-1"
-                                  variant="secondary"
-                                  size="sm"
-                                  type="button"
-                                >
-                                  닫기
-                                </Button>
-                              </div>
+                                      className="mb-1"
+                                      variant="secondary"
+                                      size="sm"
+                                      type="button"
+                                    >
+                                      닫기
+                                    </Button>
+                                  </div>
+                                </div>
+                              ) : (
+                                ''
+                              )}
                             </th>
                             <th scope="col" className="border-0 bg-light">
                               <div className="p-2 px-3 text-uppercase">
