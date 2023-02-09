@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Card, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Card, Stack } from 'react-bootstrap';
 import instance from '../../util/axios-setting';
 
 function ProductCard({ product }) {
@@ -35,31 +35,27 @@ function ProductCard({ product }) {
   }, []);
   return (
     <Container fluid>
-      <Row
-        xs="auto"
-        className="justify-content-md-center square border border-success"
-      >
-        <Col></Col>
-        <Col xs={6} className="square border border-success">
-          <Card className="mb-2 ms-3 mr-5">
-            <Card.Body>
-              <Card.Link onClick={navigateToPurchase}>
-                <Card.Img variant="top" src={imgSrc} alt="상품사진" />
-              </Card.Link>
-
-              <Card.Title className="mb-2 mt-3 text-large fw-bold">
-                {product?.title}
-              </Card.Title>
-              <Card.Subtitle className="mb-2 mt-2 text-muted">
-                {product?.shortDescription}
-              </Card.Subtitle>
-              <Card.Text className="mb-2 mt-2 fw-bold">
-                {product?.price}
-              </Card.Text>
-            </Card.Body>
-          </Card>
+      <Row xs="auto" className="justify-content-md-center">
+        <Col xs={12}>
+          <div>
+            <Card className="mb-2 ms-3 mr-5">
+              <Card.Body>
+                <Card.Link onClick={navigateToPurchase}>
+                  <Card.Img variant="top" src={imgSrc} alt="상품사진" />
+                </Card.Link>
+                <Card.Text className="mb-2 mt-4 fw-bold">
+                  {product?.title}
+                </Card.Text>
+                <Card.Subtitle className="mb-2 mt-2 text-muted">
+                  {product?.shortDescription}
+                </Card.Subtitle>
+                <Card.Text className="mb-2 mt-4 fw-bold">
+                  {product?.price}원
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </div>
         </Col>
-        <Col></Col>
       </Row>
     </Container>
   );
