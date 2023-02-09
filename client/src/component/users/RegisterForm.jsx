@@ -1,27 +1,22 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Form,
-  Row,
-  Col,
-  Container,
-  Nav,
-  InputGroup,
-} from 'react-bootstrap';
+import { Button, Form, Row, Col, Container, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import instance from '../../util/axios-setting';
 
 function RegisterForm() {
+  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
+  const [code, setCode] = useState('');
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const validateEmail = () => {
     const emailForm = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
     if (emailForm.test(email) == false) {
-      console.log('invalide Email Address');
+      setError('invalide Email Address');
       return false;
     }
     return true;
@@ -29,15 +24,15 @@ function RegisterForm() {
 
   const validateName = () => {
     if (name.length < 1) {
-      console.log('please input name');
+      setError('please input name');
       return false;
     }
     return true;
   };
 
   const validateAddress = () => {
-    if (address.length < 1) {
-      console.log('please input address');
+    if (address1.length < 1) {
+      setError('please input address');
       return false;
     }
     return true;
@@ -45,7 +40,7 @@ function RegisterForm() {
 
   const validatePassword = () => {
     if (password !== confirmPassword) {
-      console.log('password is not confirmed');
+      setError('password is not confirmed');
       return false;
     }
     return true;
@@ -74,10 +69,11 @@ function RegisterForm() {
         .post(`/api/auth/register`, userData)
         .then((res) => {
           console.log(res.data);
+          alert('Register Success!');
         })
         .catch(() => console.log('error'));
     } else {
-      alert('Invalid Form');
+      alert(error);
     }
   };
 
@@ -133,14 +129,37 @@ function RegisterForm() {
             </Col>
           </Form.Group>
 
-          <InputGroup as={Col} className="mb-3">
-            <Form.Control
-              placeholder="Address1"
-              onChange={(e) => setAddress(e.target.value)}
-            />
-            <Form.Control placeholder="Address2" />
-          </InputGroup>
+          <Form.Group
+            as={Row}
+            size="lg"
+            className="mb-3"
+            controlId="formPlaintext"
+          >
+            <Col sm xs={3}>
+              <Form.Label>Address</Form.Label>
+              <Form.Control type="address" placeholder="code" />
+            </Col>
+          </Form.Group>
 
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
+            <Col sm>
+              <Form.Control
+                type="address"
+                placeholder="address1"
+                onChange={(e) => setAddress1(e.target.value)}
+              />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
+            <Col sm>
+              <Form.Control
+                type="address"
+                placeholder="address2"
+                onChange={(e) => setAddress2(e.target.value)}
+              />
+            </Col>
+          </Form.Group>
           <br />
 
           <div className="d-grid gap-1">
