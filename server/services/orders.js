@@ -2,10 +2,10 @@ const { Order } = require('../db/model');
 
 export default class OrdersService {
   //전체주문목록
-  static async getOrdersList({ userId, role, id }) {
-    if (!id && role === 'ADMIN') {
+  static async getOrdersList({ userId, role }) {
+    if (role === 'ADMIN') {
       return await Order.find({});
-    } else if (role === 'ADMIN' || userId === id) {
+    } else if (role === 'USER') {
       const orders = await Order.find({ userId });
       if (!orders) {
         throw new Error('주문이력이 없습니다.');

@@ -12,8 +12,7 @@ router.get(
   verifyToken,
   asyncHandler(async (req, res) => {
     const { userId, role } = req.decoded;
-    const id = req.query.userId;
-    const orders = await OrdersService.getOrdersList({ userId, role, id });
+    const orders = await OrdersService.getOrdersList({ userId, role });
     return res.status(200).json(orders);
   }),
 );

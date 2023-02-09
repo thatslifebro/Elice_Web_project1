@@ -77,7 +77,7 @@ function Order() {
       address,
     };
     instance.post('/api/orders', data).then((res) => {
-      navigate(`/order/${res.data._id}`);
+      navigate(`/ordercomplete/${res.data._id}`);
     });
   };
 

@@ -100,6 +100,7 @@ function AdminOrder() {
     instance
       .get(`/api/orders`)
       .then((res) => {
+        console.log('asd' + res.data);
         if (!res.data) {
           setNoOrder(true);
         }

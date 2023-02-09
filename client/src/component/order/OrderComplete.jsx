@@ -190,33 +190,7 @@ function OrderComplete() {
                         </tbody>
                       </table>
                     </div>
-                    <div>
-                      주문 상태
-                      <Form.Select
-                        style={{ width: '500px' }}
-                        aria-label="Default select example"
-                        value={status}
-                        onChange={(e) => {
-                          setStatus(e.target.value);
-                          console.log(e.target.value);
-                        }}
-                      >
-                        <option value="상품 준비 중">상품 준비 중</option>
-                        <option value="배송 중">배송 중</option>
-                        <option value="배송 완료">배송 완료</option>
-                      </Form.Select>
-                    </div>
-                    {status === '상품 준비 중' || role === 'ADMIN' ? (
-                      <button
-                        className="btn btn-dark rounded-pill py-2 d-md-block"
-                        type="button"
-                        onClick={deleteThisOrder}
-                      >
-                        삭제
-                      </button>
-                    ) : (
-                      ''
-                    )}
+                    <div>주문 상태 : {status}</div>
                   </div>
                 </div>
                 <a href="/main" className="d-grid gap-2 col-9 mx-auto">
