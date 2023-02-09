@@ -152,11 +152,20 @@ const Cart = ({ order }) => {
   }, []);
   return (
     <div className="cart">
-      <h1 className="container px-4 px-lg-5 my-5">장바구니 목록</h1>
+      <h1 className="container px-4 px-lg-5 my-5"></h1>
+
       <section className="py-1">
         <div className="container px-4 px-lg-5 my-1">
           <div className="row">
-            <div className="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+            <div className="col-lg-13 p-5 bg-white rounded shadow-sm mb-5">
+              <h1>Your Cart</h1>
+              <Button
+                className="px-lg-2 my-3 mb-2"
+                variant="secondary"
+                onClick={deleteAll}
+              >
+                전체 비우기
+              </Button>
               <div className="table-responsive">
                 <table className="table">
                   <thead>
@@ -206,9 +215,6 @@ const Cart = ({ order }) => {
                         {totalPrice}원
                       </th>
                     </tr>
-                    <Button variant="danger" onClick={deleteAll}>
-                      전체 삭제
-                    </Button>
                   </tbody>
                 </table>
               </div>
