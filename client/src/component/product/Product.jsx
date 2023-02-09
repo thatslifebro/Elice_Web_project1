@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import axios from 'axios';
 import instance from '../../util/axios-setting';
+import './Product.css';
 
 function Product() {
   const [categoryId, setCategoryId] = useState('');
@@ -63,17 +64,22 @@ function Product() {
   return (
     <Container fluid>
       <div>
-        <h1 className="p-3 text-success">상품상세</h1>
+        <h1 className="title">상품상세</h1>
       </div>
-      <Stack direction="horizontal" gap={2}>
+      <Stack className="all" direction="horizontal" gap={2}>
         <Row xs={1} md={2}>
           <Col sm={8}>
-            <Card>
-              <Card.Img variant="top" src={imgSrc} alt="랜덤사진" />
+            <Card className="img_bg">
+              <Card.Img
+                className="img_product"
+                variant="top"
+                src={imgSrc}
+                alt="랜덤사진"
+              />
             </Card>
           </Col>
           <Col sm={4}>
-            <Card>
+            <Card className="detail">
               <Card.Body>
                 <Card.Title className="mb-2 mt-5 text-large">
                   <h1>{title}</h1>
@@ -90,7 +96,8 @@ function Product() {
             </Card>
 
             <Button
-              variant="outline-primary"
+              className="m-3"
+              variant="outline-dark"
               onClick={(e) => {
                 e.preventDefault();
                 const items = JSON.parse(localStorage.getItem('items'));
@@ -139,12 +146,9 @@ function Product() {
             >
               장바구니 추가
             </Button>
-            <Button variant="outline-primary">
-              사용자모드에서만 보일 바로구매
-            </Button>
-            <Button variant="outline-primary">
-              관리자모드에서만 보일 수정버튼
-            </Button>
+            <Button variant="dark">바로 구매</Button>
+            <br />
+
             <input
               value={quantity}
               onChange={(e) => {
@@ -155,10 +159,6 @@ function Product() {
           </Col>
         </Row>
       </Stack>
-      <Row>
-        <Col sm>상품상세 설명{detailDescription}</Col>
-        <Col sm></Col>
-      </Row>
     </Container>
   );
 }
