@@ -40,14 +40,12 @@ function CategoryProducts() {
   // };
 
   return (
-    <Container fluid>
-      <div>
-        <h1 className="p-3 text-success">상품목록</h1>
-      </div>
+    <Container>
       <Row>
         <Col className="mb-2 ms-3 mr-5 ">
           <Form>
             <Form.Label htmlFor="SelectCategory">상품카테고리</Form.Label>
+
             <Form.Select
               className="mb-4"
               id="SelectCategory"

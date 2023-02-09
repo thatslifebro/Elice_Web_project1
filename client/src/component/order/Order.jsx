@@ -15,7 +15,7 @@ import {
 } from 'react-bootstrap';
 import axios from 'axios';
 import DaumPostcode from 'react-daum-postcode';
-import Cart from './Cart';
+import Cart from './cart';
 import instance from '../../util/axios-setting';
 
 function Order() {

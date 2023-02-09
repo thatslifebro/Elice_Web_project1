@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, Badge } from 'react-bootstrap';
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
@@ -10,28 +10,35 @@ function ProductCard({ product }) {
   };
   return (
     <Container fluid>
-      <Row xs="auto">
-        <Col>
+      <Row
+        xs="auto"
+        className="justify-content-md-center square border border-success"
+      >
+        <Col></Col>
+        <Col xs={6} className="square border border-success">
           <Card className="mb-2 ms-3 mr-5">
             <Card.Body>
               <Card.Link onClick={navigateToPurchase}>
                 <Card.Img
                   variant="top"
-                  src="https://picsum.photos/600/600/?random"
-                  alt="상품사진"
+                  src="https://picsum.photos/300/400/?random"
+                  alt="랜덤사진"
                 />
               </Card.Link>
-              <Card.Title>{product?.title}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
+
+              <Card.Title className="mb-2 mt-3 text-large fw-bold">
+                {product?.title}
+              </Card.Title>
+              <Card.Subtitle className="mb-2 mt-2 text-muted">
                 {product?.shortDescription}
               </Card.Subtitle>
-              <Card.Text>{product?.price}</Card.Text>
-              <Card.Text>imageKey: {product?.imageKey}</Card.Text>
-              <Card.Text>categoryId: {product?.categoryId}</Card.Text>
-              <Card.Text>productId: {product?._id}</Card.Text>
+              <Card.Text className="mb-2 mt-2 fw-bold">
+                {product?.price}
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
+        <Col></Col>
       </Row>
     </Container>
   );
