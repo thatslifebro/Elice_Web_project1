@@ -1,10 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useReducer, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import instance from '../../util/axios-setting';
+import { useMemo } from 'react';
+
 const Cart = ({ order }) => {
-  const ProductList = ({ product }) => {
+  const comp = (prev, next) => {
+    return prev.count === next.count;
+  };
+  const ProductList = memo(({ product, setPrice }) => {
     const [imgSrc, setImgSrc] = useState('');
     const [count, setCount] = useState(0);
 
@@ -35,7 +40,7 @@ const Cart = ({ order }) => {
         <td scope="row" className="border-0">
           <img
             style={{ width: '100px', height: '100px' }}
-            src={imgSrc}
+            src={`${imgSrc}`}
             alt="current"
           />
         </td>
@@ -60,13 +65,8 @@ const Cart = ({ order }) => {
                 }
                 return i;
               });
-              setProducts(array);
               localStorage.setItem('items', JSON.stringify(array));
-
-              setTotalPrice((cur) => {
-                const tmp = cur;
-                return tmp + product.price;
-              });
+              // dispatch({ type: 'ADD_PRICE', price: product.price });
             }}
           >
             +
@@ -86,12 +86,9 @@ const Cart = ({ order }) => {
                 }
                 return i;
               });
-              setProducts(array);
               localStorage.setItem('items', JSON.stringify(array));
-              setTotalPrice((cur) => {
-                const tmp = cur;
-                return tmp - product.price;
-              });
+
+              // dispatch({ type: 'SUB_PRICE', price: product.price });
             }}
           >
             -
@@ -123,7 +120,7 @@ const Cart = ({ order }) => {
         </td>
       </tr>
     );
-  };
+  }, comp);
 
   const deleteAll = (e) => {
     localStorage.removeItem('items');
@@ -132,10 +129,24 @@ const Cart = ({ order }) => {
     setTotalPrice(0);
   };
 
+  function reducer(state, action) {
+    switch (action.type) {
+      case 'ADD_PRICE':
+        return state + action.price;
+      case 'SUB_PRICE':
+        return state - action.price;
+      default:
+        return action.price;
+    }
+  }
+
   const [products, setProducts] = useState([{}]);
   const [empty, setEmpty] = useState(true);
 
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const [state, dispatch] = useReducer(reducer, 10);
+
   useEffect(() => {
     setTotalPrice(0);
     const array = JSON.parse(localStorage.getItem('items'));
@@ -147,7 +158,7 @@ const Cart = ({ order }) => {
       const total = array.reduce((price, product) => {
         return price + product.price * product.quantity;
       }, 0);
-      setTotalPrice(total);
+      dispatch({ price: total });
     }
   }, []);
   return (
@@ -203,7 +214,7 @@ const Cart = ({ order }) => {
                         style={{ color: 'red' }}
                         className="fw-bold border-0 bg-light"
                       >
-                        {totalPrice}원
+                        {state}원
                       </th>
                     </tr>
                     <Button variant="danger" onClick={deleteAll}>

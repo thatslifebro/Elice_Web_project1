@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { resolvePath, useNavigate, useParams } from 'react-router-dom';
 import PopupDom from './PopupDom';
 import PopupPostCode from './PopupPostCode';
 import {
@@ -17,6 +17,7 @@ import axios from 'axios';
 import DaumPostcode from 'react-daum-postcode';
 import Cart from './cart';
 import instance from '../../util/axios-setting';
+import { verifyTokken } from '../../util/verify';
 
 function Order() {
   // 팝업창 상태 관리
@@ -40,6 +41,11 @@ function Order() {
     setIsPopupOpen(false);
   };
   useEffect(() => {
+    verifyTokken().then((role) => {
+      if (role === 'NOTUSER') {
+        navigate('/login');
+      }
+    });
     const array = JSON.parse(localStorage.getItem('items'));
     setProducts(array);
     if (array.length !== 0) {

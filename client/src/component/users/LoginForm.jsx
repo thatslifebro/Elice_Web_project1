@@ -27,7 +27,10 @@ function LoginForm() {
         navigate('/main');
         window.location.reload();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        alert('로그인에 실패하였습니다.');
+      });
   };
 
   useEffect(() => {
@@ -51,13 +54,11 @@ function LoginForm() {
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
-                      const emailForm =
-                        /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z0-9\.\-]+/;
-                      if (emailForm.test(e.target.value) === false) {
-                        setCorrect(false);
-                      } else {
-                        setCorrect(true);
-                      }
+
+                      const regex =
+                        /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+                      console.log(regex.test(e.target.value));
+                      setCorrect(!regex.test(e.target.value));
                     }}
                   />
                   {correct ? (
