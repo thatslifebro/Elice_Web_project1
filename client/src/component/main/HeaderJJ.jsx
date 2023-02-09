@@ -123,7 +123,6 @@ const Header = () => {
         </nav>
       ) : (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          )
           <div className="container px-4 px-lg-1">
             <Navbar>
               <Container>

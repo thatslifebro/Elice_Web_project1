@@ -125,6 +125,10 @@ const Cart = ({ order }) => {
     );
   };
 
+  const deleteAll = (e) => {
+    return;
+  };
+
   const [products, setProducts] = useState([{}]);
   const [empty, setEmpty] = useState(true);
 
@@ -196,8 +200,10 @@ const Cart = ({ order }) => {
                       >
                         {totalPrice}원
                       </th>
-                      <Button>전체 삭제</Button>
                     </tr>
+                    <Button variant="danger" onClick={deleteAll}>
+                      전체 삭제
+                    </Button>
                   </tbody>
                 </table>
               </div>
