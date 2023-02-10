@@ -16,11 +16,23 @@ import './Main.css';
 function Main() {
   const [products, setProducts] = useState([]);
   const [products2, setProducts2] = useState([]);
+  const [products3, setProducts3] = useState([]);
 
   useEffect(() => {
     instance.get(`/api/products`).then((res) => {
       setProducts(res.data.slice(0, 8));
       setProducts2(res.data.slice(10, 20));
+      const recent = JSON.parse(localStorage.getItem('recent'));
+
+      const array = res.data.filter((product) => {
+        if (recent.find((a) => a.id === product._id)) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      console.log(array);
+      setProducts3(array);
     });
   }, []);
 
@@ -39,6 +51,10 @@ function Main() {
     slidesToShow: 5,
     swipeToSlide: true,
     afterChange: function (index) {},
+  };
+  const settings3 = {
+    infinite: true,
+    swipeToSlide: true,
   };
   return (
     <>
@@ -84,6 +100,16 @@ function Main() {
           <h4>추천 상품</h4>
           <Slider {...settings2}>
             {products2.map((product) => {
+              return <MainCard product={product} />;
+            })}
+          </Slider>
+        </div>
+      </div>
+      <div className="container mb-4">
+        <div style={{ width: '300px' }}>
+          <h4>최근 본 상품</h4>
+          <Slider {...settings3}>
+            {products3.map((product) => {
               return <MainCard product={product} />;
             })}
           </Slider>

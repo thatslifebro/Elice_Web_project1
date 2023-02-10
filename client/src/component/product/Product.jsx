@@ -30,6 +30,24 @@ function Product() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let recent = localStorage.getItem('recent');
+    console.log(recent === null);
+    if (recent === null) {
+      localStorage.setItem('recent', JSON.stringify([{ id }]));
+    } else if (recent.length === 0) {
+      localStorage.setItem('recent', JSON.stringify([{ id }]));
+    } else {
+      let array = JSON.parse(recent);
+      const exist = array.find((item) => item.id === id);
+      if (!exist) {
+        array.unshift({ id });
+      } else {
+        array = array.filter((item) => item.id !== id);
+        array.unshift({ id });
+      }
+      localStorage.setItem('recent', JSON.stringify(array));
+    }
+
     instance
       .get(`/api/products/${id}`)
       .then((res) => {
