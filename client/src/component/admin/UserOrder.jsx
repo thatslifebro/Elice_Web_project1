@@ -5,8 +5,20 @@ import axios from 'axios';
 import instance from '../../util/axios-setting';
 import { verifyTokken } from '../../util/verify';
 import { useNavigate } from 'react-router-dom';
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardFooter,
+  MDBCol,
+  MDBIcon,
+  MDBListGroup,
+  MDBListGroupItem,
+  MDBRow,
+  MDBBadge,
+  MDBBtn,
+} from 'mdb-react-ui-kit';
 
-function AdminOrder() {
+function UserOrder() {
   const OneItem = ({ item }) => {
     const [quantity, setQuantity] = useState();
     const [price, setPrice] = useState();
@@ -37,14 +49,12 @@ function AdminOrder() {
       });
     }, []);
     return (
-      <tr>
-        <td>
-          <img src={imgSrc} width="80px" />
-          <div>{title}</div>
-          <div>수량 : {quantity}</div>
-          <div>개당 가격 : {price}</div>
-        </td>
-      </tr>
+      <>
+        <img src={imgSrc} width="80px" />
+        <p className="fw-bold mb-1">{title}</p>
+        <p className="fw-bold mb-1">{quantity}</p>
+        <p className="fw-bold mb-1">{price}</p>
+      </>
     );
   };
   const OneOrder = ({ order }) => {
@@ -71,19 +81,23 @@ function AdminOrder() {
     };
 
     return (
-      <tr onClick={orderClick}>
-        <td>#</td>
-        <td>{orderId}</td>
-        <td>{userId}</td>
-        <td>
+      <>
+        <MDBListGroupItem
+          onClick={orderClick}
+          className="d-flex justify-content-between align-items-center"
+        >
+          <div className="d-flex align-items-center">
+            <p className="mb-1">{orderId}</p>
+          </div>
+          <p className="mb-1">{userId}</p>
           {order.items.map((item) => {
             return <OneItem item={item} />;
           })}
-        </td>
-        <td>{totalPrice}</td>
-        <td>{status}</td>
-        <td>{orderDate}</td>
-      </tr>
+          <p className="mb-1">{totalPrice}</p>
+          <p className="mb-1">{status}</p>
+          <p className="mb-1">{orderDate}</p>
+        </MDBListGroupItem>
+      </>
     );
   };
 
@@ -111,44 +125,34 @@ function AdminOrder() {
       });
   }, []);
 
-  const objOrder = {
-    header: [
-      '#',
-      '주문번호',
-      '회원아이디',
-      '주문상품',
-      '총주문가격',
-      '주문상태',
-      '주문날짜',
-    ],
-  };
-
   return (
-    <Container fluid>
-      <Row>
-        <Col className="mb-2 ms-3 mr-5">
-          <h1>관리자모드 주문 내역 (준비중)</h1>
-
-          <Table striped bordered hover>
-            <thead className="table-success">
-              <tr>
-                {objOrder.header.map((item) => {
-                  return <th>{item}</th>;
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {noOrder
-                ? ''
-                : ordersList.map((order) => {
-                    return <OneOrder key={order._id} order={order} />;
-                  })}
-            </tbody>
-          </Table>
-        </Col>
-      </Row>
-    </Container>
+    <MDBListGroup style={{ minWidth: '22rem' }} light>
+      <MDBListGroupItem className="d-flex justify-content-between align-items-center">
+        <div className="d-flex align-items-center">
+          <div className="ms-3">
+            <p className="fw-bold mb-1"></p>
+          </div>
+        </div>
+        <p className="fw-bold mb-1">나의 주문내역</p>
+        <MDBBtn size="sm" rounded color="link"></MDBBtn>
+      </MDBListGroupItem>
+      <MDBListGroupItem className="d-flex justify-content-between align-items-center">
+        <div className="d-flex align-items-center">
+          <p className="fw-bold mb-1">주문 번호</p>
+        </div>
+        <div className="fw-bold mb-1">회원 아이디</div>
+        <div className="fw-bold mb-1">주문 상품</div>
+        <p className="fw-bold mb-1">총 주문가격</p>
+        <p className="fw-bold mb-1">주문 상태</p>
+        <p className="fw-bold mb-1">주문 날짜</p>
+      </MDBListGroupItem>
+      {noOrder
+        ? ''
+        : ordersList.map((order) => {
+            return <OneOrder key={order._id} order={order} />;
+          })}
+    </MDBListGroup>
   );
 }
 
-export default AdminOrder;
+export default UserOrder;

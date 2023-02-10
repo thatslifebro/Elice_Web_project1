@@ -6,13 +6,14 @@ import AddProduct from './component/admin/AddProduct';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AdminCategoryForm from './component/admin/AdminCategory';
 import AdminProductUD from './component/admin/AdminProductUD';
-import UserData from './component/users/UserData';
 import UserData1 from './component/users/UserData1';
 import UserWithdrawal from './component/users/UserWithdrawal1';
 import ChangePassword from './component/users/ChangePassword1';
 import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
 import AdminOrder from './component/admin/AdminOrder';
+
+import UserOrder from './component/admin/UserOrder';
 import OrdersList from './component/order/OrdersList';
 import AdminMain from './component/admin/AdminMain';
 import OrderComplete from './component/order/OrderComplete';
@@ -49,7 +50,8 @@ function App() {
         <Route path="/product" element={<CategoryProducts />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/orders/list" element={<OrdersList />} />
-        <Route path="/orders" element={<AdminOrder />} />
+        <Route path="/orders1" element={<AdminOrder />} />
+        <Route path="/orders" element={<UserOrder />} />
         <Route path="/order" element={<Order />}>
           주문페이지
         </Route>

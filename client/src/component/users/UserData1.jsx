@@ -55,7 +55,7 @@ function UserData() {
                   나의 이메일<span className="mx-2">|</span>
                   <span className="mx-2">{users.email}</span>
                 </MDBCardText>
-                <Button variant="primary" size="lg" href="/">
+                <Button variant="primary" size="lg" href="/orders">
                   주문 내역 보기
                 </Button>
                 <div className="d-flex justify-content-between text-center mt-5 mb-2">
