@@ -50,7 +50,6 @@ const Header = () => {
             <Link className="navbar-brand" to={'/main'}>
               6TEAMSHOP
             </Link>
-
             <NavDropdown
               className="navbar-toggler"
               id="nav-dropdown-dark-example"
@@ -64,9 +63,10 @@ const Header = () => {
             >
               <NavDropdown.Item href="/main">Home</NavDropdown.Item>
               <NavDropdown.Item href="/product">Product</NavDropdown.Item>
-              <NavDropdown.Item href="/category">product</NavDropdown.Item>
+              <NavDropdown.Item href="/product">Category</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+              <NavDropdown.Item href="/login">Login</NavDropdown.Item>
             </NavDropdown>
             <div
               className="collapse navbar-collapse"
@@ -108,18 +108,22 @@ const Header = () => {
                     Logout
                   </Button>
                   {auth === 'ADMIN' ? (
-                    <Link className="nav-link active m-3" to={'/admin'}>
-                      Admin
-                    </Link>
+                    <>
+                      <Link className="nav-link active m-3" to={'/admin'}>
+                        Admin
+                      </Link>
+                    </>
                   ) : (
                     ''
                   )}
                 </>
               ) : (
-                <Link className="btn btn-outline-dark" to={'/login'}>
-                  <i className="bi-cart-fill me-1"></i>
-                  Login
-                </Link>
+                <>
+                  <Link className="btn btn-outline-dark" to={'/login'}>
+                    <i className="bi-cart-fill me-1"></i>
+                    Login
+                  </Link>
+                </>
               )}
               <Link className="btn btn-outline-dark ms-lg-1" to={'/cart'}>
                 <i className="bi-cart-fill me-1 "></i>
@@ -149,25 +153,6 @@ const Header = () => {
             <Link className="navbar-brand" to={'/main'}>
               6TEAMSHOP
             </Link>
-
-            <NavDropdown
-              className="navbar-toggler"
-              id="nav-dropdown-dark-example"
-              title="Menu"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <NavDropdown.Item href="/main">Home</NavDropdown.Item>
-              <NavDropdown.Item href="/product">Product</NavDropdown.Item>
-              <NavDropdown.Item href="/category">Category</NavDropdown.Item>
-              <NavDropdown.Item href="/category">Category</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
-            </NavDropdown>
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
@@ -207,19 +192,23 @@ const Header = () => {
                     Admin
                   </Link>
                   {auth === 'ADMIN' ? (
-                    <Button variant="outline-light" onClick={handleLogout}>
-                      <i className="bi-cart-fill me-1"></i>
-                      Logout
-                    </Button>
+                    <>
+                      <Button variant="outline-light" onClick={handleLogout}>
+                        <i className="bi-cart-fill me-1"></i>
+                        Logout
+                      </Button>
+                    </>
                   ) : (
                     ''
                   )}
                 </>
               ) : (
-                <Link className="btn btn-outline-light" to={'/login'}>
-                  <i className="bi-cart-fill me-1"></i>
-                  Login
-                </Link>
+                <>
+                  <Link className="btn btn-outline-light" to={'/login'}>
+                    <i className="bi-cart-fill me-1"></i>
+                    Login
+                  </Link>
+                </>
               )}
               <Link className="btn btn-outline-light ms-lg-1" to={'/cart'}>
                 <i className="bi-cart-fill me-1 "></i>
