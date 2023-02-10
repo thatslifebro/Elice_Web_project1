@@ -31,7 +31,8 @@ const Header = () => {
 
   return (
     <>
-      {auth !== 'ADMIN' ? (
+      {/*auth !== 'ADMIN'*/}
+      {true ? (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container px-4 px-lg-1">
             <Navbar bg="white">
@@ -66,7 +67,13 @@ const Header = () => {
               <NavDropdown.Item href="/product">Category</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
-              <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+              {auth === 'NOTUSER' ? (
+                <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+              ) : (
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
+              )}
             </NavDropdown>
             <div
               className="collapse navbar-collapse"

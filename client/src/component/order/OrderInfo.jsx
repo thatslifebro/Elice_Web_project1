@@ -48,7 +48,7 @@ function OrderComplete() {
     return (
       <tr>
         <td scope="row" className="border-0">
-          {/* <img style={{ width: '70px' }} src={imgSrc} key={item.productId} /> */}
+          <img style={{ width: '70px' }} src={imgSrc} key={item.productId} />
           <strong>{title}</strong>
         </td>
         <td className="border-0 align-middle">
@@ -56,7 +56,8 @@ function OrderComplete() {
         </td>
         <td className="border-0 align-middle">
           <strong>{count}개</strong>
-          {status === '상품 준비 중' || role === 'ADMIN' ? (
+          {/* {status === '상품 준비 중' || role === 'ADMIN'*/}
+          {false ? (
             <>
               <button
                 onClick={() => {
@@ -209,24 +210,6 @@ function OrderComplete() {
       });
   }, []);
 
-  const a = async () => {
-    const res = await instance.get(`/api/orders/${id}`);
-    const array = res.data.items.map((item) => {
-      <ProductList key={item.productId} item={item} />;
-    });
-    return array;
-  };
-
-  // // const Comp = usememo(() => {
-  //   console.log('res.data');
-  //   const res = await instance.get(`/api/orders/${id}`);
-
-  //   const array = res.data.items.map((item) => {
-  //     <ProductList key={item.productId} item={item} />;
-  //   });
-  //   return array;
-  // }, [items]);
-
   return (
     <>
       <Container>
@@ -257,7 +240,6 @@ function OrderComplete() {
                           </tr>
                         </thead>
                         <tbody>
-                          {/* {Comp} */}
                           {items.map((item) => {
                             return (
                               <ProductList key={item.productId} item={item} />
@@ -289,7 +271,8 @@ function OrderComplete() {
                               <div className="p-2 px-3 text-uppercase">
                                 주소
                               </div>
-                              {status === '상품 준비 중' || role === 'ADMIN' ? (
+                              {/*status === '상품 준비 중' || role === 'ADMIN' */}
+                              {false ? (
                                 <div>
                                   <Button
                                     className="mb-1"
@@ -348,7 +331,8 @@ function OrderComplete() {
                           </tr>
                         </thead>
                         <tbody>
-                          {status === '상품 준비 중' || role === 'ADMIN' ? (
+                          {/* status === '상품 준비 중' || role === 'ADMIN'*/}
+                          {false ? (
                             <tr>
                               <td className="align-middle">{email}</td>
                               <td className="align-middle">
@@ -411,7 +395,7 @@ function OrderComplete() {
                       </table>
                     </div>
                     <div>
-                      주문 상태
+                      주문 상태 :
                       {role === 'ADMIN' ? (
                         <Form.Select
                           style={{ width: '500px' }}
@@ -443,7 +427,7 @@ function OrderComplete() {
                   </div>
                 </div>
                 <a className="d-grid gap-2 col-9 mx-auto">
-                  {role === 'ADMIN' || status === '상품 준비 중' ? (
+                  {role === 'ADMIN' ? (
                     <button
                       className="btn btn-dark rounded-pill py-2 d-md-block"
                       type="button"
