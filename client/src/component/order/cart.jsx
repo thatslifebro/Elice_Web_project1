@@ -67,9 +67,11 @@ const Cart = ({ order, update }) => {
                     const tmp = now;
                     return Number(tmp) + 1;
                   });
-                  const array = products.map((i) => {
+                  const storage = JSON.parse(localStorage.getItem('items'));
+
+                  const array = storage.map((i) => {
                     if (i.productId === product.productId) {
-                      i.quantity = Number(product.quantity) + 1;
+                      i.quantity = Number(count) + 1;
                     }
                     return i;
                   });
@@ -92,9 +94,10 @@ const Cart = ({ order, update }) => {
                     const tmp = now;
                     return Number(tmp) - 1;
                   });
-                  const array = products.map((i) => {
+                  const storage = JSON.parse(localStorage.getItem('items'));
+                  const array = storage.map((i) => {
                     if (i.productId === product.productId) {
-                      i.quantity = Number(product.quantity) - 1;
+                      i.quantity = Number(count) - 1;
                     }
                     return i;
                   });
