@@ -22,8 +22,9 @@ function RegisterForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [emailCorrect, setEmailCorrect] = useState(false);
-  const [passwordCorrect, setPasswordCorrect] = useState(false);
+  const [passwordCorrect, setPasswordCorrect] = useState(true);
   const [nameCorrect, setNameCorrect] = useState(false);
+  const [noPassword, setNoPassword] = useState(true);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -88,6 +89,13 @@ function RegisterForm() {
               ) : (
                 ''
               )}
+              {noPassword ? (
+                <div style={{ color: 'red' }}>
+                  비밀번호가 형식에 맞지 않습니다.
+                </div>
+              ) : (
+                ''
+              )}
               <MDBRow>
                 <MDBCol md="6">
                   <MDBInput
@@ -96,7 +104,19 @@ function RegisterForm() {
                     id="form2"
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (!e.target.value) {
+                        setNoPassword(true);
+                      } else {
+                        setNoPassword(false);
+                      }
+                      if (confirmPassword !== e.target.value) {
+                        setPasswordCorrect(false);
+                      } else {
+                        setPasswordCorrect(true);
+                      }
+                    }}
                   />
                 </MDBCol>
 

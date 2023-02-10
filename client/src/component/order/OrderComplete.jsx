@@ -204,7 +204,7 @@ function OrderComplete() {
                 </div>
                 <a href="/orders" className="d-grid gap-2 col-9 mx-auto">
                   <Button variant="secondary" size="lg">
-                    상품 목록으로 가기
+                    주문 목록으로 가기
                   </Button>
                 </a>
               </div>

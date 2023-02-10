@@ -56,8 +56,7 @@ function OrderComplete() {
         </td>
         <td className="border-0 align-middle">
           <strong>{count}개</strong>
-          {/* {status === '상품 준비 중' || role === 'ADMIN'*/}
-          {false ? (
+          {status === '상품 준비 중' || role === 'ADMIN' ? (
             <>
               <button
                 onClick={() => {
@@ -271,8 +270,7 @@ function OrderComplete() {
                               <div className="p-2 px-3 text-uppercase">
                                 주소
                               </div>
-                              {/*status === '상품 준비 중' || role === 'ADMIN' */}
-                              {false ? (
+                              {status === '상품 준비 중' || role === 'ADMIN' ? (
                                 <div>
                                   <Button
                                     className="mb-1"
@@ -331,8 +329,7 @@ function OrderComplete() {
                           </tr>
                         </thead>
                         <tbody>
-                          {/* status === '상품 준비 중' || role === 'ADMIN'*/}
-                          {false ? (
+                          {status === '상품 준비 중' || role === 'ADMIN' ? (
                             <tr>
                               <td className="align-middle">{email}</td>
                               <td className="align-middle">
@@ -427,25 +424,22 @@ function OrderComplete() {
                   </div>
                 </div>
                 <a className="d-grid gap-2 col-9 mx-auto">
-                  {role === 'ADMIN' ? (
-                    <button
-                      className="btn btn-dark rounded-pill py-2 d-md-block"
+                  {role === 'ADMIN' || status === '상품 준비 중' ? (
+                    <Button
+                      variant="secondary"
                       type="button"
                       onClick={updateThisOrder}
                     >
                       상품 정보 수정 완료
-                    </button>
+                    </Button>
                   ) : (
                     ''
                   )}
                 </a>
                 <a href="/orders" className="d-grid gap-2 col-9 mx-auto">
-                  <button
-                    className="btn btn-dark rounded-pill py-2 d-md-block"
-                    type="button"
-                  >
+                  <Button variant="secondary" type="button">
                     상품 목록으로 가기
-                  </button>
+                  </Button>
                 </a>
               </div>
             </section>

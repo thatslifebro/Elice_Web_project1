@@ -240,15 +240,21 @@ const Cart = ({ order, update }) => {
                   </thead>
                   <tbody>
                     {ImgComp}
-                    <tr className="d-flex justify-content-between py-3 border-bottom">
-                      <th className="text-muted border-0 bg-light">총 가격</th>
-                      <th
-                        style={{ color: 'red' }}
-                        className="fw-bold border-0 bg-light"
-                      >
-                        {totalPrice}원
-                      </th>
-                    </tr>
+                    {!empty ? (
+                      <tr className="d-flex justify-content-between py-3 border-bottom">
+                        <th className="text-muted border-0 bg-light">
+                          총 가격
+                        </th>
+                        <th
+                          style={{ color: 'red' }}
+                          className="fw-bold border-0 bg-light"
+                        >
+                          {totalPrice}원
+                        </th>
+                      </tr>
+                    ) : (
+                      ''
+                    )}
                   </tbody>
                 </table>
               </div>

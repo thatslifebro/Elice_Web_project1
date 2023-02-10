@@ -9,10 +9,12 @@ import {
   MDBBtn,
   MDBIcon,
 } from 'mdb-react-ui-kit';
+import { useNavigate } from 'react-router-dom';
 
 function UserWithdrawal() {
   const [isChecked, setIsChecked] = useState(false);
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setIsChecked(!isChecked);
@@ -20,11 +22,20 @@ function UserWithdrawal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('check');
     instance
-      .delete(`/api/auth/withdrawal`, password)
-      .then((res) => console.log(res.data))
-      .catch(() => console.log('error'));
+      .delete(`/api/auth/withdrawal`, { data: { password } })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data === '비번이 틀림') {
+          alert('비밀번호 틀렸습니다.');
+        } else {
+          alert('탈퇴되었습니다.');
+          localStorage.removeItem('jwt');
+          navigate('/main');
+          window.location.reload();
+        }
+      })
+      .catch(() => {});
   };
 
   return (
@@ -36,7 +47,8 @@ function UserWithdrawal() {
         wrapperClass="mb-4"
         label="비밀번호 입력"
         id="form1"
-        type="email"
+        type="password"
+        value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 

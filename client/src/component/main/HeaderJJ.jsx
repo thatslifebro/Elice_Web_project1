@@ -110,10 +110,6 @@ const Header = () => {
                   <Link className="nav-link active m-3" to={'/userdata'}>
                     MyPage
                   </Link>
-                  <Button variant="outline-dark" onClick={handleLogout}>
-                    <i className="bi-cart-fill me-1"></i>
-                    Logout
-                  </Button>
                   {auth === 'ADMIN' ? (
                     <>
                       <Link className="nav-link active m-3" to={'/admin'}>
@@ -123,6 +119,10 @@ const Header = () => {
                   ) : (
                     ''
                   )}
+                  <Button variant="outline-dark" onClick={handleLogout}>
+                    <i className="bi-cart-fill me-1"></i>
+                    Logout
+                  </Button>
                 </>
               ) : (
                 <>

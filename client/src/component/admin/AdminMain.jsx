@@ -16,13 +16,13 @@ function AdminMain() {
               <Nav.Link eventKey="menu1">카테고리관리</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="menu2">상품관리</Nav.Link>
+              <Nav.Link eventKey="menu2">상품추가</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="menu4">상품관리</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="menu3">주문관리</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link eventKey="menu4">상품주문관리</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
