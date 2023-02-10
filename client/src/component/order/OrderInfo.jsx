@@ -48,7 +48,7 @@ function OrderComplete() {
     return (
       <tr>
         <td scope="row" className="border-0">
-          <img style={{ width: '70px' }} src={imgSrc} key={item.productId} />
+          {/* <img style={{ width: '70px' }} src={imgSrc} key={item.productId} /> */}
           <strong>{title}</strong>
         </td>
         <td className="border-0 align-middle">
@@ -145,6 +145,7 @@ function OrderComplete() {
   const deleteThisOrder = () => {
     if (status === '상품 준비 중' || role === 'ADMIN') {
       instance.delete(`/api/orders/${id}`).then(() => {
+        alert('이 주문을 삭제합니다.');
         navigate('/orders');
       });
     }
@@ -154,6 +155,15 @@ function OrderComplete() {
       instance.delete(`/api/orders/${id}`).then(() => {
         alert('물품이 없어 주문을 삭제합니다.');
       });
+    } else if (
+      !postalCode ||
+      !address1 ||
+      !address2 ||
+      !receiverName ||
+      !receiverPhoneNumber
+    ) {
+      alert('채워지지 않은 항목이 있습니다.');
+      return;
     } else {
       instance
         .put(`/api/orders/${id}`, {
@@ -207,7 +217,7 @@ function OrderComplete() {
     return array;
   };
 
-  // const Comp = usememo(() => {
+  // // const Comp = usememo(() => {
   //   console.log('res.data');
   //   const res = await instance.get(`/api/orders/${id}`);
 
@@ -294,7 +304,12 @@ function OrderComplete() {
                                   </Button>
                                   <div id="popupDom">
                                     {isPopupOpen && (
-                                      <PopupDom>
+                                      <PopupDom
+                                        style={{
+                                          position: 'absolute',
+                                          top: '55%',
+                                        }}
+                                      >
                                         <PopupPostCode
                                           done={(data) => {
                                             setPostalCode(data.zonecode);
@@ -428,13 +443,17 @@ function OrderComplete() {
                   </div>
                 </div>
                 <a className="d-grid gap-2 col-9 mx-auto">
-                  <button
-                    className="btn btn-dark rounded-pill py-2 d-md-block"
-                    type="button"
-                    onClick={updateThisOrder}
-                  >
-                    상품 정보 수정 완료
-                  </button>
+                  {role === 'ADMIN' || status === '상품 준비 중' ? (
+                    <button
+                      className="btn btn-dark rounded-pill py-2 d-md-block"
+                      type="button"
+                      onClick={updateThisOrder}
+                    >
+                      상품 정보 수정 완료
+                    </button>
+                  ) : (
+                    ''
+                  )}
                 </a>
                 <a href="/orders" className="d-grid gap-2 col-9 mx-auto">
                   <button

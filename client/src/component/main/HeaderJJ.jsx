@@ -14,8 +14,10 @@ const Header = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem('jwt');
+    localStorage.removeItem('items');
     setAuth('NOTUSER');
     instance.defaults.headers.common['Authorization'] = null;
+    window.location.reload();
   };
   const [categories, setCategories] = useState([]);
   useEffect(() => {

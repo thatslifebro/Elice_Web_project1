@@ -102,6 +102,7 @@ function Order() {
     };
     instance.post('/api/orders', data).then((res) => {
       navigate(`/ordercomplete/${res.data._id}`);
+      localStorage.removeItem('items');
     });
   };
 

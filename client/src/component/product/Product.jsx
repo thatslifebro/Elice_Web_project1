@@ -116,6 +116,7 @@ function Product() {
                       return item;
                     });
                     localStorage.setItem('items', JSON.stringify(newItems));
+                    alert('장바구니에 담았습니다.');
                     return;
                   }
                   localStorage.setItem(
@@ -130,6 +131,7 @@ function Product() {
                       },
                     ]),
                   );
+                  alert('장바구니에 담았습니다.');
                 }
                 if (!items) {
                   localStorage.setItem(
@@ -143,6 +145,7 @@ function Product() {
                       },
                     ]),
                   );
+                  alert('장바구니에 담았습니다.');
                 }
               }}
             >
