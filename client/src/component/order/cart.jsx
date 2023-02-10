@@ -6,15 +6,10 @@ import instance from '../../util/axios-setting';
 import { useMemo } from 'react';
 
 const Cart = ({ order }) => {
-  const comp = (prev, next) => {
-    return prev.count === next.count;
-  };
-  const ProductList = memo(({ product, setPrice }) => {
+  const Image = memo(({ product }) => {
     const [imgSrc, setImgSrc] = useState('');
-    const [count, setCount] = useState(0);
 
     useEffect(() => {
-      setCount(Number(product.quantity));
       instance.get(`/api/products/${product.productId}`).then((res) => {
         instance
           .get(`/api/products/img/${res.data.imageKey}`, {
@@ -34,16 +29,28 @@ const Cart = ({ order }) => {
           });
       });
     }, []);
-
     return (
-      <tr>
+      <>
         <td scope="row" className="border-0">
           <img
             style={{ width: '100px', height: '100px' }}
             src={`${imgSrc}`}
-            alt="current"
+            alt=""
           />
         </td>
+      </>
+    );
+  });
+
+  const ProductList = ({ product }) => {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+      setCount(Number(product.quantity));
+    }, []);
+
+    return (
+      <>
         <td className="border-0 align-middle">
           <strong>{product.title}</strong>
         </td>
@@ -66,7 +73,10 @@ const Cart = ({ order }) => {
                 return i;
               });
               localStorage.setItem('items', JSON.stringify(array));
-              // dispatch({ type: 'ADD_PRICE', price: product.price });
+              setTotalPrice((cur) => {
+                const tmp = cur;
+                return tmp + product.price;
+              });
             }}
           >
             +
@@ -88,7 +98,10 @@ const Cart = ({ order }) => {
               });
               localStorage.setItem('items', JSON.stringify(array));
 
-              // dispatch({ type: 'SUB_PRICE', price: product.price });
+              setTotalPrice((cur) => {
+                const tmp = cur;
+                return tmp - product.price;
+              });
             }}
           >
             -
@@ -98,7 +111,7 @@ const Cart = ({ order }) => {
           <Button
             onClick={(e) => {
               e.preventDefault();
-              setProducts((current) => {
+              setProducts(() => {
                 const newProducts = products.filter(
                   (prod) => prod.productId !== product.productId,
                 );
@@ -118,9 +131,9 @@ const Cart = ({ order }) => {
             <text>🗑️</text>
           </Button>
         </td>
-      </tr>
+      </>
     );
-  }, comp);
+  };
 
   const deleteAll = (e) => {
     localStorage.removeItem('items');
@@ -129,23 +142,10 @@ const Cart = ({ order }) => {
     setTotalPrice(0);
   };
 
-  function reducer(state, action) {
-    switch (action.type) {
-      case 'ADD_PRICE':
-        return state + action.price;
-      case 'SUB_PRICE':
-        return state - action.price;
-      default:
-        return action.price;
-    }
-  }
-
   const [products, setProducts] = useState([{}]);
   const [empty, setEmpty] = useState(true);
 
   const [totalPrice, setTotalPrice] = useState(0);
-
-  const [state, dispatch] = useReducer(reducer, 10);
 
   useEffect(() => {
     setTotalPrice(0);
@@ -158,9 +158,10 @@ const Cart = ({ order }) => {
       const total = array.reduce((price, product) => {
         return price + product.price * product.quantity;
       }, 0);
-      dispatch({ price: total });
+      setTotalPrice(total);
     }
   }, []);
+
   return (
     <div className="cart">
       <h1 className="container px-4 px-lg-5 my-5">장바구니 목록</h1>
@@ -193,10 +194,16 @@ const Cart = ({ order }) => {
                     {products[0]?.productId !== undefined ? (
                       products.map((product) => {
                         return (
-                          <ProductList
-                            key={product.productId}
-                            product={product}
-                          />
+                          <tr>
+                            <Image
+                              key={product.productId}
+                              product={product}
+                            ></Image>
+                            <ProductList
+                              key={product.productId}
+                              product={product}
+                            />
+                          </tr>
                         );
                       })
                     ) : (
@@ -214,7 +221,7 @@ const Cart = ({ order }) => {
                         style={{ color: 'red' }}
                         className="fw-bold border-0 bg-light"
                       >
-                        {state}원
+                        {totalPrice}원
                       </th>
                     </tr>
                     <Button variant="danger" onClick={deleteAll}>

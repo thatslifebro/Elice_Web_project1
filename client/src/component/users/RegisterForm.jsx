@@ -15,7 +15,7 @@ function RegisterForm() {
 
   const validateEmail = () => {
     const emailForm = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
-    if (emailForm.test(email) == false) {
+    if (emailForm.test(email) === false) {
       setError('invalide Email Address');
       return false;
     }
@@ -86,7 +86,12 @@ function RegisterForm() {
               <Form.Control
                 type="email"
                 placeholder="Email Address"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  const regex =
+                    /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+                  // setCorrectEmail(!regex.test(e.target.value));
+                  setEmail(e.target.value);
+                }}
               />
             </Col>
           </Form.Group>
