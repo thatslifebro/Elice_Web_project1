@@ -21,13 +21,12 @@ router.post(
 router.post(
   '/register',
   asyncHandler(async (req, res) => {
-    const { email, password, address, fullName, role } = req.body;
+    const { email, password, address, fullName } = req.body;
     const createdUser = await authService.register({
       email,
       password,
       address,
       fullName,
-      role,
     });
     return res.status(201).json(createdUser);
   }),

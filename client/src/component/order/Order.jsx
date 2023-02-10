@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { resolvePath, useNavigate, useParams } from 'react-router-dom';
 import PopupDom from './PopupDom';
 import PopupPostCode from './PopupPostCode';
 import {
@@ -17,6 +17,7 @@ import axios from 'axios';
 import DaumPostcode from 'react-daum-postcode';
 import Cart from './cart';
 import instance from '../../util/axios-setting';
+import { verifyTokken } from '../../util/verify';
 
 function Order() {
   // 팝업창 상태 관리
@@ -40,8 +41,20 @@ function Order() {
     setIsPopupOpen(false);
   };
   useEffect(() => {
+    verifyTokken().then((role) => {
+      if (role === 'NOTUSER') {
+        navigate('/login');
+      }
+    });
     const array = JSON.parse(localStorage.getItem('items'));
     setProducts(array);
+    if (array === null) {
+      alert('주문할 내용이 없습니다');
+      navigate('/cart');
+    } else if (array.length === 0) {
+      alert('주문할 내용이 없습니다');
+      navigate('/cart');
+    }
     if (array.length !== 0) {
       setEmpty(false);
     }
@@ -56,10 +69,16 @@ function Order() {
 
   const handleOrder = (e) => {
     e.preventDefault();
-    if (products.length === 0) {
-      return;
+    const array = JSON.parse(localStorage.getItem('items'));
+    if (array === null) {
+      alert('주문할 내용이 없습니다');
+      navigate('/cart');
+    } else if (array.length === 0) {
+      alert('주문할 내용이 없습니다');
+      navigate('/cart');
     }
     if (!zonecode || !postalAddress || !detailAddress || !name || !phone) {
+      alert('항목이 모두 채워지지 않았습니다.');
       return;
     }
 
@@ -83,8 +102,11 @@ function Order() {
     };
     instance.post('/api/orders', data).then((res) => {
       navigate(`/ordercomplete/${res.data._id}`);
+      localStorage.removeItem('items');
     });
   };
+
+  const CartComp = useMemo(() => <Cart order={true} update={true} />, []);
 
   return (
     <Container>
@@ -94,7 +116,7 @@ function Order() {
             <div class="row">
               <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
                 <div class="table-responsive">
-                  <Cart order={true} />
+                  {CartComp}
                   <Container>
                     <Form>
                       <Form.Group
@@ -248,13 +270,9 @@ function Order() {
               ''
             ) : (
               <a href="/orderComplete" class="d-grid gap-2 col-9 mx-auto">
-                <button
-                  class="btn btn-dark rounded-pill py-2 d-md-block"
-                  type="button"
-                  onClick={handleOrder}
-                >
+                <Button variant="secondary" size="lg" onClick={handleOrder}>
                   구매하기
-                </button>
+                </Button>
               </a>
             )}
           </div>

@@ -44,6 +44,8 @@ function OrderComplete() {
       <tr>
         <td scope="row" className="border-0">
           <img style={{ width: '70px' }} src={imgSrc} key={item.productId} />
+        </td>
+        <td className="border-0 align-middle">
           <strong>{title}</strong>
         </td>
         <td className="border-0 align-middle">
@@ -105,16 +107,16 @@ function OrderComplete() {
   return (
     <>
       <Container>
-        <div className="p-3 mb-3 bg-secondary text-white">
-          <h1>주문 완료</h1>
-        </div>
-        <div className="mb-5">주문해 주셔서 감사합니다.</div>
         <Container>
           <div className="cart">
             <section className="py-3">
               <div className="container px-4 px-lg-5 my-1">
                 <div className="row">
                   <div className="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+                    <div className="p-3 mb-3 bg-secondary text-white">
+                      <h1>주문 완료</h1>
+                    </div>
+                    <div className="mb-5">주문해 주셔서 감사합니다.</div>
                     <div className="table-responsive">
                       <table className="table">
                         <thead>
@@ -122,6 +124,11 @@ function OrderComplete() {
                             <th scope="col" className="border-0 bg-light">
                               <div className="p-2 px-3 text-uppercase">
                                 상품목록
+                              </div>
+                            </th>
+                            <th scope="col" className="border-0 bg-light">
+                              <div className="p-2 px-3 text-uppercase">
+                                상품이름
                               </div>
                             </th>
                             <th scope="col" className="border-0 bg-light">
@@ -138,10 +145,12 @@ function OrderComplete() {
                               <ProductList key={item.productId} item={item} />
                             );
                           })}
-                          <tr>
-                            <th></th>
-                            <th>Total : {totalPrice} 원</th>
-                          </tr>
+
+                          <th scope="col" className="border-0 bg-light">
+                            <div className="p-5 px-2 text-uppercase">
+                              총 결제 금액 : {totalPrice} 원
+                            </div>
+                          </th>
                         </tbody>
                       </table>
                       <table className="table">
@@ -194,12 +203,9 @@ function OrderComplete() {
                   </div>
                 </div>
                 <a href="/orders" className="d-grid gap-2 col-9 mx-auto">
-                  <button
-                    className="btn btn-dark rounded-pill py-2 d-md-block"
-                    type="button"
-                  >
-                    상품 목록으로 가기
-                  </button>
+                  <Button variant="secondary" size="lg">
+                    주문 목록으로 가기
+                  </Button>
                 </a>
               </div>
             </section>

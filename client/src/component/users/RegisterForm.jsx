@@ -7,32 +7,15 @@ function RegisterForm() {
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [code, setCode] = useState('');
-  const [address1, setAddress1] = useState('');
-  const [address2, setAddress2] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  const validateEmail = () => {
-    const emailForm = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
-    if (emailForm.test(email) == false) {
-      setError('invalide Email Address');
-      return false;
-    }
-    return true;
-  };
+  const [EmailCorrect, setEmailCorrect] = useState(false);
+  const [passwordCorrect, setPasswordCorrect] = useState(false);
+  const [nameCorrect, setNameCorrect] = useState(false);
 
   const validateName = () => {
     if (name.length < 1) {
       setError('please input name');
-      return false;
-    }
-    return true;
-  };
-
-  const validateAddress = () => {
-    if (address1.length < 1) {
-      setError('please input address');
       return false;
     }
     return true;
@@ -46,32 +29,24 @@ function RegisterForm() {
     return true;
   };
 
-  const validateForm = () => {
-    return (
-      validateEmail() &&
-      validateName() &&
-      validateAddress() &&
-      validatePassword()
-    );
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = {
       email,
       fullName: name,
-      address: { postalCode: '1', address1: 'a', address2: 'a' },
       password,
     };
-    const inputStatus = validateForm();
-    if (inputStatus) {
+    if (true) {
       instance
         .post(`/api/auth/register`, userData)
         .then((res) => {
           console.log(res.data);
-          alert('Register Success!');
+          instance.post(`/api/auth/login`, { email, password });
+          alert('회원가입이 완료되었습니다.');
         })
-        .catch(() => console.log('error'));
+        .catch((err) => {
+          alert('회원가입에 실패했습니다.');
+        });
     } else {
       alert(error);
     }
@@ -86,7 +61,12 @@ function RegisterForm() {
               <Form.Control
                 type="email"
                 placeholder="Email Address"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  const regex =
+                    /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+                  setEmailCorrect(!regex.test(e.target.value));
+                  setEmail(e.target.value);
+                }}
               />
             </Col>
           </Form.Group>
@@ -143,21 +123,13 @@ function RegisterForm() {
 
           <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
             <Col sm>
-              <Form.Control
-                type="address"
-                placeholder="address1"
-                onChange={(e) => setAddress1(e.target.value)}
-              />
+              <Form.Control type="address" placeholder="address1" />
             </Col>
           </Form.Group>
 
           <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
             <Col sm>
-              <Form.Control
-                type="address"
-                placeholder="address2"
-                onChange={(e) => setAddress2(e.target.value)}
-              />
+              <Form.Control type="address" placeholder="address2" />
             </Col>
           </Form.Group>
           <br />

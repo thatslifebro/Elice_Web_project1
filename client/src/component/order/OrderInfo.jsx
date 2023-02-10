@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
@@ -14,6 +14,7 @@ import instance from '../../util/axios-setting';
 import { verifyTokken } from '../../util/verify';
 import PopupDom from './PopupDom';
 import PopupPostCode from './PopupPostCode';
+import Cart from './cart';
 
 function OrderComplete() {
   const ProductList = ({ item }) => {
@@ -138,41 +139,49 @@ function OrderComplete() {
   const [totalPrice, setTotalPrice] = useState();
   const [status, setStatus] = useState();
   const [role, setRole] = useState();
+
   const navigate = useNavigate();
 
   const deleteThisOrder = () => {
     if (status === '상품 준비 중' || role === 'ADMIN') {
       instance.delete(`/api/orders/${id}`).then(() => {
+        alert('이 주문을 삭제합니다.');
         navigate('/orders');
       });
     }
   };
   const updateThisOrder = () => {
-    instance
-      .put(`/api/orders/${id}`, {
-        items,
-        address: {
-          postalCode,
-          address1,
-          address2,
-          receiverName,
-          receiverPhoneNumber,
-        },
-        status,
-      })
-      .then((res) => {
-        const total = res.data.items.reduce((price, product) => {
-          return price + product.price * product.quantity;
-        }, 0);
-        setTotalPrice(total);
-        setAddress1(res.data.address.address1);
-        setAddress2(res.data.address.address2);
-        setPostalCode(res.data.address.postalCode);
-        setReceiverName(res.data.address.receiverName);
-        setReceiverPhoneNumber(res.data.address.receiverPhoneNumber);
-        setItems(res.data.items);
-        setStatus(res.data.status);
+    if (items.length === 0) {
+      instance.delete(`/api/orders/${id}`).then(() => {
+        alert('물품이 없어 주문을 삭제합니다.');
       });
+    } else if (
+      !postalCode ||
+      !address1 ||
+      !address2 ||
+      !receiverName ||
+      !receiverPhoneNumber
+    ) {
+      alert('채워지지 않은 항목이 있습니다.');
+      return;
+    } else {
+      instance
+        .put(`/api/orders/${id}`, {
+          items,
+          address: {
+            postalCode,
+            address1,
+            address2,
+            receiverName,
+            receiverPhoneNumber,
+          },
+          status,
+        })
+        .then(() => {
+          alert('수정완료');
+          navigate('/orders');
+        });
+    }
   };
 
   useEffect(() => {
@@ -199,6 +208,7 @@ function OrderComplete() {
         });
       });
   }, []);
+
   return (
     <>
       <Container>
@@ -234,6 +244,7 @@ function OrderComplete() {
                               <ProductList key={item.productId} item={item} />
                             );
                           })}
+
                           <tr>
                             <th></th>
                             <th>Total : {totalPrice} 원</th>
@@ -274,7 +285,12 @@ function OrderComplete() {
                                   </Button>
                                   <div id="popupDom">
                                     {isPopupOpen && (
-                                      <PopupDom>
+                                      <PopupDom
+                                        style={{
+                                          position: 'absolute',
+                                          top: '55%',
+                                        }}
+                                      >
                                         <PopupPostCode
                                           done={(data) => {
                                             setPostalCode(data.zonecode);
@@ -376,7 +392,7 @@ function OrderComplete() {
                       </table>
                     </div>
                     <div>
-                      주문 상태
+                      주문 상태 :
                       {role === 'ADMIN' ? (
                         <Form.Select
                           style={{ width: '500px' }}
@@ -408,21 +424,22 @@ function OrderComplete() {
                   </div>
                 </div>
                 <a className="d-grid gap-2 col-9 mx-auto">
-                  <button
-                    className="btn btn-dark rounded-pill py-2 d-md-block"
-                    type="button"
-                    onClick={updateThisOrder}
-                  >
-                    상품 정보 수정 완료
-                  </button>
+                  {role === 'ADMIN' || status === '상품 준비 중' ? (
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      onClick={updateThisOrder}
+                    >
+                      상품 정보 수정 완료
+                    </Button>
+                  ) : (
+                    ''
+                  )}
                 </a>
                 <a href="/orders" className="d-grid gap-2 col-9 mx-auto">
-                  <button
-                    className="btn btn-dark rounded-pill py-2 d-md-block"
-                    type="button"
-                  >
+                  <Button variant="secondary" type="button">
                     상품 목록으로 가기
-                  </button>
+                  </Button>
                 </a>
               </div>
             </section>

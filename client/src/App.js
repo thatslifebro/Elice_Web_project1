@@ -1,17 +1,19 @@
 import './App.css';
-import RegisterForm from './component/users/RegisterForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginForm from './component/users/LoginForm';
+import RegisterForm from './component/users/RegisterForm1';
+import LoginForm from './component/users/LoginForm1';
 import AddProduct from './component/admin/AddProduct';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AdminCategoryForm from './component/admin/AdminCategory';
 import AdminProductUD from './component/admin/AdminProductUD';
-import UserData from './component/users/UserData';
-import UserWithdrawal from './component/users/UserWithdrawal';
-import ChangePassword from './component/users/ChangePassword';
+import UserData1 from './component/users/UserData1';
+import UserWithdrawal from './component/users/UserWithdrawal1';
+import ChangePassword from './component/users/ChangePassword1';
 import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
 import AdminOrder from './component/admin/AdminOrder';
+
+import UserOrder from './component/admin/AdminOrder';
 import OrdersList from './component/order/OrdersList';
 import AdminMain from './component/admin/AdminMain';
 import OrderComplete from './component/order/OrderComplete';
@@ -30,9 +32,7 @@ function App() {
 
       <Routes>
         <Route path="/" />
-        <Route path="/login" element={<LoginForm />}>
-          로그인 화면
-        </Route>
+        <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/register" element={<RegisterForm />}>
           회원가입 화면
         </Route>
@@ -43,14 +43,15 @@ function App() {
           관리자 product update delete 화면
         </Route>
         <Route path="/admin/users" element={<AdminUserDB />} />
-        <Route path="/userdata" element={<UserData />} />
+        <Route path="/userdata" element={<UserData1 />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/user-withdrawal" element={<UserWithdrawal />} />
         <Route path="/AddProduct" element={<AddProduct />}></Route>
         <Route path="/product" element={<CategoryProducts />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/orders/list" element={<OrdersList />} />
-        <Route path="/orders" element={<AdminOrder />} />
+        <Route path="/orders1" element={<AdminOrder />} />
+        <Route path="/orders" element={<UserOrder />} />
         <Route path="/order" element={<Order />}>
           주문페이지
         </Route>
@@ -64,7 +65,7 @@ function App() {
         <Route path="/main" element={<Main />}>
           메인
         </Route>
-        <Route path="/cart" element={<Cart />}>
+        <Route path="/cart" element={<Cart order={false} update={true} />}>
           장바구니
         </Route>
 

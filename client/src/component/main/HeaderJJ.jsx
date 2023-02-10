@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Container, Nav, Navbar, Button, NavDropdown } from 'react-bootstrap';
 import axios from 'axios';
+import { MDBRipple } from 'mdb-react-ui-kit';
 import { verifyTokken } from '../../util/verify';
 import { Link } from 'react-router-dom';
 import instance from '../../util/axios-setting';
@@ -13,8 +14,10 @@ const Header = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem('jwt');
+    localStorage.removeItem('items');
     setAuth('NOTUSER');
     instance.defaults.headers.common['Authorization'] = null;
+    window.location.reload();
   };
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -28,7 +31,8 @@ const Header = () => {
 
   return (
     <>
-      {auth !== 'ADMIN' ? (
+      {/*auth !== 'ADMIN'*/}
+      {true ? (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container px-4 px-lg-1">
             <Navbar bg="white">
@@ -45,11 +49,12 @@ const Header = () => {
               </Container>
             </Navbar>
             <Link className="navbar-brand" to={'/main'}>
-              6team Shop
+              6TEAMSHOP
             </Link>
-
-            <button
+            <NavDropdown
               className="navbar-toggler"
+              id="nav-dropdown-dark-example"
+              title="Menu"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent"
@@ -57,8 +62,19 @@ const Header = () => {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
-            </button>
+              <NavDropdown.Item href="/main">Home</NavDropdown.Item>
+              <NavDropdown.Item href="/product">Product</NavDropdown.Item>
+              <NavDropdown.Item href="/product">Category</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+              {auth === 'NOTUSER' ? (
+                <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+              ) : (
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
+              )}
+            </NavDropdown>
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
@@ -91,29 +107,34 @@ const Header = () => {
 
               {auth !== 'NOTUSER' ? (
                 <>
+                  <Link className="nav-link active m-3" to={'/userdata'}>
+                    MyPage
+                  </Link>
+                  {auth === 'ADMIN' ? (
+                    <>
+                      <Link className="nav-link active m-3" to={'/admin'}>
+                        Admin
+                      </Link>
+                    </>
+                  ) : (
+                    ''
+                  )}
                   <Button variant="outline-dark" onClick={handleLogout}>
                     <i className="bi-cart-fill me-1"></i>
                     Logout
                   </Button>
-                  {auth === 'ADMIN' ? (
-                    <Link className="btn btn-outline-dark" to={'/admin'}>
-                      <i className="bi-cart-fill me-1"></i>
-                      Admin
-                    </Link>
-                  ) : (
-                    ''
-                  )}
                 </>
               ) : (
-                <Link className="btn btn-outline-dark" to={'/login'}>
-                  <i className="bi-cart-fill me-1"></i>
-                  Login
-                </Link>
+                <>
+                  <Link className="btn btn-outline-dark" to={'/login'}>
+                    <i className="bi-cart-fill me-1"></i>
+                    Login
+                  </Link>
+                </>
               )}
               <Link className="btn btn-outline-dark ms-lg-1" to={'/cart'}>
                 <i className="bi-cart-fill me-1 "></i>
-                Cart
-                <span className="badge bg-white text-white ms-1 rounded-pill">
+                <span className="badge bg-white text-white rounded-pill">
                   <text>🛒</text>
                 </span>
               </Link>
@@ -137,20 +158,8 @@ const Header = () => {
               </Container>
             </Navbar>
             <Link className="navbar-brand" to={'/main'}>
-              6team Shop
+              6TEAMSHOP
             </Link>
-
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
@@ -172,7 +181,7 @@ const Header = () => {
                       <NavDropdown.Item
                         key={data._id}
                         value={data._id}
-                        href={`/product/?category=${data._id}}`}
+                        href={`/product/?category=${data._id}`}
                       >
                         {data.title}
                       </NavDropdown.Item>
@@ -183,28 +192,33 @@ const Header = () => {
 
               {auth !== 'NOTUSER' ? (
                 <>
-                  <Button variant="outline-light" onClick={handleLogout}>
-                    <i className="bi-cart-fill me-1"></i>
-                    Logout
-                  </Button>
+                  <Link
+                    className="nav-link active m-3 text-white"
+                    to={'/admin'}
+                  >
+                    Admin
+                  </Link>
                   {auth === 'ADMIN' ? (
-                    <Link className="btn btn-outline-light" to={'/admin'}>
-                      <i className="bi-cart-fill me-1"></i>
-                      Admin
-                    </Link>
+                    <>
+                      <Button variant="outline-light" onClick={handleLogout}>
+                        <i className="bi-cart-fill me-1"></i>
+                        Logout
+                      </Button>
+                    </>
                   ) : (
                     ''
                   )}
                 </>
               ) : (
-                <Link className="btn btn-outline-light" to={'/login'}>
-                  <i className="bi-cart-fill me-1"></i>
-                  Login
-                </Link>
+                <>
+                  <Link className="btn btn-outline-light" to={'/login'}>
+                    <i className="bi-cart-fill me-1"></i>
+                    Login
+                  </Link>
+                </>
               )}
               <Link className="btn btn-outline-light ms-lg-1" to={'/cart'}>
                 <i className="bi-cart-fill me-1 "></i>
-                Cart
                 <span className="badge bg-white text-white ms-1 rounded-pill">
                   <text>🛒</text>
                 </span>
