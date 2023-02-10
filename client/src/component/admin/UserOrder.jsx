@@ -82,20 +82,21 @@ function UserOrder() {
 
     return (
       <>
-        <MDBListGroupItem
-          onClick={orderClick}
-          className="d-flex justify-content-between align-items-center"
-        >
+        <MDBListGroupItem className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
-            <p className="mb-1">{orderId}</p>
+            <p className="fw-bold mb-1">{orderId}</p>
           </div>
-          <p className="mb-1">{userId}</p>
-          {order.items.map((item) => {
-            return <OneItem item={item} />;
-          })}
-          <p className="mb-1">{totalPrice}</p>
-          <p className="mb-1">{status}</p>
-          <p className="mb-1">{orderDate}</p>
+          <div className="d-flex align-items-center">
+            <p className="fw-bold mb-1">{userId}</p>
+          </div>
+          <div className="d-flex align-items-center">
+            {order.items.map((item) => {
+              return <OneItem item={item} />;
+            })}
+          </div>
+          <p className="fw-bold mb-1">{totalPrice}</p>
+          <p className="fw-bold mb-1">{status}</p>
+          <p className="fw-bold mb-1">{orderDate}</p>
         </MDBListGroupItem>
       </>
     );
@@ -140,11 +141,21 @@ function UserOrder() {
         <div className="d-flex align-items-center">
           <p className="fw-bold mb-1">주문 번호</p>
         </div>
-        <div className="fw-bold mb-1">회원 아이디</div>
-        <div className="fw-bold mb-1">주문 상품</div>
-        <p className="fw-bold mb-1">총 주문가격</p>
-        <p className="fw-bold mb-1">주문 상태</p>
-        <p className="fw-bold mb-1">주문 날짜</p>
+        <div className="d-flex align-items-center">
+          <p className="fw-bold mb-1">회원 아이디</p>
+        </div>
+        <div className="d-flex align-items-center">
+          <p className="fw-bold mb-1">주문 상품</p>
+        </div>
+        <div className="d-flex align-items-center">
+          <p className="fw-bold mb-1">총 가격</p>
+        </div>
+        <div className="d-flex align-items-center">
+          <p className="fw-bold mb-1">주문 상태</p>
+        </div>
+        <div className="d-flex align-items-center">
+          <p className="fw-bold mb-1">주문 날짜</p>
+        </div>
       </MDBListGroupItem>
       {noOrder
         ? ''

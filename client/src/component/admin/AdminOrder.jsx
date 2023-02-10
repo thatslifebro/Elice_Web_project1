@@ -73,13 +73,13 @@ function AdminOrder() {
     return (
       <tr onClick={orderClick}>
         <td>#</td>
-        <td>{orderId}</td>
-        <td>{userId}</td>
         <td>
           {order.items.map((item) => {
             return <OneItem item={item} />;
           })}
         </td>
+        <td>{orderId}</td>
+        <td>{userId}</td>
         <td>{totalPrice}</td>
         <td>{status}</td>
         <td>{orderDate}</td>
@@ -114,9 +114,9 @@ function AdminOrder() {
   const objOrder = {
     header: [
       '#',
-      '주문번호',
-      '회원아이디',
       '주문상품',
+      '회원아이디',
+      '주문번호',
       '총주문가격',
       '주문상태',
       '주문날짜',
@@ -124,13 +124,13 @@ function AdminOrder() {
   };
 
   return (
-    <Container fluid>
+    <Container fluid className="bg-white">
       <Row>
         <Col className="mb-2 ms-3 mr-5">
-          <h1>주문 내역</h1>
+          <p className="fw-bold mb-1">나의 주문내역</p>
 
           <Table striped bordered hover>
-            <thead className="table-success">
+            <thead>
               <tr>
                 {objOrder.header.map((item) => {
                   return <th>{item}</th>;

@@ -13,7 +13,7 @@ import CategoryProducts from './component/product/CategoryProducts';
 import Product from './component/product/Product';
 import AdminOrder from './component/admin/AdminOrder';
 
-import UserOrder from './component/admin/UserOrder';
+import UserOrder from './component/admin/AdminOrder';
 import OrdersList from './component/order/OrdersList';
 import AdminMain from './component/admin/AdminMain';
 import OrderComplete from './component/order/OrderComplete';
