@@ -29,7 +29,7 @@ function LoginForm() {
       .post(`/api/auth/login`, userData)
       .then((res) => {
         if (res.data === '이메일이나 비번이 틀림') {
-          return;
+          throw new Error('');
         }
         localStorage.setItem('jwt', res.data);
       })

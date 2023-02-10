@@ -270,13 +270,9 @@ function Order() {
               ''
             ) : (
               <a href="/orderComplete" class="d-grid gap-2 col-9 mx-auto">
-                <button
-                  class="btn btn-dark rounded-pill py-2 d-md-block"
-                  type="button"
-                  onClick={handleOrder}
-                >
+                <Button variant="secondary" size="lg" onClick={handleOrder}>
                   구매하기
-                </button>
+                </Button>
               </a>
             )}
           </div>

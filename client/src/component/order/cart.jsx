@@ -60,7 +60,8 @@ const Cart = ({ order, update }) => {
           <>
             <td className="border-0 align-middle">
               <strong>{count} 개</strong>
-              <button
+              <Button
+                variant="light"
                 onClick={() => {
                   setCount((now) => {
                     const tmp = now;
@@ -80,8 +81,9 @@ const Cart = ({ order, update }) => {
                 }}
               >
                 +
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="light"
                 onClick={() => {
                   if (count === 1) {
                     return;
@@ -104,7 +106,7 @@ const Cart = ({ order, update }) => {
                 }}
               >
                 -
-              </button>
+              </Button>
             </td>
             <td className="border-0 align-middle">
               <Button
@@ -254,12 +256,9 @@ const Cart = ({ order, update }) => {
           ''
         ) : (
           <a href="/order" className="d-grid gap-2 col-9 mx-auto">
-            <button
-              className="btn btn-dark rounded-pill py-2 d-md-block"
-              type="button"
-            >
+            <Button variant="secondary" size="lg">
               구매 하러가기
-            </button>
+            </Button>
           </a>
         )}
       </section>
