@@ -1,6 +1,9 @@
 import './App.css';
 import RegisterForm from './component/users/RegisterForm';
+
+import RegisterForm1 from './component/users/RegisterForm1';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import LoginForm1 from './component/users/LoginForm1';
 import LoginForm from './component/users/LoginForm';
 import AddProduct from './component/admin/AddProduct';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -30,10 +33,14 @@ function App() {
 
       <Routes>
         <Route path="/" />
-        <Route path="/login" element={<LoginForm />}>
+        <Route path="/login" element={<LoginForm1 />}></Route>
+        <Route path="/login1" element={<LoginForm />}>
           로그인 화면
         </Route>
-        <Route path="/register" element={<RegisterForm />}>
+        <Route path="/register" element={<RegisterForm1 />}>
+          회원가입 화면
+        </Route>
+        <Route path="/register1" element={<RegisterForm />}>
           회원가입 화면
         </Route>
         <Route path="/admin/category" element={<AdminCategoryForm />}>

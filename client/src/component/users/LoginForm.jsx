@@ -57,7 +57,7 @@ function LoginForm() {
 
                       const regex =
                         /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
-                      console.log(regex.test(e.target.value));
+
                       setCorrect(!regex.test(e.target.value));
                     }}
                   />

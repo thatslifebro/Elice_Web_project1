@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Container, Nav, Navbar, Button, NavDropdown } from 'react-bootstrap';
 import axios from 'axios';
+import { MDBRipple } from 'mdb-react-ui-kit';
 import { verifyTokken } from '../../util/verify';
 import { Link } from 'react-router-dom';
 import instance from '../../util/axios-setting';
@@ -45,11 +46,13 @@ const Header = () => {
               </Container>
             </Navbar>
             <Link className="navbar-brand" to={'/main'}>
-              6team Shop
+              6TEAMSHOP
             </Link>
 
-            <button
+            <NavDropdown
               className="navbar-toggler"
+              id="nav-dropdown-dark-example"
+              title="Menu"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent"
@@ -57,8 +60,12 @@ const Header = () => {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
-            </button>
+              <NavDropdown.Item href="/main">Home</NavDropdown.Item>
+              <NavDropdown.Item href="/product">Product</NavDropdown.Item>
+              <NavDropdown.Item href="/category">product</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+            </NavDropdown>
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
@@ -91,13 +98,15 @@ const Header = () => {
 
               {auth !== 'NOTUSER' ? (
                 <>
+                  <Link className="nav-link active m-3" to={'/userdata'}>
+                    MyPage
+                  </Link>
                   <Button variant="outline-dark" onClick={handleLogout}>
                     <i className="bi-cart-fill me-1"></i>
                     Logout
                   </Button>
                   {auth === 'ADMIN' ? (
-                    <Link className="btn btn-outline-dark" to={'/admin'}>
-                      <i className="bi-cart-fill me-1"></i>
+                    <Link className="nav-link active m-3" to={'/admin'}>
                       Admin
                     </Link>
                   ) : (
@@ -112,8 +121,7 @@ const Header = () => {
               )}
               <Link className="btn btn-outline-dark ms-lg-1" to={'/cart'}>
                 <i className="bi-cart-fill me-1 "></i>
-                Cart
-                <span className="badge bg-white text-white ms-1 rounded-pill">
+                <span className="badge bg-white text-white rounded-pill">
                   <text>🛒</text>
                 </span>
               </Link>
@@ -137,11 +145,13 @@ const Header = () => {
               </Container>
             </Navbar>
             <Link className="navbar-brand" to={'/main'}>
-              6team Shop
+              6TEAMSHOP
             </Link>
 
-            <button
+            <NavDropdown
               className="navbar-toggler"
+              id="nav-dropdown-dark-example"
+              title="Menu"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent"
@@ -149,8 +159,13 @@ const Header = () => {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
-            </button>
+              <NavDropdown.Item href="/main">Home</NavDropdown.Item>
+              <NavDropdown.Item href="/product">Product</NavDropdown.Item>
+              <NavDropdown.Item href="/category">Category</NavDropdown.Item>
+              <NavDropdown.Item href="/category">Category</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+            </NavDropdown>
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
@@ -183,15 +198,17 @@ const Header = () => {
 
               {auth !== 'NOTUSER' ? (
                 <>
-                  <Button variant="outline-light" onClick={handleLogout}>
-                    <i className="bi-cart-fill me-1"></i>
-                    Logout
-                  </Button>
+                  <Link
+                    className="nav-link active m-3 text-white"
+                    to={'/admin'}
+                  >
+                    Admin
+                  </Link>
                   {auth === 'ADMIN' ? (
-                    <Link className="btn btn-outline-light" to={'/admin'}>
+                    <Button variant="outline-light" onClick={handleLogout}>
                       <i className="bi-cart-fill me-1"></i>
-                      Admin
-                    </Link>
+                      Logout
+                    </Button>
                   ) : (
                     ''
                   )}
@@ -204,7 +221,6 @@ const Header = () => {
               )}
               <Link className="btn btn-outline-light ms-lg-1" to={'/cart'}>
                 <i className="bi-cart-fill me-1 "></i>
-                Cart
                 <span className="badge bg-white text-white ms-1 rounded-pill">
                   <text>🛒</text>
                 </span>
