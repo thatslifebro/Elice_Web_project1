@@ -24,6 +24,7 @@ import Main from './component/main/Main';
 import Footer from './component/main/Footer';
 import HeaderJJ from './component/main/HeaderJJ';
 import AdminUserDB from './component/admin/AdminUserDB';
+import Root from './component/main/Root';
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
       <HeaderJJ></HeaderJJ>
 
       <Routes>
-        <Route path="/" />
+        <Route path="/" element={<Root />} />
         <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/register" element={<RegisterForm />}>
           회원가입 화면
