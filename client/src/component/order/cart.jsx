@@ -5,8 +5,8 @@ import { Button } from 'react-bootstrap';
 import instance from '../../util/axios-setting';
 import { useMemo } from 'react';
 
-const Cart = ({ order }) => {
-  const Image = memo(({ product }) => {
+const Cart = ({ order, update }) => {
+  const Image = ({ product }) => {
     const [imgSrc, setImgSrc] = useState('');
 
     useEffect(() => {
@@ -19,6 +19,7 @@ const Cart = ({ order }) => {
             responseType: 'blob',
           })
           .then((res) => {
+            console.log('lfjskd');
             const getfile = new File([res.data], product.imageKey);
             const reader = new FileReader();
             reader.onload = (event) => {
@@ -30,19 +31,17 @@ const Cart = ({ order }) => {
       });
     }, []);
     return (
-      <>
-        <td scope="row" className="border-0">
-          <img
-            style={{ width: '100px', height: '100px' }}
-            src={`${imgSrc}`}
-            alt=""
-          />
-        </td>
-      </>
+      <td>
+        <img
+          style={{ width: '100px', height: '100px' }}
+          src={`${imgSrc}`}
+          alt="img"
+        />
+      </td>
     );
-  });
+  };
 
-  const ProductList = ({ product }) => {
+  const ProductList = ({ product, update }) => {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
@@ -57,80 +56,86 @@ const Cart = ({ order }) => {
         <td className="border-0 align-middle">
           <strong>{product.price} 원</strong>
         </td>
-        <td className="border-0 align-middle">
-          <strong>{count} 개</strong>
-          <button
-            onClick={() => {
-              setCount((now) => {
-                const tmp = now;
-                return Number(tmp) + 1;
-              });
-
-              const array = products.map((i) => {
-                if (i.productId === product.productId) {
-                  i.quantity = Number(product.quantity) + 1;
-                }
-                return i;
-              });
-              localStorage.setItem('items', JSON.stringify(array));
-              setTotalPrice((cur) => {
-                const tmp = cur;
-                return tmp + product.price;
-              });
-            }}
-          >
-            +
-          </button>
-          <button
-            onClick={() => {
-              if (count === 1) {
-                return;
-              }
-              setCount((now) => {
-                const tmp = now;
-                return Number(tmp) - 1;
-              });
-              const array = products.map((i) => {
-                if (i.productId === product.productId) {
-                  i.quantity = Number(product.quantity) - 1;
-                }
-                return i;
-              });
-              localStorage.setItem('items', JSON.stringify(array));
-
-              setTotalPrice((cur) => {
-                const tmp = cur;
-                return tmp - product.price;
-              });
-            }}
-          >
-            -
-          </button>
-        </td>
-        <td className="border-0 align-middle">
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              setProducts(() => {
-                const newProducts = products.filter(
-                  (prod) => prod.productId !== product.productId,
-                );
-                const total = newProducts.reduce((price, product) => {
-                  return price + product.price * product.quantity;
-                }, 0);
-                setTotalPrice(total);
-                localStorage.setItem('items', JSON.stringify(newProducts));
-                if (newProducts.length === 0) {
-                  setEmpty(true);
-                }
-                return newProducts;
-              });
-            }}
-            variant="outline-light"
-          >
-            <text>🗑️</text>
-          </Button>
-        </td>
+        {update ? (
+          <>
+            <td className="border-0 align-middle">
+              <strong>{count} 개</strong>
+              <button
+                onClick={() => {
+                  setCount((now) => {
+                    const tmp = now;
+                    return Number(tmp) + 1;
+                  });
+                  const array = products.map((i) => {
+                    if (i.productId === product.productId) {
+                      i.quantity = Number(product.quantity) + 1;
+                    }
+                    return i;
+                  });
+                  localStorage.setItem('items', JSON.stringify(array));
+                  setTotalPrice((cur) => {
+                    const tmp = cur;
+                    return tmp + product.price;
+                  });
+                }}
+              >
+                +
+              </button>
+              <button
+                onClick={() => {
+                  if (count === 1) {
+                    return;
+                  }
+                  setCount((now) => {
+                    const tmp = now;
+                    return Number(tmp) - 1;
+                  });
+                  const array = products.map((i) => {
+                    if (i.productId === product.productId) {
+                      i.quantity = Number(product.quantity) - 1;
+                    }
+                    return i;
+                  });
+                  localStorage.setItem('items', JSON.stringify(array));
+                  setTotalPrice((cur) => {
+                    const tmp = cur;
+                    return tmp - product.price;
+                  });
+                }}
+              >
+                -
+              </button>
+            </td>
+            <td className="border-0 align-middle">
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setProducts(() => {
+                    const newProducts = products.filter(
+                      (prod) => prod.productId !== product.productId,
+                    );
+                    const total = newProducts.reduce((price, product) => {
+                      return price + product.price * product.quantity;
+                    }, 0);
+                    setTotalPrice(total);
+                    localStorage.setItem('items', JSON.stringify(newProducts));
+                    if (newProducts.length === 0) {
+                      setEmpty(true);
+                    }
+                    return newProducts;
+                  });
+                }}
+                variant="outline-light"
+              >
+                <text>🗑️</text>
+              </Button>
+            </td>
+          </>
+        ) : (
+          <td className="border-0 align-middle">
+            <strong>{count} 개</strong>
+          </td>
+        )}
       </>
     );
   };
@@ -146,6 +151,35 @@ const Cart = ({ order }) => {
   const [empty, setEmpty] = useState(true);
 
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const ImgComp = useMemo(() => {
+    const array = JSON.parse(localStorage.getItem('items'));
+    if (array === null) {
+      return (
+        <th scope="col" className="border-1 bg-light">
+          <div className="py-4 text-uppercase">장바구니가 비었습니다</div>
+        </th>
+      );
+    } else if (array.length === 0) {
+      return (
+        <th scope="col" className="border-1 bg-light">
+          <div className="py-4 text-uppercase">장바구니가 비었습니다</div>
+        </th>
+      );
+    }
+    return (
+      <>
+        {array.map((product) => {
+          return (
+            <tr>
+              <Image product={product} />
+              <ProductList product={product} update={update} />
+            </tr>
+          );
+        })}
+      </>
+    );
+  }, [products]);
 
   useEffect(() => {
     setTotalPrice(0);
@@ -200,30 +234,7 @@ const Cart = ({ order }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {products[0]?.productId !== undefined ? (
-                      products.map((product) => {
-                        return (
-                          <tr>
-                            <Image
-                              key={product.productId}
-                              product={product}
-                            ></Image>
-                            <ProductList
-                              key={product.productId}
-                              product={product}
-                            />
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <tr>
-                        <th scope="col" className="border-1 bg-light">
-                          <div className="py-4 text-uppercase">
-                            장바구니가 비었습니다
-                          </div>
-                        </th>
-                      </tr>
-                    )}
+                    {ImgComp}
                     <tr className="d-flex justify-content-between py-3 border-bottom">
                       <th className="text-muted border-0 bg-light">총 가격</th>
                       <th

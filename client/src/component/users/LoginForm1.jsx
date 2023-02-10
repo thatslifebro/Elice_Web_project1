@@ -28,6 +28,9 @@ function LoginForm() {
     instance
       .post(`/api/auth/login`, userData)
       .then((res) => {
+        if (res.data === '이메일이나 비번이 틀림') {
+          return;
+        }
         localStorage.setItem('jwt', res.data);
       })
       .then(verifyTokken)
@@ -105,7 +108,9 @@ function LoginForm() {
                 type="password"
                 size="lg"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
               />
 
               <Button

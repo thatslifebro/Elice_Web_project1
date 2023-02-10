@@ -18,7 +18,7 @@ export default class authService {
     return token;
   }
 
-  static async register({ email, password, address, fullName, role }) {
+  static async register({ email, password, address, fullName }) {
     const user = await User.findOne({ email });
     if (user) {
       throw new Error('이미 있는 이메일');
@@ -28,7 +28,6 @@ export default class authService {
       address,
       fullName,
       password: await bcrypt.hash(password, saltRounds),
-      role,
     });
     const filtered = {
       email: newUser.email,

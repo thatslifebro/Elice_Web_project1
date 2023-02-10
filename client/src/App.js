@@ -71,7 +71,7 @@ function App() {
         <Route path="/main" element={<Main />}>
           메인
         </Route>
-        <Route path="/cart" element={<Cart />}>
+        <Route path="/cart" element={<Cart order={false} update={true} />}>
           장바구니
         </Route>
 

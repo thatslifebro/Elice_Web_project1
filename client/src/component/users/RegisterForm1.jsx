@@ -17,72 +17,35 @@ import {
 } from 'mdb-react-ui-kit';
 
 function RegisterForm() {
-  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [code, setCode] = useState('');
-  const [address1, setAddress1] = useState('');
-  const [address2, setAddress2] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [emailCorrect, setEmailCorrect] = useState(false);
+  const [passwordCorrect, setPasswordCorrect] = useState(false);
+  const [nameCorrect, setNameCorrect] = useState(false);
   const navigate = useNavigate();
-
-  const validateEmail = () => {
-    const emailForm = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
-    if (emailForm.test(email) == false) {
-      setError('invalide Email Address');
-      return false;
-    }
-    return true;
-  };
-
-  const validateName = () => {
-    if (name.length < 1) {
-      setError('please input name');
-      return false;
-    }
-    return true;
-  };
-
-  const validateAddress = () => {
-    if (address1.length < 1) {
-      setError('please input address');
-      return false;
-    }
-    return true;
-  };
-
-  const validatePassword = () => {
-    if (password !== confirmPassword) {
-      setError('password is not confirmed');
-      return false;
-    }
-    return true;
-  };
-
-  const validateForm = () => {
-    return validateEmail() && validateName() && validatePassword();
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const userData = {
-      email,
-      fullName: name,
-      password,
-    };
-    const inputStatus = validateForm();
-    if (inputStatus) {
+    if (nameCorrect && emailCorrect && passwordCorrect) {
       instance
-        .post(`/api/auth/register`, userData)
+        .post(`/api/auth/register`, { email, password, fullName: name })
         .then((res) => {
           console.log(res.data);
-          alert('Register Success!');
-          navigate('/main');
+          alert('회원가입이 완료되었습니다.');
+          instance.post('/api/auth/login', { email, password }).then((res) => {
+            localStorage.setItem('jwt', res.data);
+            alert('로그인됩니다.');
+            navigate('/main');
+            window.location.reload();
+          });
         })
-        .catch(() => console.log('error'));
+        .catch((err) => {
+          alert(err);
+        });
     } else {
-      alert(error);
+      alert('항목이 조건에 맞지 않습니다.');
     }
   };
   return (
@@ -99,13 +62,32 @@ function RegisterForm() {
 
             <MDBCardBody className="px-5">
               <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">회원가입</h3>
+              {!emailCorrect ? (
+                <div style={{ color: 'red' }}>
+                  이메일이 형식에 맞지 않습니다.
+                </div>
+              ) : (
+                ''
+              )}
               <MDBInput
                 wrapperClass="mb-4"
                 label="이메일"
                 id="form1"
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  const regex =
+                    /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+                  setEmailCorrect(regex.test(e.target.value));
+                  setEmail(e.target.value);
+                }}
               />
+              {!passwordCorrect ? (
+                <div style={{ color: 'red' }}>
+                  확인 비밀번호가 일치하지 않습니다.
+                </div>
+              ) : (
+                ''
+              )}
               <MDBRow>
                 <MDBCol md="6">
                   <MDBInput
@@ -113,6 +95,7 @@ function RegisterForm() {
                     label="비밀번호"
                     id="form2"
                     type="password"
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </MDBCol>
@@ -123,20 +106,48 @@ function RegisterForm() {
                     label="비밀번호 재확인"
                     id="form2"
                     type="password"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={confirmPassword}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      if (password !== e.target.value) {
+                        setPasswordCorrect(false);
+                      } else {
+                        setPasswordCorrect(true);
+                      }
+                    }}
                   />
                 </MDBCol>
               </MDBRow>
               <MDBCol md="6">
+                {!nameCorrect ? (
+                  <div style={{ color: 'red' }}>
+                    이름이 작성되지 않았습니다.
+                  </div>
+                ) : (
+                  ''
+                )}
                 <MDBInput
                   wrapperClass="datepicker mb-4"
                   label="이름"
                   id="form2"
                   type="name"
-                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                  onChange={(e) => {
+                    if (e.target.value.length === 0) {
+                      setNameCorrect(false);
+                    } else {
+                      setNameCorrect(true);
+                    }
+                    setName(e.target.value);
+                  }}
                 />
               </MDBCol>
-              <Button className="mb-4" variant="secondary" size="lg">
+              <Button
+                onClick={handleSubmit}
+                className="mb-4"
+                variant="secondary"
+                size="lg"
+              >
                 회원가입하기
               </Button>
             </MDBCardBody>

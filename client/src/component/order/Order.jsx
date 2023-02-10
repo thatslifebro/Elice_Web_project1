@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { resolvePath, useNavigate, useParams } from 'react-router-dom';
 import PopupDom from './PopupDom';
 import PopupPostCode from './PopupPostCode';
@@ -48,6 +48,13 @@ function Order() {
     });
     const array = JSON.parse(localStorage.getItem('items'));
     setProducts(array);
+    if (array === null) {
+      alert('주문할 내용이 없습니다');
+      navigate('/cart');
+    } else if (array.length === 0) {
+      alert('주문할 내용이 없습니다');
+      navigate('/cart');
+    }
     if (array.length !== 0) {
       setEmpty(false);
     }
@@ -62,10 +69,16 @@ function Order() {
 
   const handleOrder = (e) => {
     e.preventDefault();
-    if (products.length === 0) {
-      return;
+    const array = JSON.parse(localStorage.getItem('items'));
+    if (array === null) {
+      alert('주문할 내용이 없습니다');
+      navigate('/cart');
+    } else if (array.length === 0) {
+      alert('주문할 내용이 없습니다');
+      navigate('/cart');
     }
     if (!zonecode || !postalAddress || !detailAddress || !name || !phone) {
+      alert('항목이 모두 채워지지 않았습니다.');
       return;
     }
 
@@ -92,6 +105,8 @@ function Order() {
     });
   };
 
+  const CartComp = useMemo(() => <Cart order={true} update={true} />, []);
+
   return (
     <Container>
       <div className="cart">
@@ -100,7 +115,7 @@ function Order() {
             <div class="row">
               <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
                 <div class="table-responsive">
-                  <Cart order={true} />
+                  {CartComp}
                   <Container>
                     <Form>
                       <Form.Group

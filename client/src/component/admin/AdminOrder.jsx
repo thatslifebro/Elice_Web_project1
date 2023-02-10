@@ -127,7 +127,7 @@ function AdminOrder() {
     <Container fluid>
       <Row>
         <Col className="mb-2 ms-3 mr-5">
-          <h1>관리자모드 주문 내역 (준비중)</h1>
+          <h1>주문 내역</h1>
 
           <Table striped bordered hover>
             <thead className="table-success">
@@ -143,13 +143,6 @@ function AdminOrder() {
                 : ordersList.map((order) => {
                     return <OneOrder key={order._id} order={order} />;
                   })}
-              <tr>
-                <td>#</td>
-                <td colSpan={3}></td>
-                <td>\</td>
-                <td></td>
-                <td colSpan={2}></td>
-              </tr>
             </tbody>
           </Table>
         </Col>
