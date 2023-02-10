@@ -15,6 +15,7 @@ const Header = () => {
     e.preventDefault();
     localStorage.removeItem('jwt');
     localStorage.removeItem('items');
+    localStorage.removeItem('recent');
     setAuth('NOTUSER');
     instance.defaults.headers.common['Authorization'] = null;
     window.location.reload();

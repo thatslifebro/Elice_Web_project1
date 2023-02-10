@@ -4,6 +4,7 @@ import AdminCategory from './AdminCategory';
 import AdminProduct from './AddProduct';
 import AdminOrder from './AdminOrder';
 import AdminProductUD from './AdminProductUD';
+import AdminUserDB from './AdminUserDB';
 
 function AdminMain() {
   return (
@@ -19,10 +20,13 @@ function AdminMain() {
               <Nav.Link eventKey="menu2">상품추가</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="menu4">상품관리</Nav.Link>
+              <Nav.Link eventKey="menu3">상품관리</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="menu3">주문관리</Nav.Link>
+              <Nav.Link eventKey="menu4">주문관리</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="menu5">유저관리</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
@@ -39,6 +43,9 @@ function AdminMain() {
             </Tab.Pane>
             <Tab.Pane eventKey="menu4">
               <AdminProductUD />
+            </Tab.Pane>
+            <Tab.Pane eventKey="menu5">
+              <AdminUserDB />
             </Tab.Pane>
           </Tab.Content>
         </Col>
