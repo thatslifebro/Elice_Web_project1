@@ -49,8 +49,10 @@ const Header = () => {
               6TEAMSHOP
             </Link>
 
-            <button
+            <NavDropdown
               className="navbar-toggler"
+              id="nav-dropdown-dark-example"
+              title="Menu"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent"
@@ -58,8 +60,12 @@ const Header = () => {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
-            </button>
+              <NavDropdown.Item href="/main">Home</NavDropdown.Item>
+              <NavDropdown.Item href="/product">Product</NavDropdown.Item>
+              <NavDropdown.Item href="/category">product</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+            </NavDropdown>
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
@@ -92,7 +98,7 @@ const Header = () => {
 
               {auth !== 'NOTUSER' ? (
                 <>
-                  <Link className="nav-link active m-3" to={'/user'}>
+                  <Link className="nav-link active m-3" to={'/userdata'}>
                     MyPage
                   </Link>
                   <Button variant="outline-dark" onClick={handleLogout}>
@@ -142,8 +148,10 @@ const Header = () => {
               6TEAMSHOP
             </Link>
 
-            <button
+            <NavDropdown
               className="navbar-toggler"
+              id="nav-dropdown-dark-example"
+              title="Menu"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent"
@@ -151,8 +159,13 @@ const Header = () => {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
-            </button>
+              <NavDropdown.Item href="/main">Home</NavDropdown.Item>
+              <NavDropdown.Item href="/product">Product</NavDropdown.Item>
+              <NavDropdown.Item href="/category">Category</NavDropdown.Item>
+              <NavDropdown.Item href="/category">Category</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+            </NavDropdown>
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
