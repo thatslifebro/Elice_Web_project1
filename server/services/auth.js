@@ -18,37 +18,36 @@ export default class authService {
     return token;
   }
 
-  static async register(email, password, address, fullName, role) {
+  static async register({ email, password, address, fullName }) {
     const user = await User.findOne({ email });
     if (user) {
       throw new Error('이미 있는 이메일');
     }
-    const newuser = await User.create({
+    const newUser = await User.create({
       email,
       address,
       fullName,
       password: await bcrypt.hash(password, saltRounds),
-      role,
     });
     const filtered = {
-      email: newuser.email,
-      address: newuser.address,
-      fullName: newuser.fullName,
-      role: newuser.role,
+      email: newUser.email,
+      address: newUser.address,
+      fullName: newUser.fullName,
+      role: newUser.role,
     };
     return filtered;
   }
 
-  static async withdrawal(id, role, password) {
+  static async withdrawal({ userId, role, password }) {
     if (role !== 'USER') {
       throw new Error('권한이 없다');
     }
-    const user = await User.findOne({ id });
+    const user = await User.findOne({ _id: userId });
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       throw new Error('비번이 틀림');
     }
-    const deletedUser = await User.findByIdAndDelete(id);
+    const deletedUser = await User.findByIdAndDelete(userId);
     const filtered = {
       email: deletedUser.email,
       address: deletedUser.address,

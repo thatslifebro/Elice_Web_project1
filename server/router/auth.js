@@ -2,7 +2,8 @@ import { Router } from 'express';
 import asyncHandler from '../util/async-handler';
 import authService from '../services/auth';
 
-import verifyToken from '../db/middleware/verify-token';
+import verifyToken from '../middleware/verify-token';
+import { verify } from 'jsonwebtoken';
 
 const router = Router();
 
@@ -12,8 +13,7 @@ router.post(
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const token = await authService.login(email, password);
-    res.json(token);
-    return;
+    return res.status(200).json(token);
   }),
 );
 
@@ -21,16 +21,14 @@ router.post(
 router.post(
   '/register',
   asyncHandler(async (req, res) => {
-    const { email, password, address, fullName, role } = req.body;
-    const createdUser = await authService.register(
+    const { email, password, address, fullName } = req.body;
+    const createdUser = await authService.register({
       email,
       password,
       address,
       fullName,
-      role,
-    );
-    res.json(createdUser);
-    return;
+    });
+    return res.status(201).json(createdUser);
   }),
 );
 
@@ -40,13 +38,22 @@ router.delete(
   verifyToken,
   asyncHandler(async (req, res) => {
     const { userId, role } = req.decoded;
-    const deletedUser = await authService.withdrawal(
+    const { password } = req.body;
+    const deletedUser = await authService.withdrawal({
       userId,
       role,
-      req.body.password,
-    );
-    res.json(deletedUser);
-    return;
+      password,
+    });
+    return res.status(200).json(deletedUser);
+  }),
+);
+
+router.get(
+  '/verify',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { role } = req.decoded;
+    return res.status(200).json({ role });
   }),
 );
 

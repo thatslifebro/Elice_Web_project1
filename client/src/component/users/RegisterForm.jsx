@@ -1,65 +1,55 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Form,
-  Row,
-  Col,
-  Container,
-  Nav,
-  InputGroup,
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-// **** input 받는 부분에서 onChange로 state를 세팅하는 부분이 사라졌으니 새로 코딩할것 ****
+import { Button, Form, Row, Col, Container, Nav } from 'react-bootstrap';
+import axios from 'axios';
+import instance from '../../util/axios-setting';
+
 function RegisterForm() {
+  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [EmailCorrect, setEmailCorrect] = useState(false);
+  const [passwordCorrect, setPasswordCorrect] = useState(false);
+  const [nameCorrect, setNameCorrect] = useState(false);
 
-  const validateEmail = (email) => {
-    const emailForm = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
-    if (emailForm.test(email) == false) {
-      console.log('invalide Email Address');
-      return false;
-    }
-    return true;
-  };
-
-  const validateName = (name) => {
+  const validateName = () => {
     if (name.length < 1) {
-      console.log('please input name');
+      setError('please input name');
       return false;
     }
     return true;
   };
 
-  const validateAddress = (address) => {
-    if (address.length < 1) {
-      console.log('please input address');
-      return false;
-    }
-    return true;
-  };
-
-  const validatePassword = (password, confirmPassword) => {
+  const validatePassword = () => {
     if (password !== confirmPassword) {
-      console.log('password is not confirmed');
+      setError('password is not confirmed');
       return false;
     }
     return true;
   };
 
-  const validateForm = (form) => {
-    validateEmail(form.email);
-    validateName(form.name);
-    //validateAddress(form.address);
-    validatePassword(form.password, form.confirmPassword);
-  };
-
-  const handleSubmit = () => {
-    const formData = { email, name, address, password, confirmPassword };
-    const inputStatus = validateForm(formData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userData = {
+      email,
+      fullName: name,
+      password,
+    };
+    if (true) {
+      instance
+        .post(`/api/auth/register`, userData)
+        .then((res) => {
+          console.log(res.data);
+          instance.post(`/api/auth/login`, { email, password });
+          alert('회원가입이 완료되었습니다.');
+        })
+        .catch((err) => {
+          alert('회원가입에 실패했습니다.');
+        });
+    } else {
+      alert(error);
+    }
   };
 
   return (
@@ -68,7 +58,16 @@ function RegisterForm() {
         <Form>
           <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
             <Col sm>
-              <Form.Control type="email" placeholder="Email Address" />
+              <Form.Control
+                type="email"
+                placeholder="Email Address"
+                onChange={(e) => {
+                  const regex =
+                    /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+                  setEmailCorrect(!regex.test(e.target.value));
+                  setEmail(e.target.value);
+                }}
+              />
             </Col>
           </Form.Group>
 
@@ -78,7 +77,11 @@ function RegisterForm() {
             controlId="formPlaintextPassword"
           >
             <Col sm>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Col>
           </Form.Group>
 
@@ -88,25 +91,51 @@ function RegisterForm() {
             controlId="formPlaintextPassword"
           >
             <Col sm>
-              <Form.Control type="password" placeholder="Confirm Password" />
+              <Form.Control
+                type="password"
+                placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
             </Col>
           </Form.Group>
 
           <Form.Group as={Row} className="mb-3" controlId="formPlaintextName">
             <Col sm>
-              <Form.Control type="name" placeholder="Name" />
+              <Form.Control
+                type="name"
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
+              />
             </Col>
           </Form.Group>
 
-          <InputGroup as={Col} className="mb-3">
-            <Form.Control placeholder="Address1" />
-            <Form.Control placeholder="Address2" />
-          </InputGroup>
+          <Form.Group
+            as={Row}
+            size="lg"
+            className="mb-3"
+            controlId="formPlaintext"
+          >
+            <Col sm xs={3}>
+              <Form.Label>Address</Form.Label>
+              <Form.Control type="address" placeholder="code" />
+            </Col>
+          </Form.Group>
 
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
+            <Col sm>
+              <Form.Control type="address" placeholder="address1" />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
+            <Col sm>
+              <Form.Control type="address" placeholder="address2" />
+            </Col>
+          </Form.Group>
           <br />
 
           <div className="d-grid gap-1">
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" onClick={handleSubmit}>
               회원가입
             </Button>
             <Button variant="secondary" type="submit">

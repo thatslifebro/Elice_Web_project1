@@ -1,132 +1,92 @@
 import { Router } from 'express';
 import { User } from '../db/model';
 import asyncHandler from '../util/async-handler';
+import usersService from '../services/users';
+import verifyToken from '../middleware/verify-token';
 
 const router = Router();
 
-//모든 사용자정보 가져오기
-//관리자
+//전체 유저 목록
 router.get(
   '/',
+  verifyToken,
   asyncHandler(async (req, res) => {
-    const users = await User.find().select('email address fullName role');
-    res.json(users);
-    return;
+    const { role } = req.decoded;
+    const users = await usersService.getAllUsers(role);
+    return res.status(200).json(users);
   }),
 );
 
-//id로 사용자 정보가져오기
-//관리자
+router.get(
+  '/me',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { userId } = req.decoded;
+    const user = await usersService.getUserMe(userId);
+    return res.status(200).json(user);
+  }),
+);
+
+//특정 유저 정보
 router.get(
   '/:id',
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById(id).select('email address fullName role');
-    if (!user) {
-      throw new Error('없는 사용자 입니다');
-    }
-    res.json(user);
-    return;
+    const { userId, role } = req.decoded;
+    const user = await usersService.getUserById({ id, userId, role });
+    return res.status(200).json(user);
   }),
 );
 
-//id로 사용자 정보 수정하기
-//관리자
+//특정 유저 정보 수정
 router.put(
   '/:id',
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const user = await User.findByIdAndUpdate(id, req.body);
-    if (!user) {
-      throw new Error('없는 사용자 입니다');
-    }
-    return;
+    const { address, fullName } = req.body;
+    const { userId, role } = req.decoded;
+    const user = await usersService.updateUserById({
+      id,
+      userId,
+      role,
+      address,
+      fullName,
+    });
+    return res.status(201).json(user);
   }),
 );
 
-//id로 사용자 정보 삭제하기
-//관리자
+//특정 유저 삭제
 router.delete(
   '/:id',
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const user = await User.findByIdAndDelete(id);
-    if (!user) {
-      throw new Error('없는 사용자 입니다');
-    }
-    return;
+    const { role } = req.decoded;
+    const user = await usersService.deleteUserById(id, role);
+    return res.status(200).json(user);
   }),
 );
 
-//새로운 사용자 등록하기
-//아무나
-// router.post(
-//   '/',
-//   asyncHandler(async (req, res) => {
-//     const { email, fullName, password, phoneNumber, address } = req.body;
-//     if (!email || !fullName || !password || !phoneNumber || !address) {
-//       throw new Error('필수 항목이 모두 채워지지 않았습니다.');
-//     }
-//     const newUser = await User.create({
-//       email,
-//       fullName,
-//       password,
-//       phoneNumber,
-//       address,
-//     });
-//     return;
-//   }),
-// );
-
-//user
-
-//자신정보 가져오기
-//회원
-
-// router.get(
-//   '/', //유효성검사
-//   asyncHandler(async (req, res) => {
-//     const { id } = // jwt 토큰에서 받은 id
-//     const user = await User.findById(id).select('email address fullName');
-//     res.json(user);
-//     return;
-//   }),
-// );
-
-//자신정보 수정
-//회원
-
-// router.put(
-//   '/', //유효성검사
-//   asyncHandler(async (req, res) => {
-//     const { id } = // jwt 토큰에서 받은 id
-//     const user = await User.findByIdAndUpdate(id,req.body);
-//     return;
-//   }),
-// );
-
-//회원 비밀번호 수정
-//회원
-
-// router.put(
-//   '/', //유효성검사
-//   asyncHandler(async (req, res) => {
-//     const { id } = // jwt 토큰에서 받은 id
-//     const user = await User.findById(id);
-//     if (!user) {
-//       throw new Error('없는 유저');
-//     }
-//     const match = await bcrypt.compare(req.body.password, user.password);
-//     if (!match) {
-//       throw new Error('비밀번호 틀림');
-//     } else {
-//       await user.update({ password: await hash(req.body.newPassword) });
-//       return;
-//     }
-//   }),
-// );
-
-//회원 탈퇴
-//회원
+//특정 유저 비밀번호 변경
+router.put(
+  '/:id/password',
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { password, newPassword } = req.body;
+    const { userId, role } = req.decoded;
+    const user = await usersService.changePasswordById({
+      id,
+      password,
+      newPassword,
+      userId,
+      role,
+    });
+    return res.status(200).json(user);
+  }),
+);
 
 export default router;

@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 import { Button, Form, Row, Col, Container } from 'react-bootstrap';
+import axios from 'axios';
+import instance from '../../util/axios-setting';
 
 function UserWithdrawal() {
   const [isChecked, setIsChecked] = useState(false);
+  const [password, setPassword] = useState('');
 
   const handleClick = () => {
-    isChecked ? setIsChecked(false) : setIsChecked(true);
+    setIsChecked(!isChecked);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('check');
+    instance
+      .delete(`/api/auth/withdrawal`, password)
+      .then((res) => console.log(res.data))
+      .catch(() => console.log('error'));
   };
 
   return (
@@ -14,7 +26,11 @@ function UserWithdrawal() {
         <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
           <Col sm>
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="password" />
+            <Form.Control
+              type="password"
+              placeholder="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </Col>
         </Form.Group>
         <Form className="mb-3">
@@ -29,7 +45,7 @@ function UserWithdrawal() {
             회원 탈퇴
           </Button>
         ) : (
-          <Button variant="danger" size="lg">
+          <Button variant="danger" size="lg" onClick={handleSubmit}>
             회원 탈퇴
           </Button>
         )}

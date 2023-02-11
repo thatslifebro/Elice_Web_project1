@@ -8,7 +8,7 @@ const ProductSchema = new Schema(
     },
     categoryId: {
       type: Schema.Types.ObjectId,
-      ref: 'categorys',
+      ref: 'categories',
       required: true,
     },
     //짧은 소개

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../constants/env';
 
 const signToken = async (id, role) => {
   const token = await jwt.sign(
@@ -6,9 +7,9 @@ const signToken = async (id, role) => {
       userId: id,
       role: role,
     },
-    process.env.JWT_SECRET,
+    JWT_SECRET,
     {
-      expiresIn: '1h', //1분
+      expiresIn: '100h', //1분
       issuer: '6team',
     },
   );
